@@ -1,0 +1,1 @@
+[objectType objectLength] = readObject(file);
