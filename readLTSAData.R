@@ -40,10 +40,9 @@ readLTSAData <- function(fid, fileInfo, data) {
             if(version==0) {
                   data$byteData <- pamBinRead(fid, 'int16', n = fileInfo$moduleHeader$fftLength / 2)
                   data$data <- data$byteData / 32767 * data$maxVal
-            }
-            # After version 0, the data was first scaled to 16 bit and then
-            # converted to a log so that it could be saved as an 8 bit
-            else {
+            } else {
+                  # After version 0, the data was first scaled to 16 bit and then
+                  # converted to a log so that it could be saved as an 8 bit
                   data$byteData <- pamBinRead(fid, 'int8', n = fileInfo$moduleHeader$fftLength / 2)
                   data$data <- exp((data$byteData - b)/a)* data$maxVal / 32767
             }

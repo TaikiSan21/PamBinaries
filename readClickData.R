@@ -29,8 +29,7 @@ readClickData <- function(fid, fileInfo, data) {
             
             if(version >= 2) {
                   data$flags <- pamBinRead(fid, 'int32', n=1)
-            }
-            else data$flags <- 0
+            } else data$flags <- 0
             
             if(version <= 3) {
                   nDelays <- pamBinRead(fid, 'int16', n=1)
@@ -47,13 +46,11 @@ readClickData <- function(fid, fileInfo, data) {
             if(version >= 3) {
                   nAngleErrors <- pamBinRead(fid, 'int16', n=1)
                   data$angleErrors <- pamBinRead(fid, 'float', n=nAngleErrors)
-            }
-            else data$angleErrors <- numeric() #unsure if equiv. to []
+            } else data$angleErrors <- numeric() #unsure if equiv. to []
             
             if(version <= 3) {
                   data$duration <- pamBinRead(fid, 'int16', n=1)
-            }
-            else data$duration <- data$sampleDuration
+            } else data$duration <- data$sampleDuration
             
             data$nChan <- countChannels(data$channelMap)
             maxVal <- pamBinRead(fid, 'float', n=1)

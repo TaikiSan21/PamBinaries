@@ -18,8 +18,7 @@ readFileHeader <- function(file, readExtra=FALSE) {
       header$extroInfoLen <- pamBinRead(file, 'int32', n=1)
       if(readExtra){
             header$extraInfo <- pamBinRead(file, 'int8', n=header$extraInfoLen)
-      }
-      else {
+      } else {
             seek(file, header$extraInfoLen, origin='current')
       }
       return(header)

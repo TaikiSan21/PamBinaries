@@ -23,15 +23,13 @@ readNoiseMonData <- function(fid, fileInfo, data) {
             
             if(version >= 1) {
                   data$nMeasures <- pamBinRead(fid, 'int16', n=1)
-            }
-            else {
+            } else {
                   data$nMeasures <- 4
             }
             
             if(version <= 1) {
                   n <- pamBinRead(fid, 'float', n = data$nBands * data$nMeasures)
-            }
-            else {
+            } else {
                   n <- pamBinRead(fid, 'int16', n = data$nBands * data$nMeasures) / 100
             }
             
