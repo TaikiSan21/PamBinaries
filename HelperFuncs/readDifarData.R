@@ -19,7 +19,7 @@ readDifarData <- function(fid, fileInfo, data) {
             version <- fileInfo$moduleHeader$version
             
             if(version <= 1) {
-                  datat$startSample <- pamBinRead(fid, 'int64', n=1)
+                  data$startSample <- pamBinRead(fid, 'int64', n=1)
             }
             
             data$clipStart <- pamBinRead(fid, 'int64', n=1)

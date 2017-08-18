@@ -3,6 +3,7 @@
 # specific to a module
 
 readStdModuleFooter <- function(file) {
+    footer <- list()
       footer$length <- pamBinRead(file, 'int32', n=1)
       footer$identifier <- pamBinRead(file, 'int32', n=1)
       footer$binaryLength <- pamBinRead(file, 'int32', n=1)

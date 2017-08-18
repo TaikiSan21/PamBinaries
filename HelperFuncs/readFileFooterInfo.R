@@ -3,6 +3,7 @@
 # includes the lowest and highest UID values in the file
 
 readFileFooterInfo <- function(fid, version) {
+    footer <- list()
       footer$length <- pamBinRead(fid, 'int32', n=1)
       footer$identifier <- pamBinRead(fid, 'int32', n=1)
       footer$nObjects <- pamBinRead(fid, 'int32', n=1)

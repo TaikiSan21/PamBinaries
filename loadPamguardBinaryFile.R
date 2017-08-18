@@ -1,7 +1,8 @@
 # Program to load a Pamguard binary file
 
 # open binary file and read data
-sourceDirectory('./HelperFuncs')
+library(R.utils)
+sourceDirectory('./HelperFuncs') # Check these have been updated
 loadPamguardBinaryFile <- function(fileName) {
       tryCatch({
             fid <- file(fileName, open='rb')
