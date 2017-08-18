@@ -40,7 +40,7 @@ loadPamguardBinaryFile <- function(fileName) {
             switch(nextType,
                    '-1' = {
                        fileInfo$fileHeader <- readFileHeader(fid)
-                       print(1)
+                       # print(1)
                        switch(fileInfo$fileHeader$moduleType,
                               'AIS Processing' = {
                                   fileInfo$objectType <- 0
@@ -106,7 +106,7 @@ loadPamguardBinaryFile <- function(fileName) {
                    # when we read the file header. If the file header is empty,
                    # something has gone wrong so warn the user and exit.
                    '-2' = {
-                       print(2)
+                       # print(2)
                        if(length(fileInfo$fileHeader)==0){
                            print('Error: found file footer before file header. Aborting load.')
                            break
@@ -118,7 +118,7 @@ loadPamguardBinaryFile <- function(fileName) {
                    # header is empty, something has gone wrong so warn the user
                    # and exit
                    '-3' = {
-                       print(3)
+                       # print(3)
                        if(length(fileInfo$fileHeader)==0) {
                            print('Error: found module header before file header. Aborting load.')
                            break
@@ -130,7 +130,7 @@ loadPamguardBinaryFile <- function(fileName) {
                    # header is empty, something has gone wrong so warn the user
                    # and exit
                    '-4' = {
-                       print(4)
+                       # print(4)
                        if(length(fileInfo$fileHeader)==0) {
                            print('Error: found module footer before file header. Aborting load.')
                            break
@@ -141,7 +141,7 @@ loadPamguardBinaryFile <- function(fileName) {
                    # set when we read in the file header. If the file header is
                    # empty, something has gone wrong so warn the user and exit
                    {
-                       print(5)
+                       # print(5)
                        if(length(fileInfo$fileHeader)==0) {
                            print('Error: found data before file header. Abortng load.')
                            break
