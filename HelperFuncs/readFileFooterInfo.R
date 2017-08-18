@@ -4,17 +4,17 @@
 
 readFileFooterInfo <- function(fid, version) {
     footer <- list()
-      footer$length <- pamBinRead(fid, 'int32', n=1)
-      footer$identifier <- pamBinRead(fid, 'int32', n=1)
-      footer$nObjects <- pamBinRead(fid, 'int32', n=1)
-      footer$dataDate <- millisToDateNum(pamBinRead(fid, 'int64', n=1))
-      footer$analysisDate <- millisToDateNum(pamBinRead(fid, 'int64', n=1))
-      footer$endSample <- pamBinRead(fid, 'int64', n=1)
-      if(version >= 3) {
-            footer$lowestUID <- pamBinRead(fid, 'int64', n=1)
-            footer$highestUID <- pamBinRead(fid, 'int64', n=1)
-      }
-      footer$fileLength <- pamBinRead(fid, 'int64', n=1)
-      footer$endReason <- pamBinRead(fid, 'int32', n=1)
-      return(footer)
+    footer$length <- pamBinRead(fid, 'int32', n=1)
+    footer$identifier <- pamBinRead(fid, 'int32', n=1)
+    footer$nObjects <- pamBinRead(fid, 'int32', n=1)
+    footer$dataDate <- millisToDateNum(pamBinRead(fid, 'int64', n=1))
+    footer$analysisDate <- millisToDateNum(pamBinRead(fid, 'int64', n=1))
+    footer$endSample <- pamBinRead(fid, 'int64', n=1)
+    if(version >= 3) {
+        footer$lowestUID <- pamBinRead(fid, 'int64', n=1)
+        footer$highestUID <- pamBinRead(fid, 'int64', n=1)
+    }
+    footer$fileLength <- pamBinRead(fid, 'int64', n=1)
+    footer$endReason <- pamBinRead(fid, 'int32', n=1)
+    return(footer)
 }

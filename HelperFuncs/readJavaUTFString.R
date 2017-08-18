@@ -2,9 +2,9 @@
 # Based on MATLAB code by Michael Oswald
 
 readJavaUTFString <- function(file) {
-      browser()
-      len <- pamBinRead(file, 'int8', n=1)
-      str <- pamBinRead(file, 'character', n=len)
-      print(len)
-      list(len=len, str=str)
+    browser()
+    len <- pamBinRead(file, 'int8', n=1)
+    str <- pamBinRead(file, 'character', n=len)
+    print(len)
+    list(len=len, str=str)
 }

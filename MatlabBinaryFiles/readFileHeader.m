@@ -5,7 +5,7 @@ end
 header.length = fread(file, 1, 'int32');
 header.identifier = fread(file, 1, 'int32');
 header.fileFormat = fread(file, 1, 'int32');
-header.pamguard = char(fread(file, 12, 'uchar')');
+header.pamguard = char(fread(file, 12, 'uchar'))';
 header.version = readJavaUTFString(file);
 header.branch = readJavaUTFString(file);
 header.dataDate = millisToDateNum(fread(file, 1, 'int64'));

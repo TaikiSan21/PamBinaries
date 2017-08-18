@@ -4,9 +4,9 @@
 
 readStdModuleHeader <- function(file) {
     header <- list()
-      header$length <- pamBinRead(file, 'int32', n=1)
-      header$identifier <- pamBinRead(file, 'int32', n=1)
-      header$version <- pamBinRead(file, 'int32', n=1)
-      header$binaryLength <- pamBinRead(file, 'int32', n=1)
-      return(header)
+    header$length <- pamBinRead(file, 'int32', n=1)
+    header$identifier <- pamBinRead(file, 'int32', n=1)
+    header$version <- pamBinRead(file, 'int32', n=1)
+    header$binaryLength <- pamBinRead(file, 'int32', n=1)
+    return(header)
 }
