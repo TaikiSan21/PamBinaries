@@ -2,7 +2,7 @@
 
 readFileHeader <- function(file, readExtra=FALSE) {
     header <- list()
-    browser()
+    # browser()
     header$length <- pamBinRead(file, 'int32', n=1)
     header$identifier <- pamBinRead(file, 'int32', n=1)
     header$fileFormat <- pamBinRead(file, 'int32', n=1)

@@ -30,7 +30,7 @@ loadPamguardBinaryFile <- function(fileName) {
             # pointer back to the beginning of the length variable, and switch
             # on the type. If we couldn't read nextLen or nextType, assume
             # that means we've hit the end of the file and break out of loop
-            browser()
+            # browser()
             nextLen <- pamBinRead(fid, 'int32', n=1)
             nextType <- as.character(pamBinRead(fid, 'int32', n=1))
             if((length(nextLen) == 0) | (length(nextType) == 0)) {
