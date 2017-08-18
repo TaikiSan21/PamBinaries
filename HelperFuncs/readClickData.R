@@ -10,7 +10,6 @@
 
 readClickData <- function(fid, fileInfo, data) {
     error <- FALSE
-    
     tryCatch({
         dataLength <- pamBinRead(fid, 'int32', n=1)
         if(dataLength==0) {
@@ -57,6 +56,7 @@ readClickData <- function(fid, fileInfo, data) {
         data$wave <- matrix(
             pamBinRead(fid, 'int8', n = data$duration * data$nChan),
             nrow = data$duration, ncol = data$nChan) * maxVal / 127 # Check if this matrix output is correct
+        return(list(data=data, error=error))
     }, warning = function(w) {
         print(paste('Warning occurred: ', w))
         return(list(data=data, error=error))
