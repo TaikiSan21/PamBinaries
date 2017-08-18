@@ -40,7 +40,7 @@ readPamData <- function(fid, fileInfo) {
       # it should be, based on the file header. If not, warn the user, move the
       # pointer to the next object, and exit
       data$identifier <- pamBinRead(fid, 'int32', n=1)
-      
+      browser()
       if(any(data$identifier == fileInfo$objectType)) {
             # Do nothing here- couldn't figure out a clean way of checking if
             # number wasn't in array

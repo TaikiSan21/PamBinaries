@@ -8,6 +8,6 @@ pamBinRead <- function(fid, what=c( 'int8', 'int16', 'int32', 'int64', 'float', 
              int32 = readBin(fid, 'integer', n=n, size=4, endian=endian),
              int64 = readBin(fid, 'integer', n=n, size=8, endian=endian),
              float = readBin(fid, 'numeric', n=n, size=4, endian=endian),
-             character = readBin(fid, 'character', n=n, endian=endian))
+             character = readBin(fid, 'character', n=1, size=1, endian=endian))
 }
       

@@ -1,6 +1,8 @@
 # Read file headers
 
 readFileHeader <- function(file, readExtra=FALSE) {
+      header <- list()
+      browser()
       header$length <- pamBinRead(file, 'int32', n=1)
       header$identifier <- pamBinRead(file, 'int32', n=1)
       header$fileFormat <- pamBinRead(file, 'int32', n=1)
@@ -15,7 +17,7 @@ readFileHeader <- function(file, readExtra=FALSE) {
       header$moduleType <- readJavaUTFString(file)$str
       header$moduleName <- readJavaUTFString(file)$str
       header$streamName <- readJavaUTFString(file)$str
-      header$extroInfoLen <- pamBinRead(file, 'int32', n=1)
+      header$extraInfoLen <- pamBinRead(file, 'int32', n=1)
       if(readExtra){
             header$extraInfo <- pamBinRead(file, 'int8', n=header$extraInfoLen)
       } else {
