@@ -101,8 +101,8 @@ readPamData <- function(fid, fileInfo) {
         }
         
         # set date, to maintain backwards compatibility
-        # data$date <- as.POSIXct(millisToDateNum(data$millis), origin='1970-01-01', tz='UTC')
-        data$date <- millisToDateNum(data$millis)
+        data$date <- as.POSIXct(millisToDateNum(data$millis), origin='1970-01-01', tz='UTC')
+        # data$date <- millisToDateNum(data$millis)
         # now read the module-specific data
         if(class(fileInfo$readModuleData)=='function') {
             result <- fileInfo$readModuleData(fid, fileInfo, data)
