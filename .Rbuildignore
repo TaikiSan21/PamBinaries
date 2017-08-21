@@ -1,0 +1,14 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^devel/*
+^Misc/*
+^MatlabBinaryFiles/*
+^TestFiles/*
+^README\.Rmd$
+^README-.*\.png$
+^NEWS\.Rmd$
+^NEWS\.md$
+tar.gz$
+.gitignore
+^\.travis\.yml$
+^appveyor\.yml$
