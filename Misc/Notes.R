@@ -1,19 +1,20 @@
 # NOTES #
 
-# Java UTF string wasn't behaving properly. Changed from int16 to int8 and it works
-############## ^^^^^ ######### Stopped working with int8, now it works in int16
-# Fuck you, R
-
-# R has no 64 bit integers. Read in as two 32s, turned to numeric, then 
-# a*2^32 + b. Seems to work fine, possibly sketchy.
-# Fuck you, R
-
 # Dates can be converted with as.POSIXct(date, origin='1970-01-01', tz='UTC')
 
-# Dates arent working sometimes. The milliseconds are sometimes off by 2^32
-# Probably because of my int64. Lets try to read in as raw. It reads one byte
-# at a time as a hex. We can convert the hex to decimal, then shift those by
-# 2^56, 2^48, ... 2^8, 2^0 or whatever power I need. strtoi(hex, base=16)
+# TIMES: ClickTest: 11-12s vs 57s. 13955 events.
+#        BigTest (DIFAR): 1.3s vs .5s 273 events.
+
+# Possible future improvements - we should be able to read all of the data as one big chunk. 
+# Either by looping through once just to get the data length, or can we work backwards from 
+# the end of file? If we read in everything as a big raw chunk we can reorganize it into a
+# matrix https://stat.ethz.ch/pipermail/r-help/2008-August/171645.html and then readBin from
+# that structure all common types at a time. Would need to map the structure somehow. Possibly
+# a matrix with type Id (stored as ints or factors) and length? Working backwards should work
+# depending on what this 'datagram' nonsense is.
+
+# Probably best to loop through once and store each data length and an event Id for it. Use this
+# at end to split into separate events, then search through events for variable length data.
 
 as.numeric(ymd_hms("2017-04-27 21:29:15 UTC")) -
     as.numeric(ymd_hms("2017-03-09 04:26:28 UTC")) #mine
