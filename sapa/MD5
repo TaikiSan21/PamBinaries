@@ -1,0 +1,13 @@
+96db6cd02d633760b2c1088e3f606494 *DESCRIPTION
+2b5fb2449afaa79f3bebd2dea7c0a0d2 *NAMESPACE
+77c5ddc966720045591d5d57dac865f0 *R/sapa_pkg.R
+5207a7b6ec706bbe00bb4d20381d1908 *R/sapa_sdf.R
+7d70b33882bb0c3c81b34aee50439967 *R/sapa_taper.R
+87b12321d9194783deaa978416aab67b *README.md
+48e854aa2771b7f332e1cb15fc0dec8b *inst/sapa.chm
+9220fea6baa720089971d071a1cce493 *man/ACVS.Rd
+40498facaaa5e0d576ebb8f2b208155c *man/SDF.Rd
+f52fb98feabd649e22264a72342cbca3 *man/taper.Rd
+3996e7c16bfb96fad295ee425815cb4d *src/Makevars
+b149ccc0141f11f6ed36aad7ae4008e9 *src/sapa_lapack.c
+d74e1a998a0c17f498bbca650f5cb9b1 *src/sapa_lapack.h
