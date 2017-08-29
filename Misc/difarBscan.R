@@ -37,15 +37,16 @@
 
 # This code adapted from Matlab to R by Taiki Sakai
 
-difarBscan <- function(Om, EW, NS, fftLength, sampleRate, freqRange=c(-Inf, Inf)) {
+difarBscan <- function(Om, EW, NS, fftLength, sampleRate, freqRange=c(-Inf, Inf), ...) {
     makePlots = FALSE
     # Convert fftLength in seconds, to fftLength in samples
     # Don't think this is needed for R version of PSD.
+    # Using samples as fftLength
     
-    fftLength <- trunc(fftLength * sampleRate)
-    fftLength <- min(fftLength, length(Om))
-    # # Make sure it is an even number
-    fftLength <- fftLength - (fftLength %% 2)
+    # fftLength <- trunc(fftLength * sampleRate)
+    # fftLength <- min(fftLength, length(Om))
+    # # # Make sure it is an even number
+    # fftLength <- fftLength - (fftLength %% 2)
     
     # The routines sppowr and spcros from "Signal Processing Algorithms in Matlab"
     # by S.D. Stearns and R. A. David, Prentice Hall 1996 were used in Matlab version.
@@ -53,7 +54,8 @@ difarBscan <- function(Om, EW, NS, fftLength, sampleRate, freqRange=c(-Inf, Inf)
     
     # Computes entire cross spectra matrix. S11, S12, S13, S22, S23, S33. Uses Hanning
     # window with overlap of .5.
-    allSpectra <- SDF(matrix(c(Om, EW, NS), ncol=3), method='wosa', sampling.interval=1/sampleRate)
+    browser()
+    allSpectra <- SDF(matrix(c(Om, EW, NS), ncol=3), method='wosa', sampling.interval=1/sampleRate, ...)
     
     OmS <- allSpectra[,1]
     EWS <- allSpectra[,4]
