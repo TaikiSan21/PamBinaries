@@ -1,4 +1,4 @@
-function [ang freqs mag Output degBins freqBins] = difarBscan(Om, EW, NS, fftLength, sampleRate, freqRange)
+function [ang freqs mag Output degBins freqBins OmEWx] = difarBscan(Om, EW, NS, fftLength, sampleRate, freqRange)
 % [OutBRR degBins freqBins] = difarBscan(Om, EW, NS, sampleRate)
 % Find the magnetic bearing of a sound source given the demultiplexed output
 % of a difar sonobuoy, type AN-SSQ-53B or 53D
@@ -58,14 +58,21 @@ iwindo=4;   % Hanning window
 ovrlap=0.5; % 50 percent overlap
 
 % compute the autospectra of each component
-OmS = sppowr(Om', fftLength, iwindo, ovrlap);
-EWS = sppowr(EW', fftLength, iwindo, ovrlap);
-NSS = sppowr(NS', fftLength, iwindo, ovrlap);
+OmS = pwelch(Om', hann(512), 256, 512);
+EWS = pwelch(EW', hann(512), 256, 512);
+NSS = pwelch(NS', hann(512), 256, 512);
+% OmS = sppowr(Om', fftLength, iwindo, ovrlap);
+% EWS = sppowr(EW', fftLength, iwindo, ovrlap);
+% NSS = sppowr(NS', fftLength, iwindo, ovrlap);
 
 % compute the cross spectra needed
-OmEWx = spcros(Om', EW', fftLength, iwindo, ovrlap);
-OmNSx = spcros(Om', NS', fftLength, iwindo, ovrlap);
-EWNSx = spcros(EW', NS', fftLength, iwindo, ovrlap);
+OmEWx = cpsd(Om', EW', hann(512), 256, 512);
+OmNSx = cpsd(Om', NS', hann(512), 256, 512);
+EWNSx = cpsd(EW', NS', hann(512), 256, 512);
+% compute the cross spectra needed
+% OmEWx = spcros(Om', EW', fftLength, iwindo, ovrlap);
+% OmNSx = spcros(Om', NS', fftLength, iwindo, ovrlap);
+% EWNSx = spcros(EW', NS', fftLength, iwindo, ovrlap);
 
 nfbins=(fftLength/2)+1;
 fstep=(sampleRate/2)/nfbins;

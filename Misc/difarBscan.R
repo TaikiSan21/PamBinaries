@@ -37,8 +37,9 @@
 
 # This code adapted from Matlab to R by Taiki Sakai
 
-difarBscan <- function(Om, EW, NS, fftLength, sampleRate, freqRange=c(-Inf, Inf), ...) {
-    makePlots = FALSE
+difarBscan <- function(Om, EW, NS, fftLength, sampleRate, freqRange=c(-Inf, Inf),
+                       degstep = 1, outputType = 'Bartlett', makePlots = FALSE, ...) {
+    # makePlots = FALSE
     # Convert fftLength in seconds, to fftLength in samples
     # Don't think this is needed for R version of PSD.
     # Using samples as fftLength
@@ -54,8 +55,10 @@ difarBscan <- function(Om, EW, NS, fftLength, sampleRate, freqRange=c(-Inf, Inf)
     
     # Computes entire cross spectra matrix. S11, S12, S13, S22, S23, S33. Uses Hanning
     # window with overlap of .5.
-    browser()
-    allSpectra <- SDF(matrix(c(Om, EW, NS), ncol=3), method='wosa', sampling.interval=1/sampleRate, ...)
+    # browser()
+    allSpectra <- SDF(matrix(c(Om, EW, NS), ncol=3), method='wosa',sampling.interval=1/sampleRate,
+                      npad = fftLength)#,
+                      # blocksize = fftLength, ...)
     
     OmS <- allSpectra[,1]
     EWS <- allSpectra[,4]
@@ -79,13 +82,13 @@ difarBscan <- function(Om, EW, NS, fftLength, sampleRate, freqRange=c(-Inf, Inf)
     fbinmax <- min(fbinmax, trunc(freqRange[2]/fstep))
     
     # The steering vectors are a 1x3 matrix for each step in azimuth (theta)
-    degstep <- 2 # step in degrees
+    # degstep <- 2 # step in degrees
     step  <- degstep*pi/180 # step in radians
     nazsteps  <- 360/degstep
     degBins <- seq(1, 360, degstep)
     OutB <- matrix(1, nrow=nazsteps, ncol=nfbins)
     
-    outputType <- 'Bartlett' # Can be 'Bartlett' or 'MVDR'
+    # outputType <- 'Bartlett' # Can be 'Bartlett' or 'MVDR'
     for(az in 1:nazsteps) {
         theta <- (az-1)*step
         svec <- c(.5, .5*sin(theta), .5*cos(theta))
@@ -128,6 +131,6 @@ difarBscan <- function(Om, EW, NS, fftLength, sampleRate, freqRange=c(-Inf, Inf)
     # This seems weird?
     freqs <- freqBins[fbinmin:fbinmax]
     return(list(ang=ang, freqs=freqs, mag=mag, Output=Output,
-                degBins=degBins, freqBins=freqBins))
+                degBins=degBins, freqBins=freqBins, sdf = allSpectra))
 }
     
