@@ -60,9 +60,9 @@ readClickData <- function(fid, fileInfo, data) {
             pamBinRead(fid, 'int8', n = data$duration * data$nChan),
             nrow = data$duration, ncol = data$nChan) * maxVal / 127 # Check if this matrix output is correct
         return(list(data=data, error=error))
-    }, warning = function(w) {
-        print(paste('Warning occurred: ', w))
-        return(list(data=data, error=error))
+    # }, warning = function(w) {
+        # print(paste('Warning occurred: ', w))
+        # return(list(data=data, error=error))
     }, error = function(e) {
         print('Error reading ', fileInfo$fileHeader$moduleType, ' Data read:')
         print(data)

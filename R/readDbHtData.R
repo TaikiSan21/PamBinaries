@@ -32,9 +32,9 @@ readDbHtData <- function(fid, fileInfo, data) {
         data$peakPeak <- pamBinRead(fid, 'int16', n=1) / 100
         
         return(list(data=data, error=error))
-    }, warning = function(w) {
-        print(paste('Warning occurred: ', w))
-        return(list(data=data, error=error))
+    # }, warning = function(w) {
+    #     print(paste('Warning occurred: ', w))
+    #     return(list(data=data, error=error))
     }, error = function(e) {
         print(paste('Error reading ', fileInfo$fileHeader$moduleType, ' data object. Data read:'))
         print(data)

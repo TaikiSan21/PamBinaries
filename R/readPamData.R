@@ -49,7 +49,7 @@ readPamData <- function(fid, fileInfo) {
                     fileInfo$fileHeader$moduleType,
                     ' type. Aborting data read.'))
         seek(fid, nextObj, origin='start')
-        return(fid, fileInfo)
+        return(list(fid=fid, fileInfo=fileInfo))
     }
     
     # Read the data, starting with the standard data that every data unit has
@@ -116,9 +116,9 @@ readPamData <- function(fid, fileInfo) {
             }
         }
         return(data)
-    }, warning = function(w) {
-        print(paste('Warning occurred: ', w))
-        return(data)
+    # }, warning = function(w) {
+    #     print(paste('Warning occurred: ', w))
+    #     return(data)
     }, error = function(e) {
         print('Error loading object data')
         print(data)

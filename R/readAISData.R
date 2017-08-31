@@ -27,9 +27,9 @@ readAISData <- function(fid, fileInfo, data) {
         data$charData <- readJavaUTFString(fid)$str
         data$aisChannel <- readJavaUTFString(fid)$str
         return(list(data=data, error=error))
-    }, warning = function(w) {
-        print(paste('Warning occurred: ', w))
-        return(list(data=data, error=error))
+    # }, warning = function(w) {
+    #     print(paste('Warning occurred: ', w))
+    #     return(list(data=data, error=error))
     }, error = function(e) {
         print('Error reading AIS data object. Data read:')
         print(data)

@@ -74,9 +74,9 @@ readDifarData <- function(fid, fileInfo, data) {
         }
         
         return(list(data=data, error=error))
-    }, warning = function(w) {
-        print(paste('Warning occurred: ', w))
-        return(list(data=data, error=error))
+    # }, warning = function(w) {
+    #     print(paste('Warning occurred: ', w))
+    #     return(list(data=data, error=error))
     }, error = function(e) {
         print(paste('Error reading ', fileInfo$fileHeader$moduleType, ' data object. Data read:'))
         print(data)
