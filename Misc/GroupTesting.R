@@ -1,15 +1,22 @@
 # Comparison to Jay's
+library(data.table)
+library(dplyr)
+library(microbenchmark)
+library(R.utils)
+library(pryr)
+sourceDirectory('./R')
 safeDf <- function(data) {
     do.call(rbind, lapply(data, function(x) {
-        tooBig <- which(sapply(x, function(y) !is.null(dim(y))))
+        # tooBig <- which(sapply(x, function(y) !is.null(dim(y))))
+        tooBig <- 15
         data.frame(x[-tooBig])
     }))}
 
 fastDf <- function(data) {
     do.call(rbind, lapply(data, function(x) {
         # tooBig <- which(sapply(x, function(y) !is.null(dim(y))))
-        tooBig <- grep('wave', names(x))
-        # tooBig <- 15
+        # tooBig <- grep('wave', names(x))
+        tooBig <- 15
         x <- x[-tooBig]
         tryCatch({
             class(x) <- 'data.frame'
@@ -22,8 +29,8 @@ fastDf <- function(data) {
 fastDt <- function(data) {
     rbindlist(lapply(data, function(x) {
         # tooBig <- which(sapply(x, function(y) !is.null(dim(y))))
-        # tooBig <- 15
-        tooBig <- grep('wave', names(x))
+        tooBig <- 15
+        # tooBig <- grep('wave', names(x))
         x <- x[-tooBig]
         tryCatch({
             class(x) <- 'data.frame'
@@ -85,7 +92,7 @@ microbenchmark(
     list_call = taikiTime(fastDt, callFun),
     call_list = taikiTime(fastDf, rbindlist),
     call_call = taikiTime(fastDf, callFun),
-    jayTime(),
+    # jayTime(),
     times=10
 )
 

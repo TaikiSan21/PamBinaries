@@ -12,7 +12,7 @@
 #' 
 #' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
 #' 
-readPamData <- function(fid, fileInfo) {
+readPamData <- function(fid, fileInfo, ...) {
     ### UNSURE OF WHAT THE RESULTS ARE IN CASE OF ERROR ###
     # set constants to match flag bitmap constants in class
     # DataUnitBaseData.java. The following constants match header version 4.
@@ -105,7 +105,7 @@ readPamData <- function(fid, fileInfo) {
         # data$date <- millisToDateNum(data$millis)
         # now read the module-specific data
         if(class(fileInfo$readModuleData)=='function') {
-            result <- fileInfo$readModuleData(fid, fileInfo, data)
+            result <- fileInfo$readModuleData(fid, fileInfo, data, ...)
             data <- result$data
             if(result$error) {
                 print(paste('Error - cannot retrieve ', 

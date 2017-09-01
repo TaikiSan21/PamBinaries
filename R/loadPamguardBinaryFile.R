@@ -13,7 +13,7 @@
 #' 
 #' @export
 #' 
-loadPamguardBinaryFile <- function(fileName) {
+loadPamguardBinaryFile <- function(fileName, ...) {
     tryCatch({
         fid <- file(fileName, open='rb')
         
@@ -156,7 +156,7 @@ loadPamguardBinaryFile <- function(fileName) {
                            print('Error: found data before file header. Aborting load.')
                            break
                        }
-                       dataPoint <- readPamData(fid, fileInfo)
+                       dataPoint <- readPamData(fid, fileInfo, ...)
                        
                        dataSet[[length(dataSet)+1]] <- dataPoint
                    }
