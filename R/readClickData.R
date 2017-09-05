@@ -11,10 +11,10 @@
 #' 
 #' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
 #' 
-readClickData <- function(fid, fileInfo, data, getWave=FALSE) {
+readClickData <- function(fid, fileInfo, data, getWave=FALSE, onlyWave=FALSE) {
     error <- FALSE
     tryCatch({
-        dataLength <- pamBinRead(fid, 'int32', n=1, seek=getWave)
+        dataLength <- pamBinRead(fid, 'int32', n=1, seek=onlyWave)
         if(dataLength==0) {
             return(list(data=data, error=error))
         }
@@ -22,15 +22,15 @@ readClickData <- function(fid, fileInfo, data, getWave=FALSE) {
         version <- fileInfo$moduleHeader$version
         
         if(version <= 3) {
-            data$startSample <- pamBinRead(fid, 'int64', n=1, seek=getWave)
+            data$startSample <- pamBinRead(fid, 'int64', n=1, seek=onlyWave)
             data$channelMap <- pamBinRead(fid, 'int32', n=1)
         }
         
-        data$triggerMap <- pamBinRead(fid, 'int32', n=1, seek=getWave)
-        data$type <- pamBinRead(fid, 'int16', n=1, seek=getWave)
+        data$triggerMap <- pamBinRead(fid, 'int32', n=1, seek=onlyWave)
+        data$type <- pamBinRead(fid, 'int16', n=1, seek=onlyWave)
         
         if(version >= 2) {
-            data$flags <- pamBinRead(fid, 'int32', n=1, seek=getWave)
+            data$flags <- pamBinRead(fid, 'int32', n=1, seek=onlyWave)
         } else data$flags <- 0
         
         if(version <= 3) {
@@ -38,16 +38,16 @@ readClickData <- function(fid, fileInfo, data, getWave=FALSE) {
             ################
             # matlab has if(nDelays), should be fine if nDelays is 0, so not needed
             ###################
-            data$delays <- pamBinRead(fid, 'float', n=nDelays, seek=getWave) #### THIS IS POSSIBLE ERROR NUMERIC - FLOAT
+            data$delays <- pamBinRead(fid, 'float', n=nDelays, seek=onlyWave) #### THIS IS POSSIBLE ERROR NUMERIC - FLOAT
         }
         
         nAngles <- pamBinRead(fid, 'int16', n=1)
         # if(nAngles) again
-        data$angles <- pamBinRead(fid, 'float', n=nAngles, seek=getWave)
+        data$angles <- pamBinRead(fid, 'float', n=nAngles, seek=onlyWave)
         
         if(version >= 3) {
             nAngleErrors <- pamBinRead(fid, 'int16', n=1)
-            data$angleErrors <- pamBinRead(fid, 'float', n=nAngleErrors, seek=getWave)
+            data$angleErrors <- pamBinRead(fid, 'float', n=nAngleErrors, seek=onlyWave)
         } else data$angleErrors <- numeric() #unsure if equiv. to []
         
         if(version <= 3) {

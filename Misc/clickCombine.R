@@ -22,12 +22,18 @@ taikiClicks <- function(dir='.', folders=NULL, outDir=NULL, ...) {
         })
 }
 
-combineClickFiles <- function(folder, quiet=FALSE, getWave=FALSE) {
+combineClickFiles <- function(folder, fileList=NULL, quiet=FALSE, getWave=FALSE, messageFrequency=10) {
     hSens <- -172.1
     gain <- 1
     adcPeakPeak <- 2.828
-    files <- list.files(folder, pattern='Click_Detector_Click_Detector_Clicks.*\\.pgdf$',
-                        recursive=TRUE, full.names=TRUE)
+    if(is.null(fileList)) {
+        files <- list.files(folder, pattern='Click_Detector_Click_Detector_Clicks.*\\.pgdf$',
+                            recursive=TRUE, full.names=TRUE)
+    } else {
+        files <- fileList
+    }
+    
+    logName <- 'ClickErrorLog.txt'
     nFiles <- length(files)
     iFile <- 1
     errors <- c()
@@ -39,11 +45,15 @@ combineClickFiles <- function(folder, quiet=FALSE, getWave=FALSE) {
                                 if(!quiet) {
                                     # print(mem_used())
                                     # time <- proc.time()
-                                    cat(iFile, ' of', nFiles, '  ', shortFile, '\n')
+                                    if((iFile %% messageFrequency) == 1) {
+                                        cat(iFile, ' of', nFiles, '  ', shortFile, '\n')
+                                    }
                                 }
                                 iFile <<- iFile + 1
                                 # Gather clicks
                                 tryCatch({
+                                    log <- file(logName, open = 'wt')
+                                    sink(log, type='message')
                                 binaryData <- loadPamguardBinaryFile(file, getWave=getWave)
                                 #browser()
                                 nClicks <- length(binaryData$data)
@@ -67,7 +77,7 @@ combineClickFiles <- function(folder, quiet=FALSE, getWave=FALSE) {
                                         }
                                         result$wave <- waves
                                     }
-                                    if(iFile==2) 1+'1'
+                                    # if(iFile==2) 1+'1'
                                     
                                 }
                                 # if(!quiet) {
@@ -76,6 +86,7 @@ combineClickFiles <- function(folder, quiet=FALSE, getWave=FALSE) {
                                 result
                                 }, error = function(e) {
                                     errors <<- c(errors, shortFile)
+                                    cat(paste('Error in file ', shortFile, ': \n', e), file=logName, append=TRUE)
                                     list(clickDf=data.frame(), wave=matrix())
                                 })
                             }
@@ -83,8 +94,9 @@ combineClickFiles <- function(folder, quiet=FALSE, getWave=FALSE) {
     )
     if(length(errors) > 0) {
         cat('WARNING: Encountered ', length(errors), ' error(s). Unable to load files: \n',
-            errors)
+            errors, '\n see log file ', logName, ' for details.')
     }
+    
     AllClicksList
 }
 
