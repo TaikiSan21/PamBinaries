@@ -8,10 +8,10 @@ sourceDirectory('./R')
 source('./Misc/clickCombine.R')
 
 microbenchmark(
-    taiki=taikiClicks(quiet=TRUE, getWave=FALSE),
+    taiki=taikiClicks(dir='./TestFiles/', getWave=FALSE),
     # allcheck=taikiClicks2(quiet=TRUE),
     jay = jayClicks(),
-    times=1)
+    times=4)
 
 try <- 'S:\\1650_PASCAL_2016\\Data\\DASBR_Pamguard_Post_Processing\\Binaries\\Full_Click_Runs\\Processed_Master_Copies\\Binaries_Station-23_Soundtrap-E'
 taikiClicks(folders=try, getWave=FALSE)
@@ -24,8 +24,8 @@ taikiClicks(folders='./TestFiles/1', getWave=FALSE)
 test <- loadPamguardBinaryFile('./TestFiles/ClickTest.pgdf')
 
 microbenchmark(
-    wave = loadPamguardBinaryFile('./TestFiles/ClickTest.pgdf', getWave=TRUE),
-    noWave = loadPamguardBinaryFile('./TestFiles/ClickTest.pgdf', getWave=FALSE),
+    wave = loadPamguardBinaryFile('./TestFiles/Click_Detector_Click_Detector_Clicks_20160903_004214.pgdf', getWave=TRUE),
+    noWave = loadPamguardBinaryFile('./TestFiles/Click_Detector_Click_Detector_Clicks_20160903_004214.pgdf', getWave=FALSE),
     times=5
 )
 

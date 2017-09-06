@@ -5,6 +5,8 @@
 #' @param fid binary file identifier
 #' @param fileInfo structure holding the file header and module header
 #' @param data a structure containing standard data
+#' @param getWave a flag for whether or not wave file data should be read
+#' @param onlyWave a flag for skipping over other data when reading wave files
 #' 
 #' @return a structure containing data from a single object, and a logical
 #'   flag if an error has occurred

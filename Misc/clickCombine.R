@@ -1,16 +1,39 @@
 library(data.table)
 library(dplyr)
-# library(PamBinaries)
-# setwd('./TestFiles')
+library(PamBinaries)
 
-taikiClicks <- function(dir='.', folders=NULL, outDir=NULL, ...) {
+###################################################################################################
+# Can either specify specific folders to process, or a directory containing all folders to process.
+# Will write files into the current directory. The default settings are to skip reading wave
+# files (getWave=FALSE), process all folders in the current directory, and print progress
+# updates every 10 files. It will also create a ClickErrorLog.txt in the current directory if
+# any errors are encountered that shows what the errors were. It should (hopefully) keep running even
+# if it encounters an error reading a file, then you can use the log to find out which files you need
+# to go back and run again.
+###################################################################################################
+
+# EXAMPLES: 
+# To create a CSV for each folder in directory 'S:/AllMyBinaries/' :
+# writeClickFolder(dir='S:/AllMyBinaries/', getWave=FALSE)
+#
+# To read only specific folders c('S:/AllMyBinaries/Folder1', 'S:/AllMyBinaries/Folder2') 
+# (Useful if you only need to run a subset of folders in a directory) :
+# writeClickFolder(folders=c('S:/AllMyBinaries/Folder1', 'S:/AllMyBinaries/Folder2'))
+#
+# You can set the frequency of message updates (ie. 'On file 1 of 100') by setting
+# messageFrequency, or tell it to be quiet with quiet=TRUE:
+#
+# Only print progress message every 20 files:
+# writeClickFolder(dir='S:/AllMyBinaries/', messageFrequency=20)
+#
+# Or no messages:
+# writeClickFolder(dir='S:/AllMyBinaries/', quiet=TRUE)
+
+writeClickFolder <- function(dir='.', folders=NULL, ...) {
     if(is.null(folders)) {
         foldersToCombine <- list.dirs(dir, recursive=FALSE)
     } else {
         foldersToCombine <- folders
-    }
-    if(is.null(outDir)) {
-        outDir <- dir
     }
     lapply(
         foldersToCombine, function(f) {
@@ -52,22 +75,23 @@ combineClickFiles <- function(folder, fileList=NULL, quiet=FALSE, getWave=FALSE,
                                 iFile <<- iFile + 1
                                 # Gather clicks
                                 tryCatch({
-                                    log <- file(logName, open = 'wt')
-                                    sink(log, type='message')
+                                    # log <- file(logName, open = 'wt')
+                                    # sink(log, type='message')
                                 binaryData <- loadPamguardBinaryFile(file, getWave=getWave)
                                 #browser()
                                 nClicks <- length(binaryData$data)
                                 if(nClicks > 0) {
                                     if(!getWave) {
-                                        result$clickDf <- rbindlist(lapply(binaryData$data, function(d) {
-                                            tryCatch({
+                                        result$clickDf <- tryCatch({
+                                            rbindlist(lapply(binaryData$data, function(d) {
                                                 class(d) <- 'data.frame'
                                                 attr(d, 'row.names') <- .set_row_names(length(d[[1]]))
-                                                d}, error=function(e) {
+                                                d}))}, error=function(e) {
                                                     print('Fast version failed, going slow.')
+                                                    do.call(rbind, lapply(binaryData$data, function(d) {
                                                     data.frame(d)
-                                                })
-                                        })) %>% mutate(ClickNo = 0:(n()-1),
+                                                    }
+                                                ))}) %>% mutate(ClickNo = 0:(n()-1),
                                                        BinaryFile = shortFile)
                                         # Gather waves
                                     } else {
@@ -75,7 +99,8 @@ combineClickFiles <- function(folder, fileList=NULL, quiet=FALSE, getWave=FALSE,
                                         for(i in seq_along(waves)) {
                                             waves[[i]] <- binaryData$data[[i]]$wave
                                         }
-                                        result$wave <- waves
+                                        result <- waves
+                                        names(result) <- 0:(nClicks-1)
                                     }
                                     # if(iFile==2) 1+'1'
                                     
@@ -96,7 +121,6 @@ combineClickFiles <- function(folder, fileList=NULL, quiet=FALSE, getWave=FALSE,
         cat('WARNING: Encountered ', length(errors), ' error(s). Unable to load files: \n',
             errors, '\n see log file ', logName, ' for details.')
     }
-    
     AllClicksList
 }
 
