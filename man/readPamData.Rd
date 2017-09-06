@@ -4,13 +4,15 @@
 \alias{readPamData}
 \title{Read Pamguard Data}
 \usage{
-readPamData(fid, fileInfo)
+readPamData(fid, fileInfo, ...)
 }
 \arguments{
 \item{fid}{binary file identifier}
 
 \item{fileInfo}{structure holding the file header, module header, and the
 appropriate function to read module specific data}
+
+\item{\dots}{Arguments passed to other functions}
 }
 \value{
 a structure containing data from a single object

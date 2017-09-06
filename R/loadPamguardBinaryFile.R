@@ -5,7 +5,7 @@
 #'   All functions based on Matlab code written by Michael Oswald.
 #' 
 #' @param fileName The name of the binary file to be read
-#' 
+#' @param \dots Arguments passed to other functions
 #' @return This function returns a list containing two objects. Data contains
 #'   all the binary data read. fileInfo contains metadata information for the file.
 #' 

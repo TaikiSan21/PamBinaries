@@ -6,6 +6,7 @@
 #' @param what The type of data to read. Int64 is not handled natively
 #'   by R, see note.
 #' @param n The number of objects to read.
+#' @param seek Whether or not to just seek instead of reading
 #' 
 #' @return Data of the type and number specified.
 #' 

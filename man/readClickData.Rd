@@ -4,7 +4,7 @@
 \alias{readClickData}
 \title{Read Click Data}
 \usage{
-readClickData(fid, fileInfo, data)
+readClickData(fid, fileInfo, data, getWave = FALSE, onlyWave = FALSE)
 }
 \arguments{
 \item{fid}{binary file identifier}
@@ -12,6 +12,10 @@ readClickData(fid, fileInfo, data)
 \item{fileInfo}{structure holding the file header and module header}
 
 \item{data}{a structure containing standard data}
+
+\item{getWave}{a flag for whether or not wave file data should be read}
+
+\item{onlyWave}{a flag for skipping over other data when reading wave files}
 }
 \value{
 a structure containing data from a single object, and a logical

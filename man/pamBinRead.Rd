@@ -5,7 +5,7 @@
 \title{Read Pamguard Binary Data}
 \usage{
 pamBinRead(fid, what = c("int8", "int16", "int32", "int64", "float",
-  "character"), n)
+  "character"), n, seek = FALSE)
 }
 \arguments{
 \item{fid}{The binary file being read}
@@ -14,6 +14,8 @@ pamBinRead(fid, what = c("int8", "int16", "int32", "int64", "float",
 by R, see note.}
 
 \item{n}{The number of objects to read.}
+
+\item{seek}{Whether or not to just seek instead of reading}
 }
 \value{
 Data of the type and number specified.

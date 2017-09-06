@@ -7,6 +7,7 @@
 #' @param fid binary file identifier
 #' @param fileInfo structure holding the file header, module header, and the
 #'   appropriate function to read module specific data
+#' @param \dots Arguments passed to other functions
 #' 
 #' @return a structure containing data from a single object
 #' 

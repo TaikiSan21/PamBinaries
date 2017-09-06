@@ -4,10 +4,12 @@
 \alias{loadPamguardBinaryFile}
 \title{Load Pamguard Binary File}
 \usage{
-loadPamguardBinaryFile(fileName)
+loadPamguardBinaryFile(fileName, ...)
 }
 \arguments{
 \item{fileName}{The name of the binary file to be read}
+
+\item{\dots}{Arguments passed to other functions}
 }
 \value{
 This function returns a list containing two objects. Data contains

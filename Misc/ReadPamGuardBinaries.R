@@ -20,7 +20,7 @@ for (ifolder in 1:nfolders) {
     
   files= list.files(folders[ifolder],pattern=glob2rx("Click_Detector_Click_Detector_Clicks*.pgdf"),recursive=TRUE,full.names=TRUE)
   OutputFileName=  paste(sub(pattern="./",replacement="",x=folders[ifolder]),".CSV",sep="")
-  
+  first <- TRUE
   nfiles= length(files)
   for (ifile in 1:nfiles) {
     
@@ -48,8 +48,9 @@ for (ifolder in 1:nfolders) {
 #       for(i in 1:nClicks) {
 #           waves[[i]] <- binaryData$data[[i]]$wave
 #       }
-      if (ifile==1) {
+      if (first) {
         write.csv(clickDf,file=OutputFileName,row.names=FALSE)
+        first <<- FALSE  
       } else {
         write.table(clickDf,file=OutputFileName,append=TRUE,sep=",",col.names=FALSE,row.names=FALSE)
       }
