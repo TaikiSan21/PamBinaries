@@ -40,12 +40,12 @@ writeClickFolder <- function(dir='.', folders=NULL, ...) {
             AllClicks <- combineClickFiles(f, ...)
             folderName <- gsub('.*(/|\\\\)', '', f)
             write.csv(rbindlist(lapply(AllClicks, function(x) {
-                x$clickDf})), file=paste0('TaikiComp',folderName, '.CSV'),
+                x$clickDf})), file=paste0(folderName, '.CSV'),
                 row.names=FALSE)
         })
 }
 
-combineClickFiles <- function(folder, fileList=NULL, quiet=FALSE, getWave=FALSE, messageFrequency=10) {
+combineClickFiles <- function(folder, fileList=NULL, quiet=FALSE, getWave=FALSE, messageFrequency=10, clickNos=NULL) {
     hSens <- -172.1
     gain <- 1
     adcPeakPeak <- 2.828
@@ -60,6 +60,7 @@ combineClickFiles <- function(folder, fileList=NULL, quiet=FALSE, getWave=FALSE,
     nFiles <- length(files)
     iFile <- 1
     errors <- c()
+    
     AllClicksList <- lapply(files,
                             function(file) {
                                 # Show progress
@@ -108,20 +109,25 @@ combineClickFiles <- function(folder, fileList=NULL, quiet=FALSE, getWave=FALSE,
                                 # if(!quiet) {
                                 #     cat('\n Took ', (proc.time()-time)[3],'\n')
                                 # }
+                                if(!is.null(clickNos)) {
+                                    result <- result[(clickNos+1)]
+                                }
                                 result
                                 }, error = function(e) {
                                     errors <<- c(errors, shortFile)
                                     cat(paste('Error in file ', shortFile, ': \n', e), file=logName, append=TRUE)
-                                    list(clickDf=data.frame(), wave=matrix())
+                                    list(clickDf=data.frame(), wave=list())
                                 })
                             }
                             
     )
+    fileNames <- sub('.*([/|\\\\](.*))$', '\\2', files)
     if(length(errors) > 0) {
         cat('WARNING: Encountered ', length(errors), ' error(s). Unable to load files: \n',
             errors, '\n see log file ', logName, ' for details.')
+        # errorFiles <- sub('.*([/|\\\\](.*))$', '\\2', errors)
+        # fileNames <- fileNames[!(fileNames %in% errorFiles)]
     }
+    names(AllClicksList) <- fileNames
     AllClicksList
 }
-
-
