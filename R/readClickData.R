@@ -13,7 +13,7 @@
 #' 
 #' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
 #' 
-readClickData <- function(fid, fileInfo, data, getWave=FALSE, onlyWave=FALSE) {
+readClickData <- function(fid, fileInfo, data, getWave=TRUE, onlyWave=FALSE) {
     error <- FALSE
     tryCatch({
         dataLength <- pamBinRead(fid, 'int32', n=1, seek=onlyWave)
