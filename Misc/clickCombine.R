@@ -78,41 +78,41 @@ combineClickFiles <- function(folder, fileList=NULL, quiet=FALSE, getWave=FALSE,
                                 tryCatch({
                                     # log <- file(logName, open = 'wt')
                                     # sink(log, type='message')
-                                binaryData <- loadPamguardBinaryFile(file, getWave=getWave)
-                                #browser()
-                                nClicks <- length(binaryData$data)
-                                if(nClicks > 0) {
-                                    if(!getWave) {
-                                        result$clickDf <- tryCatch({
-                                            rbindlist(lapply(binaryData$data, function(d) {
-                                                class(d) <- 'data.frame'
-                                                attr(d, 'row.names') <- .set_row_names(length(d[[1]]))
-                                                d}))}, error=function(e) {
-                                                    print('Fast version failed, going slow.')
-                                                    do.call(rbind, lapply(binaryData$data, function(d) {
-                                                    data.frame(d)
-                                                    }
-                                                ))}) %>% mutate(ClickNo = 0:(n()-1),
-                                                       BinaryFile = shortFile)
-                                        # Gather waves
-                                    } else {
-                                        waves <- vector('list', nClicks)
-                                        for(i in seq_along(waves)) {
-                                            waves[[i]] <- binaryData$data[[i]]$wave
+                                    binaryData <- loadPamguardBinaryFile(file, getWave=getWave)
+                                    #browser()
+                                    nClicks <- length(binaryData$data)
+                                    if(nClicks > 0) {
+                                        if(!getWave) {
+                                            result$clickDf <- tryCatch({
+                                                rbindlist(lapply(binaryData$data, function(d) {
+                                                    class(d) <- 'data.frame'
+                                                    attr(d, 'row.names') <- .set_row_names(length(d[[1]]))
+                                                    d}))}, error=function(e) {
+                                                        print('Fast version failed, going slow.')
+                                                        do.call(rbind, lapply(binaryData$data, function(d) {
+                                                            data.frame(d)
+                                                        }
+                                                        ))}) %>% mutate(ClickNo = 0:(n()-1),
+                                                                        BinaryFile = shortFile)
+                                            # Gather waves
+                                        } else {
+                                            waves <- vector('list', nClicks)
+                                            for(i in seq_along(waves)) {
+                                                waves[[i]] <- binaryData$data[[i]]$wave
+                                            }
+                                            result <- waves
+                                            names(result) <- 0:(nClicks-1)
                                         }
-                                        result <- waves
-                                        names(result) <- 0:(nClicks-1)
+                                        # if(iFile==2) 1+'1'
+                                        
                                     }
-                                    # if(iFile==2) 1+'1'
-                                    
-                                }
-                                # if(!quiet) {
-                                #     cat('\n Took ', (proc.time()-time)[3],'\n')
-                                # }
-                                if(!is.null(clickNos)) {
-                                    result <- result[(clickNos+1)]
-                                }
-                                result
+                                    # if(!quiet) {
+                                    #     cat('\n Took ', (proc.time()-time)[3],'\n')
+                                    # }
+                                    if(!is.null(clickNos)) {
+                                        result <- result[(clickNos+1)]
+                                    }
+                                    result
                                 }, error = function(e) {
                                     errors <<- c(errors, shortFile)
                                     cat(paste('Error in file ', shortFile, ': \n', e), file=logName, append=TRUE)
