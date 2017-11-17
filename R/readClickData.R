@@ -40,22 +40,16 @@ readClickData <- function(fid, fileInfo, data, getWave=TRUE, onlyWave=FALSE) {
             ################
             # matlab has if(nDelays), should be fine if nDelays is 0, so not needed
             ###################
-            if(nDelays > 0) {
-                data$delays <- pamBinRead(fid, 'float', n=nDelays, seek=onlyWave) #### THIS IS POSSIBLE ERROR NUMERIC - FLOAT
-            }
+            data$delays <- pamBinRead(fid, 'float', n=nDelays, seek=onlyWave) #### THIS IS POSSIBLE ERROR NUMERIC - FLOAT
         }
         
         nAngles <- pamBinRead(fid, 'int16', n=1)
         # if(nAngles) again
-        if(nAngles > 0) {
-            data$angles <- pamBinRead(fid, 'float', n=nAngles, seek=onlyWave)
-        }
+        data$angles <- pamBinRead(fid, 'float', n=nAngles, seek=onlyWave)
         
         if(version >= 3) {
             nAngleErrors <- pamBinRead(fid, 'int16', n=1)
-            if(nAngleErrors > 0) {
-                data$angleErrors <- pamBinRead(fid, 'float', n=nAngleErrors, seek=onlyWave)
-            }
+            data$angleErrors <- pamBinRead(fid, 'float', n=nAngleErrors, seek=onlyWave)
         } else data$angleErrors <- numeric() #unsure if equiv. to []
         
         if(version <= 3) {

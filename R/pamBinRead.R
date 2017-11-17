@@ -28,6 +28,8 @@ pamBinRead <- function(fid, what=c('int8', 'int16', 'int32','int64',
                int64 = seek(fid, n*8, origin='current'),
                float = seek(fid, n*4, origin='current'),
                character = seek(fid, n, origin='current'))
+    } else if(n==0) {
+        NA
     } else { switch(match.arg(what),
                     int8 = readBin(fid, 'integer', n=n, size=1, endian=endian),
                     int16 = readBin(fid, 'integer', n=n, size=2, endian=endian),
