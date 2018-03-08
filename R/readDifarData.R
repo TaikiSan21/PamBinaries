@@ -5,13 +5,14 @@
 #' @param fid binary file identifier
 #' @param fileInfo structure holding the file header and module header
 #' @param data a structure containing standard data
+#' @param getWave a flag of whether or not to read the waveform
 #' 
 #' @return a structure containing data from a single object, and a logical
 #'   flag if an error has occurred
 #' 
 #' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
 #' 
-readDifarData <- function(fid, fileInfo, data) {
+readDifarData <- function(fid, fileInfo, data, getWave = TRUE) {
     error <- FALSE
     
     tryCatch({
@@ -52,9 +53,13 @@ readDifarData <- function(fid, fileInfo, data) {
         }
         
         data$maxVal <- pamBinRead(fid, 'float', n=1)
+        if(getWave) {
         data$demuxData <- matrix(
             pamBinRead(fid, 'int16', n=data$demuxedLength * 3),
             nrow=data$demuxedLength, ncol=3) * data$maxVal / 32767
+        } else {
+            seek(fid, data$demuxedLength * 3, origin = 'current')
+        }
         
         data$numMatches <- pamBinRead(fid, 'int16', n=1)
         if(data$numMatches > 0) {

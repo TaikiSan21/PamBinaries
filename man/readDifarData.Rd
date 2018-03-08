@@ -4,7 +4,7 @@
 \alias{readDifarData}
 \title{Read Difar Data}
 \usage{
-readDifarData(fid, fileInfo, data)
+readDifarData(fid, fileInfo, data, getWave = TRUE)
 }
 \arguments{
 \item{fid}{binary file identifier}
@@ -12,6 +12,8 @@ readDifarData(fid, fileInfo, data)
 \item{fileInfo}{structure holding the file header and module header}
 
 \item{data}{a structure containing standard data}
+
+\item{getWave}{a flag of whether or not to read the waveform}
 }
 \value{
 a structure containing data from a single object, and a logical
