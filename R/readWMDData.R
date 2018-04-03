@@ -39,10 +39,11 @@ readWMDData <- function(fid, fileInfo, data) {
             data$delays <- data$delays / fileInfo$moduleHeader$delayScale # Not sure if this is right - diff from matlab
         }
         
-        data$sliceData <- numeric()
+        data$sliceData <- list()
         data$contour <- rep(0, data$nSlices)
         data$contWidth <- rep(0, data$nSlices)
         for(i in 1:data$nSlices) {
+            aSlice <- list()
             aSlice$sliceNumber <- pamBinRead(fid, 'int32', n=1)
             aSlice$nPeaks <- pamBinRead(fid, 'int8', n=1)
             aSlice$peakData <- matrix(0, nrow=4, ncol=aSlice$nPeaks)
@@ -50,7 +51,7 @@ readWMDData <- function(fid, fileInfo, data) {
                 sss <- pamBinRead(fid, 'int16', n=4)
                 aSlice$peakData[,p] <- sss
             }
-            data$sliceData[i] <- aSlice
+            data$sliceData[[i]] <- aSlice
             data$contour[i] <- aSlice$peakData[2,1]
             data$contWidth[i] <- aSlice$peakData[3,1] - aSlice$peakData[1,1] + 1
         }

@@ -50,7 +50,7 @@ readPamData <- function(fid, fileInfo, ...) {
                     fileInfo$fileHeader$moduleType,
                     ' type. Aborting data read.'))
         seek(fid, nextObj, origin='start')
-        return(list(fid=fid, fileInfo=fileInfo))
+        return()
     }
     
     # Read the data, starting with the standard data that every data unit has
@@ -59,7 +59,7 @@ readPamData <- function(fid, fileInfo, ...) {
         data$millis <- pamBinRead(fid, 'int64', n=1)
         
         if(version >= 3) {
-            data$flagBitmap <- pamBinRead(fid, 'int16', n=1)
+            data$flagBitMap <- pamBinRead(fid, 'int16', n=1)
         }
         
         if((version == 2) | (bitwAnd(data$flagBitMap, TIMENANOS) != 0)) {
