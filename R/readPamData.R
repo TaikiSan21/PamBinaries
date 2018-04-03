@@ -16,7 +16,7 @@
 readPamData <- function(fid, fileInfo, ...) {
     ### UNSURE OF WHAT THE RESULTS ARE IN CASE OF ERROR ###
     # set constants to match flag bitmap constants in class
-    # DataUnitBaseData.java. The following constants match header version 4.
+    # DataUnitBaseData.java. The following constants match header version 6.
     TIMEMILLIS        = strtoi('1', base=16)
     TIMENANOS         = strtoi('2', base=16)
     CHANNELMAP        = strtoi('4', base=16)
@@ -26,6 +26,7 @@ readPamData <- function(fid, fileInfo, ...) {
     FREQUENCYLIMITS   = strtoi('40', base=16)
     MILLISDURATION    = strtoi('80', base=16)
     TIMEDELAYSSECS    = strtoi('100', base=16)
+    SEQUENCEBITMAP    = strtoi('200', base=16)
     
     # initialize a new variable to hold the data
     data <- list()
@@ -99,6 +100,10 @@ readPamData <- function(fid, fileInfo, ...) {
                 td[i] <- pamBinRead(fid, 'float', n=1)
             }
             data$timeDelays <- td
+        }
+        
+        if(bitwAnd(data$flagBitMap, SEQUENCEBITMAP) != 0) {
+            data$sequenceBitMap <- pamBinRead(fid, 'int32', n=1)
         }
         
         # set date, to maintain backwards compatibility
