@@ -5,6 +5,7 @@
 #' @param fid binary file identifier
 #' @param fileInfo structure holding the file header and module header
 #' @param data a structure containing standard data
+#' @param skipContour should we skip reading large contour data
 #' 
 #' @return a structure containing data from a single object, and a logical
 #'   flag if an error has occurred
