@@ -84,9 +84,9 @@ readPamData <- function(fid, fileInfo, ...) {
         }
         
         if(bitwAnd(data$flagBitMap, FREQUENCYLIMITS) != 0) {
-            minFreq <- pamBinRead(fid, 'float', n=1)
-            maxFreq <- pamBinRead(fid, 'float', n=1)
-            data$freqLimits <- c(minFreq, maxFreq)
+            data$minFreq <- pamBinRead(fid, 'float', n=1)
+            data$maxFreq <- pamBinRead(fid, 'float', n=1)
+            # data$freqLimits <- c(minFreq, maxFreq)
         }
         
         if(bitwAnd(data$flagBitMap, MILLISDURATION) != 0) {

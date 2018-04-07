@@ -11,7 +11,7 @@
 #' 
 #' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
 #' 
-readWMDData <- function(fid, fileInfo, data) {
+readWMDData <- function(fid, fileInfo, data, skipContour=FALSE) {
     error <- FALSE
     
     tryCatch({
@@ -44,11 +44,11 @@ readWMDData <- function(fid, fileInfo, data) {
         data$contWidth <- rep(0, data$nSlices)
         for(i in 1:data$nSlices) {
             aSlice <- list()
-            aSlice$sliceNumber <- pamBinRead(fid, 'int32', n=1)
+            aSlice$sliceNumber <- pamBinRead(fid, 'int32', n=1, seek=skipContour)
             aSlice$nPeaks <- pamBinRead(fid, 'int8', n=1)
             aSlice$peakData <- matrix(0, nrow=4, ncol=aSlice$nPeaks)
             for(p in 1:aSlice$nPeaks) {
-                sss <- pamBinRead(fid, 'int16', n=4)
+                sss <- pamBinRead(fid, 'int16', n=4, seek=skipContour)
                 aSlice$peakData[,p] <- sss
             }
             data$sliceData[[i]] <- aSlice
@@ -56,7 +56,9 @@ readWMDData <- function(fid, fileInfo, data) {
             data$contWidth[i] <- aSlice$peakData[3,1] - aSlice$peakData[1,1] + 1
         }
         data$meanWidth <- mean(data$contWidth)
-        
+        if(skipContour) {
+            data <- data[which(!(names(data) %in% c('contour', 'contWidth', 'sliceData')))]
+        }
         return(list(data=data, error=error))
     # }, warning = function(w) {
     #     print(paste('Warning occurred: ', w))
