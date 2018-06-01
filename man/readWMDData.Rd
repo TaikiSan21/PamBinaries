@@ -4,7 +4,7 @@
 \alias{readWMDData}
 \title{Read Whistle and Moan Data}
 \usage{
-readWMDData(fid, fileInfo, data, skipContour = FALSE)
+readWMDData(fid, fileInfo, data, skipLarge = FALSE)
 }
 \arguments{
 \item{fid}{binary file identifier}
@@ -13,7 +13,7 @@ readWMDData(fid, fileInfo, data, skipContour = FALSE)
 
 \item{data}{a structure containing standard data}
 
-\item{skipContour}{should we skip reading large contour data}
+\item{skipLarge}{a flag for whether or not to skip reading large contours}
 }
 \value{
 a structure containing data from a single object, and a logical

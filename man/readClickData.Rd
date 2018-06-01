@@ -4,7 +4,7 @@
 \alias{readClickData}
 \title{Read Click Data}
 \usage{
-readClickData(fid, fileInfo, data, getWave = TRUE, onlyWave = FALSE)
+readClickData(fid, fileInfo, data, skipLarge = FALSE, getWave, onlyWave)
 }
 \arguments{
 \item{fid}{binary file identifier}
@@ -13,9 +13,11 @@ readClickData(fid, fileInfo, data, getWave = TRUE, onlyWave = FALSE)
 
 \item{data}{a structure containing standard data}
 
-\item{getWave}{a flag for whether or not wave file data should be read}
+\item{skipLarge}{a flag for whether or not to skip reading large wave file}
 
-\item{onlyWave}{a flag for skipping over other data when reading wave files}
+\item{getWave}{DEPRECATED: see skipLarge}
+
+\item{onlyWave}{DEPRECATED: see skipLarge}
 }
 \value{
 a structure containing data from a single object, and a logical

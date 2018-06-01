@@ -17,16 +17,16 @@ readPamData <- function(fid, fileInfo, ...) {
     ### UNSURE OF WHAT THE RESULTS ARE IN CASE OF ERROR ###
     # set constants to match flag bitmap constants in class
     # DataUnitBaseData.java. The following constants match header version 6.
-    TIMEMILLIS        = strtoi('1', base=16)
-    TIMENANOS         = strtoi('2', base=16)
-    CHANNELMAP        = strtoi('4', base=16)
-    UID               = strtoi('8', base=16)
-    STARTSAMPLE       = strtoi('10', base=16)
-    SAMPLEDURATION    = strtoi('20', base=16)
-    FREQUENCYLIMITS   = strtoi('40', base=16)
-    MILLISDURATION    = strtoi('80', base=16)
-    TIMEDELAYSSECS    = strtoi('100', base=16)
-    SEQUENCEBITMAP    = strtoi('200', base=16)
+    TIMEMILLIS        <- strtoi('1', base=16)
+    TIMENANOS         <- strtoi('2', base=16)
+    CHANNELMAP        <- strtoi('4', base=16)
+    UID               <- strtoi('8', base=16)
+    STARTSAMPLE       <- strtoi('10', base=16)
+    SAMPLEDURATION    <- strtoi('20', base=16)
+    FREQUENCYLIMITS   <- strtoi('40', base=16)
+    MILLISDURATION    <- strtoi('80', base=16)
+    TIMEDELAYSSECS    <- strtoi('100', base=16)
+    SEQUENCEBITMAP    <- strtoi('200', base=16)
     
     # initialize a new variable to hold the data
     data <- list()

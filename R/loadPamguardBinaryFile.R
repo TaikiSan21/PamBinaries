@@ -62,7 +62,7 @@ loadPamguardBinaryFile <- function(fileName, ...) {
                                   fileInfo$readModuleFooter <- readClickFooter
                               },
                               'Clip Generator' = {
-                                  fileInfo$objectType <- c(1,2)
+                                  fileInfo$objectType <- c(1, 2)
                                   fileInfo$readModuleData <- readClipData
                               },
                               'DbHt' = {
@@ -162,11 +162,11 @@ loadPamguardBinaryFile <- function(fileName, ...) {
                    }
             )
         }
+        close(fid)
+        list(data=dataSet, fileInfo=fileInfo)
     }, error = function(e) {
-        print('Error reading file')
+        cat('Error reading file ', fileName)
         print(e)
     })
-    close(fid)
-    list(data=dataSet, fileInfo=fileInfo)
 }
 

@@ -5,14 +5,14 @@
 #' @param fid binary file identifier
 #' @param fileInfo structure holding the file header and module header
 #' @param data a structure containing standard data
-#' @param skipContour should we skip reading large contour data
+#' @param skipLarge a flag for whether or not to skip reading large contours
 #' 
 #' @return a structure containing data from a single object, and a logical
 #'   flag if an error has occurred
 #' 
 #' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
 #' 
-readWMDData <- function(fid, fileInfo, data, skipContour=FALSE) {
+readWMDData <- function(fid, fileInfo, data, skipLarge=FALSE) {
     error <- FALSE
     
     tryCatch({
@@ -45,11 +45,11 @@ readWMDData <- function(fid, fileInfo, data, skipContour=FALSE) {
         data$contWidth <- rep(0, data$nSlices)
         for(i in 1:data$nSlices) {
             aSlice <- list()
-            aSlice$sliceNumber <- pamBinRead(fid, 'int32', n=1, seek=skipContour)
+            aSlice$sliceNumber <- pamBinRead(fid, 'int32', n=1, seek=skipLarge)
             aSlice$nPeaks <- pamBinRead(fid, 'int8', n=1)
             aSlice$peakData <- matrix(0, nrow=4, ncol=aSlice$nPeaks)
             for(p in 1:aSlice$nPeaks) {
-                sss <- pamBinRead(fid, 'int16', n=4, seek=skipContour)
+                sss <- pamBinRead(fid, 'int16', n=4, seek=skipLarge)
                 aSlice$peakData[,p] <- sss
             }
             data$sliceData[[i]] <- aSlice
@@ -57,7 +57,7 @@ readWMDData <- function(fid, fileInfo, data, skipContour=FALSE) {
             data$contWidth[i] <- aSlice$peakData[3,1] - aSlice$peakData[1,1] + 1
         }
         data$meanWidth <- mean(data$contWidth)
-        if(skipContour) {
+        if(skipLarge) {
             data <- data[which(!(names(data) %in% c('contour', 'contWidth', 'sliceData')))]
         }
         return(list(data=data, error=error))
