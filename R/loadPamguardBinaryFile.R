@@ -5,6 +5,10 @@
 #'   All functions based on Matlab code written by Michael Oswald.
 #' 
 #' @param fileName The name of the binary file to be read
+#' @param skipLarge Should we skip large parts of binaries? Currently only applicable
+#'   to whistle, click, and DIFAR data
+#' @param keepUIDs If not \code{NULL}, a vector of UIDs to read. All UIDs not in this
+#'   vector will not be read.
 #' @param \dots Arguments passed to other functions
 #' @return This function returns a list containing two objects. Data contains
 #'   all the binary data read. fileInfo contains metadata information for the file.
@@ -13,7 +17,7 @@
 #' 
 #' @export
 #' 
-loadPamguardBinaryFile <- function(fileName, ...) {
+loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, keepUIDs=NULL, ...) {
     tryCatch({
         fid <- file(fileName, open='rb')
         
@@ -105,6 +109,11 @@ loadPamguardBinaryFile <- function(fileName, ...) {
                                   fileInfo$readModuleHeader <- readWMDHeader
                                   fileInfo$readModuleData <- readWMDData
                               },
+                              'ClickClassifier_1' = {
+                                  fileInfo$objectType <- 0
+                                  fileInfo$readModuleData <- clickClassifierAnnotation
+                                  print('suuup bro. asmr')
+                              },
                               {
                                   print(paste("Don't recognize type ", 
                                               fileInfo$fileHeader$moduleType,
@@ -156,13 +165,19 @@ loadPamguardBinaryFile <- function(fileName, ...) {
                            print('Error: found data before file header. Aborting load.')
                            break
                        }
-                       dataPoint <- readPamData(fid, fileInfo, ...)
-                       
-                       dataSet[[length(dataSet)+1]] <- dataPoint
+                       dataPoint <- readPamData(fid=fid, fileInfo=fileInfo, 
+                                                skipLarge=skipLarge, keepUIDs=keepUIDs, ...)
+                       if(!is.null(dataPoint)) {
+                           dataSet[[length(dataSet)+1]] <- dataPoint
+                       }
                    }
             )
         }
         close(fid)
+        if(length(dataSet) > 0 && 
+            'UID' %in% names(dataSet[[1]])) {
+            names(dataSet) <- sapply(dataSet, function(x) x$UID)
+        }
         list(data=dataSet, fileInfo=fileInfo)
     }, error = function(e) {
         cat('Error reading file ', fileName)

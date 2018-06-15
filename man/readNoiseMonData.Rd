@@ -4,7 +4,7 @@
 \alias{readNoiseMonData}
 \title{Read Noise Monitor Data}
 \usage{
-readNoiseMonData(fid, fileInfo, data)
+readNoiseMonData(fid, fileInfo, data, ...)
 }
 \arguments{
 \item{fid}{binary file identifier}
@@ -12,6 +12,8 @@ readNoiseMonData(fid, fileInfo, data)
 \item{fileInfo}{structure holding the file header and module header}
 
 \item{data}{a structure containing standard data}
+
+\item{\dots}{Arguments passed to other functions}
 }
 \value{
 a structure containing data from a single object, and a logical

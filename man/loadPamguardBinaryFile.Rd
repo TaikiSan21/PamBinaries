@@ -4,10 +4,16 @@
 \alias{loadPamguardBinaryFile}
 \title{Load Pamguard Binary File}
 \usage{
-loadPamguardBinaryFile(fileName, ...)
+loadPamguardBinaryFile(fileName, skipLarge = FALSE, keepUIDs = NULL, ...)
 }
 \arguments{
 \item{fileName}{The name of the binary file to be read}
+
+\item{skipLarge}{Should we skip large parts of binaries? Currently only applicable
+to whistle, click, and DIFAR data}
+
+\item{keepUIDs}{If not \code{NULL}, a vector of UIDs to read. All UIDs not in this
+vector will not be read.}
 
 \item{\dots}{Arguments passed to other functions}
 }

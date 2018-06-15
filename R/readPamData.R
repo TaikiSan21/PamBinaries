@@ -7,13 +7,17 @@
 #' @param fid binary file identifier
 #' @param fileInfo structure holding the file header, module header, and the
 #'   appropriate function to read module specific data
+#' @param skipLarge Should we skip large parts of binaries? Currently only applicable
+#'   to whistle, click, and DIFAR data
+#' @param keepUIDs If not \code{NULL}, a vector of UIDs to read. All UIDs not in this
+#'   vector will not be read.
 #' @param \dots Arguments passed to other functions
 #' 
 #' @return a structure containing data from a single object
 #' 
 #' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
 #' 
-readPamData <- function(fid, fileInfo, ...) {
+readPamData <- function(fid, fileInfo, skipLarge, keepUIDs, ...) {
     ### UNSURE OF WHAT THE RESULTS ARE IN CASE OF ERROR ###
     # set constants to match flag bitmap constants in class
     # DataUnitBaseData.java. The following constants match header version 6.
@@ -34,8 +38,8 @@ readPamData <- function(fid, fileInfo, ...) {
     
     # caclulate where the next object starts, in case there is an error trying
     # to read this one
-    objectLen <- pamBinRead(fid, 'int32', n=1)
     curObj <- seek(fid)
+    objectLen <- pamBinRead(fid, 'int32', n=1)
     nextObj <- curObj + objectLen
     
     # first thing to check is that this is really the type of object we think
@@ -51,7 +55,7 @@ readPamData <- function(fid, fileInfo, ...) {
                     fileInfo$fileHeader$moduleType,
                     ' type. Aborting data read.'))
         seek(fid, nextObj, origin='start')
-        return()
+        return(NULL)
     }
     
     # Read the data, starting with the standard data that every data unit has
@@ -73,6 +77,13 @@ readPamData <- function(fid, fileInfo, ...) {
         
         if(bitwAnd(data$flagBitMap, UID)==UID) {
             data$UID <- pamBinRead(fid, 'int64', n=1)
+            # Skip if we provided UID list
+            if(!is.null(keepUIDs) &&
+               !(data$UID %in% keepUIDs)) {
+                seek(fid, nextObj, origin='start')
+                return(NULL)
+            }
+                
         }
         
         if(bitwAnd(data$flagBitMap, STARTSAMPLE) != 0) {
@@ -111,7 +122,7 @@ readPamData <- function(fid, fileInfo, ...) {
         # data$date <- millisToDateNum(data$millis)
         # now read the module-specific data
         if(class(fileInfo$readModuleData)=='function') {
-            result <- fileInfo$readModuleData(fid, fileInfo, data, ...)
+            result <- fileInfo$readModuleData(fid=fid, fileInfo=fileInfo, data=data, skipLarge=skipLarge, ...)
             data <- result$data
             if(result$error) {
                 print(paste('Error - cannot retrieve ', 

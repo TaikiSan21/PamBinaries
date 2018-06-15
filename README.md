@@ -38,15 +38,29 @@ is a list containing some metadata and information used by the
 `loadPamguardBinaryFile` function.
 
 There is also an option to reduce the size of objects read from a 
-Click Detector or Whistle and Moan Detector:
+Click Detector, Whistle and Moan Detector, or DIFAR:
 
 ```r
 binaryDataSmall <- loadPamguardBinaryFile(myBinaryFile, skipLarge=TRUE)
 ```
 
-This option will skip reading the waveform for click data, and
+This option will skip reading the waveform for click and difar data, and
 skip the contour and slice information for whistle data. This greatly reduces
 the size of the loaded object and the time required to read the data, useful
 if you need to process a large number of files.
+
+You can also choose to only read in data with specific UIDs:
+
+```r
+binarySomeUIDs <- loadPamguardBinaryFile(myBinaryFile, keepUIDs=c(100000001, 100000002))
+```
+
+This only read in the data with the UIDs provided in the keepUIDs argument, skipping over
+the rest. This can greatly reduce the time required to read data if you only need a
+small subset of the items in the binary file.
+
+### TO DO:
+
+
 
 

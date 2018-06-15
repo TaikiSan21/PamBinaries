@@ -5,13 +5,14 @@
 #' @param fid binary file identifier
 #' @param fileInfo structure holding the file header and module header
 #' @param data a structure containing standard data
+#' @param \dots Arguments passed to other functions
 #' 
 #' @return a structure containing data from a single object, and a logical
 #'   flag if an error has occurred
 #' 
 #' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
 #' 
-readNoiseMonData <- function(fid, fileInfo, data) {
+readNoiseMonData <- function(fid, fileInfo, data, ...) {
     error <- FALSE
     
     tryCatch({
