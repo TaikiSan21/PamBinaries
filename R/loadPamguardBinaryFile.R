@@ -170,6 +170,12 @@ loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, keepUIDs=NULL, ...
                        if(!is.null(dataPoint)) {
                            dataSet[[length(dataSet)+1]] <- dataPoint
                        }
+                       # Stop if at end of list of UIDs
+                       # MAYBE PROBLEM: This skips the footers.
+                       if(length(keepUIDs) > 0 &&
+                          length(keepUIDs)==length(dataSet)) {
+                           break
+                       }
                    }
             )
         }
