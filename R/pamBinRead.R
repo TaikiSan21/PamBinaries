@@ -43,7 +43,12 @@ pamBinRead <- function(fid, what=c('int8', 'int16', 'int32','int64',
                    # R has no int64, need to be creative. Reading in as raw - these are hexidecimal
                    a <- readBin(fid, 'raw', n=8, size=1, endian=endian)
                    # Convert each hex to int, then shift by power of 2
-                   sum(strtoi(a, base=16)*2^(8*(7:0)))
+                   a <- sum(strtoi(a, base=16)*2^(8*(7:0)))
+                   if(a <= .Machine$integer.max) {
+                       as.integer(a)
+                   } else {
+                       a
+                   }
                },
                float = readBin(fid, 'numeric', n=n, size=4, endian=endian),
                character = rawToChar(readBin(fid, 'raw', n=n, size=1, endian=endian))
