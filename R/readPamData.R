@@ -21,20 +21,22 @@ readPamData <- function(fid, fileInfo, skipLarge, keepUIDs, ...) {
     ### UNSURE OF WHAT THE RESULTS ARE IN CASE OF ERROR ###
     # set constants to match flag bitmap constants in class
     # DataUnitBaseData.java. The following constants match header version 6.
-    TIMEMILLIS        <- strtoi('1', base=16)
-    TIMENANOS         <- strtoi('2', base=16)
-    CHANNELMAP        <- strtoi('4', base=16)
-    UID               <- strtoi('8', base=16)
-    STARTSAMPLE       <- strtoi('10', base=16)
-    SAMPLEDURATION    <- strtoi('20', base=16)
-    FREQUENCYLIMITS   <- strtoi('40', base=16)
-    MILLISDURATION    <- strtoi('80', base=16)
-    TIMEDELAYSSECS    <- strtoi('100', base=16)
-    SEQUENCEBITMAP    <- strtoi('200', base=16)
+    TIMEMILLIS           <- strtoi('1', base=16)
+    TIMENANOS            <- strtoi('2', base=16)
+    CHANNELMAP           <- strtoi('4', base=16)
+    UID                  <- strtoi('8', base=16)
+    STARTSAMPLE          <- strtoi('10', base=16)
+    SAMPLEDURATION       <- strtoi('20', base=16)
+    FREQUENCYLIMITS      <- strtoi('40', base=16)
+    MILLISDURATION       <- strtoi('80', base=16)
+    TIMEDELAYSSECS       <- strtoi('100', base=16)
+    HASBINARYANNOTATIONS <- strtoi('200', base=16)
+    # SEQUENCEBITMAP       <- strtoi('200', base=16) NOT IN NEW VERSION?
     
     # initialize a new variable to hold the data
     data <- list()
     data$flagBitMap <- 0
+    hasAnnotation <- 0
     
     # caclulate where the next object starts, in case there is an error trying
     # to read this one
@@ -113,9 +115,9 @@ readPamData <- function(fid, fileInfo, skipLarge, keepUIDs, ...) {
             data$timeDelays <- td
         }
         
-        if(bitwAnd(data$flagBitMap, SEQUENCEBITMAP) != 0) {
-            data$sequenceBitMap <- pamBinRead(fid, 'int32', n=1)
-        }
+        # if(bitwAnd(data$flagBitMap, SEQUENCEBITMAP) != 0) {
+        #     data$sequenceBitMap <- pamBinRead(fid, 'int32', n=1)
+        # }
         
         # set date, to maintain backwards compatibility
         data$date <- as.POSIXct(millisToDateNum(data$millis), origin='1970-01-01', tz='UTC')
@@ -132,6 +134,55 @@ readPamData <- function(fid, fileInfo, skipLarge, keepUIDs, ...) {
                 return(data)
             }
         }
+        
+        # Check for annotations
+        annotations <- list()
+        if(bitwAnd(data$flagBitMap, HASBINARYANNOTATIONS) != 0) {
+            hasAnnotation <- 1
+            anStart <- seek(fid)
+            anTotLength <- pamBinRead(fid, 'int16', n=1)
+            nAn <- pamBinRead(fid, 'int16', n=1)
+            for(i in 1:nAn) {
+                filePos <- seek(fid)
+                anLength <- pamBinRead(fid, 'int16', n=1) - 2 # length not include itself
+                anId <- readJavaUTFString(fid)$str
+                anVersion <- pamBinRead(fid, 'int16', n=1)
+                switch(anId,
+                       'Beer' = {
+                           annotations$beamAngles <- readBeamFormerAnnotation(fid, anId, anLength, fileInfo, anVersion)
+                       },
+                       'Bearing' = {
+                           annotations$bearing <- readBearingAnnotation(fid, anId, anLength, fileInfo, anVersion)
+                       },
+                       'TMAN' = {
+                           annotations$targetMotion <- readTMAnnotation(fid, anId, anLength, fileInfo, anVersion)
+                       },
+                       'TDBL' = {
+                           annotations$toadAngles <- readTDBLAnnotation(fid, anId, anLength, fileInfo, anVersion)
+                       },
+                       'ClickClasssifier_1' = {
+                           annotations$classification <- readClickClsfrAnnotation(fid, fileInfo)
+                       },
+                       'Matched_Clk_Clsfr' = {
+                           annotations$mclassification <- readMatchClsfrAnnotation(fid, fileInfo)
+                       },
+                       {
+                           warning('Unknown annotation type ', anId, ' length ', anLength, 
+                                   ' version ', anVersion, ' in file.')
+                           seek(fid, filePos + anLength, origin = 'start')
+                       })
+                endPos <- seek(fid)
+                if(endPos != filePos + anLength) {
+                    warning('Possible annotation read size error in file.')
+                    seek(fid, filePos + anLength, origin = 'start')
+                    endPos <- seek(fid)
+                }
+            }
+            if(endPos != anStart + anTotLength) {
+                seek(fid, anStart + anTotLength, origin = 'start')
+            }
+        }
+        data$annotations <- annotations
         return(data)
     # }, warning = function(w) {
     #     print(paste('Warning occurred: ', w))

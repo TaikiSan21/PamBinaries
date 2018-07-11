@@ -59,7 +59,14 @@ This only read in the data with the UIDs provided in the keepUIDs argument, skip
 the rest. This can greatly reduce the time required to read data if you only need a
 small subset of the items in the binary file.
 
+### Compatibility
+
+PamBinaries should be compatible with Pamguard v2.00.13 and earlier.
+
 ### TO DO:
+
+Add rest of annotation readers. Will probably need to re-adjust existing ones in future
+PG versions.
 
 
 

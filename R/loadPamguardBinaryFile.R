@@ -109,11 +109,6 @@ loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, keepUIDs=NULL, ...
                                   fileInfo$readModuleHeader <- readWMDHeader
                                   fileInfo$readModuleData <- readWMDData
                               },
-                              'ClickClassifier_1' = {
-                                  fileInfo$objectType <- 0
-                                  fileInfo$readModuleData <- clickClassifierAnnotation
-                                  print('suuup bro. asmr')
-                              },
                               {
                                   print(paste("Don't recognize type ", 
                                               fileInfo$fileHeader$moduleType,
