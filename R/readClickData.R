@@ -6,6 +6,7 @@
 #' @param fileInfo structure holding the file header and module header
 #' @param data a structure containing standard data
 #' @param skipLarge a flag for whether or not to skip reading large wave file
+#' @param debug logical flag to show more info on errors
 #' @param getWave DEPRECATED: see skipLarge 
 #' @param onlyWave DEPRECATED: see skipLarge
 #' 
@@ -14,7 +15,7 @@
 #' 
 #' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
 #' 
-readClickData <- function(fid, fileInfo, data, skipLarge=FALSE, getWave, onlyWave) {
+readClickData <- function(fid, fileInfo, data, skipLarge=FALSE, debug=FALSE, getWave, onlyWave) {
     if(!missing(getWave) | !missing(onlyWave)) {
         warning('Arguments "getWave" and "onlyWave" are no longer used. Use "skipLarge"', call.=FALSE)
         if(missing(skipLarge)) {
@@ -78,9 +79,11 @@ readClickData <- function(fid, fileInfo, data, skipLarge=FALSE, getWave, onlyWav
         # print(paste('Warning occurred: ', w))
         # return(list(data=data, error=error))
     }, error = function(e) {
-        print('Error reading ', fileInfo$fileHeader$moduleType, ' Data read:')
-        print(data)
-        print(e)
+        if(debug) {
+            print(paste0('Error reading ', fileInfo$fileHeader$moduleType, ' Data read:'))
+            print(data)
+            print(e)
+        }
         error <- TRUE
         return(list(data=data, error=error))
     })

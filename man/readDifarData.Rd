@@ -4,7 +4,7 @@
 \alias{readDifarData}
 \title{Read Difar Data}
 \usage{
-readDifarData(fid, fileInfo, data, skipLarge = FALSE)
+readDifarData(fid, fileInfo, data, skipLarge = FALSE, debug = FALSE)
 }
 \arguments{
 \item{fid}{binary file identifier}
@@ -14,6 +14,8 @@ readDifarData(fid, fileInfo, data, skipLarge = FALSE)
 \item{data}{a structure containing standard data}
 
 \item{skipLarge}{a flag of whether or not to skip reading the waveform}
+
+\item{debug}{logical flag to show more info on errors}
 }
 \value{
 a structure containing data from a single object, and a logical

@@ -5,6 +5,7 @@
 #' @param fid binary file identifier
 #' @param fileInfo structure holding the file header and module header
 #' @param data a structure containing standard data
+#' @param debug logical flag to show more info on errors
 #' @param \dots Arguments passed to other functions
 #' 
 #' @return a structure containing data from a single object, and a logical
@@ -12,7 +13,7 @@
 #' 
 #' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
 #' 
-readAISData <- function(fid, fileInfo, data, ...) {
+readAISData <- function(fid, fileInfo, data, debug=FALSE, ...) {
     error <- FALSE
     
     tryCatch({
@@ -32,9 +33,11 @@ readAISData <- function(fid, fileInfo, data, ...) {
     #     print(paste('Warning occurred: ', w))
     #     return(list(data=data, error=error))
     }, error = function(e) {
-        print('Error reading AIS data object. Data read:')
-        print(data)
-        print(e)
+        if(debug) {
+            print(paste0('Error reading ', fileInfo$fileHeader$moduleType, ' Data read:'))
+            print(data)
+            print(e)
+        }
         error <- TRUE
         return(list(data=data, error=error))
     })

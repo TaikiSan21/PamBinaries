@@ -4,12 +4,14 @@
 \alias{readClickClsfrAnnotation}
 \title{Read Click Classifier Annotation}
 \usage{
-readClickClsfrAnnotation(fid, fileInfo)
+readClickClsfrAnnotation(fid, fileInfo, debug = FALSE)
 }
 \arguments{
 \item{fid}{binary file identifier}
 
 \item{fileInfo}{structure holding the file header and module header}
+
+\item{debug}{logical flag to show more info on errors}
 }
 \value{
 a vector of click classifiers, represented by the click type flag

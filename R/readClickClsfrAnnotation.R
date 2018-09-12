@@ -4,12 +4,13 @@
 #'   
 #' @param fid binary file identifier
 #' @param fileInfo structure holding the file header and module header
+#' @param debug logical flag to show more info on errors
 #' 
 #' @return a vector of click classifiers, represented by the click type flag
 #' 
 #' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
 #' 
-readClickClsfrAnnotation <- function(fid, fileInfo) {
+readClickClsfrAnnotation <- function(fid, fileInfo, debug=FALSE) {
     error <- FALSE
     tryCatch({
         nClassifications <- pamBinRead(fid, 'int16', n=1)
@@ -23,9 +24,11 @@ readClickClsfrAnnotation <- function(fid, fileInfo) {
         #     print(paste('Warning occurred: ', w))
         #     return(list(data=data, error=error))
     }, error = function(e) {
-        print(paste('Error reading ', fileInfo$fileHeader$moduleType, ' classification set. Data read:\n'))
-        print(classifySet)
-        print(e)
+        if(debug) {
+            print(paste0('Error reading ', fileInfo$fileHeader$moduleType, ' classification set. Data read:'))
+            print(classifySet)
+            print(e)
+        }
         error <- TRUE
         return(classifySet)
         # return(list(data=data, error=error))

@@ -9,12 +9,13 @@
 #'   
 #' @param fid binary file identifier
 #' @param fileInfo structure holding the file header and module header
+#' @param debug logical flag to show more info on errors
 #' 
 #' @return a vector with the threshold, matchcorr, and rejectcorr values. See description.
 #' 
 #' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
 #' 
-readMatchClsfrAnnotation <- function(fid, fileInfo) {
+readMatchClsfrAnnotation <- function(fid, fileInfo, debug=FALSE) {
     error <- FALSE
     data <- c()
     tryCatch({
@@ -23,9 +24,12 @@ readMatchClsfrAnnotation <- function(fid, fileInfo) {
         rejectcorr <- pamBinRead(fid, 'double', n=1)
         data <- c(threshold, matchcorr, rejectcorr)
     }, error = function(e) {
-        print(paste('Error reading ', fileInfo$fileHeader$moduleType, 
-                    ' matched classifier annotation. Data read:\n'))
-        print(e)
+        if(debug) {
+            print(paste0('Error reading ', fileInfo$fileHeader$moduleType, 
+                         ' matched classifier annotation. Data read:'))
+            print(data)
+            print(e)
+        }
         error <- TRUE
         return(data)
         # return(list(data=data, error=error))

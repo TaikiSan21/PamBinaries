@@ -6,13 +6,14 @@
 #' @param fileInfo structure holding the file header and module header
 #' @param data a structure containing standard data
 #' @param skipLarge a flag of whether or not to skip reading the waveform
+#' @param debug logical flag to show more info on errors
 #' 
 #' @return a structure containing data from a single object, and a logical
 #'   flag if an error has occurred
 #' 
 #' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
 #' 
-readDifarData <- function(fid, fileInfo, data, skipLarge = FALSE) {
+readDifarData <- function(fid, fileInfo, data, skipLarge = FALSE, debug=FALSE) {
     error <- FALSE
     
     tryCatch({
@@ -83,9 +84,11 @@ readDifarData <- function(fid, fileInfo, data, skipLarge = FALSE) {
     #     print(paste('Warning occurred: ', w))
     #     return(list(data=data, error=error))
     }, error = function(e) {
-        print(paste('Error reading ', fileInfo$fileHeader$moduleType, ' data object. Data read:'))
-        print(data)
-        print(e)
+        if(debug) {
+            print(paste0('Error reading ', fileInfo$fileHeader$moduleType, ' Data read:'))
+            print(data)
+            print(e)
+        }
         error <- TRUE
         return(list(data=data, error=error))
     })

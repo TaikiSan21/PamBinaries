@@ -5,6 +5,7 @@
 #' @param fid binary file identifier
 #' @param fileInfo structure holding the file header and module header
 #' @param data a structure containing standard data
+#' @param debug logical flag to show more info on errors
 #' @param \dots Arguments passed to other functions
 #' 
 #' @return a structure containing data from a single object, and a logical
@@ -12,7 +13,7 @@
 #' 
 #' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
 #' 
-readClipData <- function(fid, fileInfo, data, ...) {
+readClipData <- function(fid, fileInfo, data, debug=FALSE, ...) {
     error <- FALSE
     
     tryCatch({
@@ -53,9 +54,11 @@ readClipData <- function(fid, fileInfo, data, ...) {
     #     print(paste('Warning occurred: ', w))
     #     return(list(data=data, error=error))
     }, error = function(e) {
-        print(paste('Error reading ', fileInfo$fileHeader$moduleType, ' data object. Data read:'))
-        print(data)
-        print(e)
+        if(debug) {
+            print(paste0('Error reading ', fileInfo$fileHeader$moduleType, ' Data read:'))
+            print(data)
+            print(e)
+        }
         error <- TRUE
         return(list(data=data, error=error))
     })

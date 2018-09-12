@@ -9,6 +9,7 @@
 #'   appropriate function to read module specific data
 #' @param skipLarge Should we skip large parts of binaries? Currently only applicable
 #'   to whistle, click, and DIFAR data
+#' @param debug logical flag to show more info on errors
 #' @param keepUIDs If not \code{NULL}, a vector of UIDs to read. All UIDs not in this
 #'   vector will not be read.
 #' @param \dots Arguments passed to other functions
@@ -17,7 +18,7 @@
 #' 
 #' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
 #' 
-readPamData <- function(fid, fileInfo, skipLarge, keepUIDs, ...) {
+readPamData <- function(fid, fileInfo, skipLarge, debug=FALSE, keepUIDs, ...) {
     ### UNSURE OF WHAT THE RESULTS ARE IN CASE OF ERROR ###
     # set constants to match flag bitmap constants in class
     # DataUnitBaseData.java. The following constants match header version 6.
@@ -124,14 +125,15 @@ readPamData <- function(fid, fileInfo, skipLarge, keepUIDs, ...) {
         # data$date <- millisToDateNum(data$millis)
         # now read the module-specific data
         if(class(fileInfo$readModuleData)=='function') {
-            result <- fileInfo$readModuleData(fid=fid, fileInfo=fileInfo, data=data, skipLarge=skipLarge, ...)
+            result <- fileInfo$readModuleData(fid=fid, fileInfo=fileInfo, data=data, 
+                                              skipLarge=skipLarge, debug=debug, ...)
             data <- result$data
             if(result$error) {
-                print(paste('Error - cannot retrieve ', 
+                print(paste('Error - cannot retrieve', 
                             fileInfo$fileHeader$moduleType,
-                            ' data properly.'))
+                            'data properly from file', fileInfo$fileName))
                 seek(fid, nextObj, origin='start')
-                return(data)
+                return(NULL)
             }
         }
         
@@ -192,6 +194,7 @@ readPamData <- function(fid, fileInfo, skipLarge, keepUIDs, ...) {
         print(data)
         print(e)
         seek(fid, nextObj, origin='start')
+        return(NULL)
     })
 }
 

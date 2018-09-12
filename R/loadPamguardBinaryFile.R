@@ -7,6 +7,7 @@
 #' @param fileName The name of the binary file to be read
 #' @param skipLarge Should we skip large parts of binaries? Currently only applicable
 #'   to whistle, click, and DIFAR data
+#' @param debug logical flag to show more info on errors
 #' @param keepUIDs If not \code{NULL}, a vector of UIDs to read. All UIDs not in this
 #'   vector will not be read.
 #' @param \dots Arguments passed to other functions
@@ -17,7 +18,7 @@
 #' 
 #' @export
 #' 
-loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, keepUIDs=NULL, ...) {
+loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, debug=FALSE, keepUIDs=NULL, ...) {
     tryCatch({
         fid <- file(fileName, open='rb')
         
@@ -25,6 +26,7 @@ loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, keepUIDs=NULL, ...
         prevPos <- -1
         dataSet <- list()
         fileInfo <- list()
+        fileInfo$fileName <- fileName
         fileInfo$readModuleHeader <- readStdModuleHeader
         fileInfo$readModuleFooter <- readStdModuleFooter
         
@@ -166,7 +168,7 @@ loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, keepUIDs=NULL, ...
                            break
                        }
                        dataPoint <- readPamData(fid=fid, fileInfo=fileInfo, 
-                                                skipLarge=skipLarge, keepUIDs=keepUIDs, ...)
+                                                skipLarge=skipLarge, debug=debug, keepUIDs=keepUIDs, ...)
                        if(!is.null(dataPoint)) {
                            dataSet[[length(dataSet)+1]] <- dataPoint
                        }

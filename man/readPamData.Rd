@@ -4,7 +4,7 @@
 \alias{readPamData}
 \title{Read Pamguard Data}
 \usage{
-readPamData(fid, fileInfo, skipLarge, keepUIDs, ...)
+readPamData(fid, fileInfo, skipLarge, debug = FALSE, keepUIDs, ...)
 }
 \arguments{
 \item{fid}{binary file identifier}
@@ -14,6 +14,8 @@ appropriate function to read module specific data}
 
 \item{skipLarge}{Should we skip large parts of binaries? Currently only applicable
 to whistle, click, and DIFAR data}
+
+\item{debug}{logical flag to show more info on errors}
 
 \item{keepUIDs}{If not \code{NULL}, a vector of UIDs to read. All UIDs not in this
 vector will not be read.}

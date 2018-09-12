@@ -4,7 +4,7 @@
 \alias{readAISData}
 \title{Read AIS Data}
 \usage{
-readAISData(fid, fileInfo, data, ...)
+readAISData(fid, fileInfo, data, debug = FALSE, ...)
 }
 \arguments{
 \item{fid}{binary file identifier}
@@ -12,6 +12,8 @@ readAISData(fid, fileInfo, data, ...)
 \item{fileInfo}{structure holding the file header and module header}
 
 \item{data}{a structure containing standard data}
+
+\item{debug}{logical flag to show more info on errors}
 
 \item{\dots}{Arguments passed to other functions}
 }
