@@ -27,7 +27,7 @@ pamBinRead <- function(fid, what=c('int8', 'int16', 'int32','int64',
     
     if(seek) {
         return(
-            switch(match.arg(what),
+            switch(what,
                    int8 = seek(fid, n, origin='current'),
                    int16 = seek(fid, n*2, origin='current'),
                    int32 = seek(fid, n*4, origin='current'),
@@ -41,7 +41,7 @@ pamBinRead <- function(fid, what=c('int8', 'int16', 'int32','int64',
         return(NA)
     }
     
-    switch(match.arg(what),
+    switch(what,
            int8 = readBin(fid, 'integer', n=n, size=1, endian=endian),
            int16 = readBin(fid, 'integer', n=n, size=2, endian=endian),
            int32 = readBin(fid, 'integer', n=n, size=4, endian=endian),

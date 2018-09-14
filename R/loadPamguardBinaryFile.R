@@ -63,9 +63,17 @@ loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, debug=FALSE, keepU
                                   fileInfo$readModuleData <- readAISData
                               },
                               'Click Detector' = {
-                                  fileInfo$objectType <- 1000
-                                  fileInfo$readModuleData <- readClickData
-                                  fileInfo$readModuleFooter <- readClickFooter
+                                  switch(fileInfo$fileHeader$streamName,
+                                         'Clicks' = {
+                                             fileInfo$objectType <- 1000
+                                             fileInfo$readModuleData <- readClickData
+                                             fileInfo$readModuleFooter <- readClickFooter
+                                         },
+                                         'Trigger Background' = {
+                                             fileInfo$objectType <- 0
+                                             fileInfo$readModuleData <- readClickTriggerData
+                                             fileInfo$readModuleHeader <- readClickTriggerHeader
+                                         })
                               },
                               'SoundTrap Click Detector' = {
                                   fileInfo$objectType <- 1000
