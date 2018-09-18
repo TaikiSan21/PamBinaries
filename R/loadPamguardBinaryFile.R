@@ -10,6 +10,8 @@
 #' @param debug logical flag to show more info on errors
 #' @param keepUIDs If not \code{NULL}, a vector of UIDs to read. All UIDs not in this
 #'   vector will not be read.
+#' @param convertDate logical flag to convert date from numeric to POSIXct. Defaults to 
+#'   \code{FALSE} for speed, can reduce time by 
 #' @param \dots Arguments passed to other functions
 #' @return This function returns a list containing two objects. Data contains
 #'   all the binary data read. fileInfo contains metadata information for the file.
@@ -18,7 +20,7 @@
 #' 
 #' @export
 #' 
-loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, debug=FALSE, keepUIDs=NULL, ...) {
+loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, debug=FALSE, keepUIDs=NULL, convertDate=FALSE, ...) {
     tryCatch({
         fid <- file(fileName, open='rb')
         
@@ -175,8 +177,8 @@ loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, debug=FALSE, keepU
                            print('Error: found data before file header. Aborting load.')
                            break
                        }
-                       dataPoint <- readPamData(fid=fid, fileInfo=fileInfo, 
-                                                skipLarge=skipLarge, debug=debug, keepUIDs=keepUIDs, ...)
+                       dataPoint <- readPamData(fid=fid, fileInfo=fileInfo, skipLarge=skipLarge, 
+                                                debug=debug, keepUIDs=keepUIDs, ...)
                        if(!is.null(dataPoint)) {
                            dataSet[[length(dataSet)+1]] <- dataPoint
                        }
@@ -193,6 +195,11 @@ loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, debug=FALSE, keepU
         if(length(dataSet) > 0 && 
             'UID' %in% names(dataSet[[1]])) {
             names(dataSet) <- sapply(dataSet, function(x) x$UID)
+        }
+        if(convertDate) {
+            for(i in seq_along(dataSet)) {
+                dataSet[[i]]$date <- convertPgDate(dataSet[[i]]$date)
+            }
         }
         list(data=dataSet, fileInfo=fileInfo)
     }, error = function(e) {

@@ -5,7 +5,7 @@
 \title{Load Pamguard Binary File}
 \usage{
 loadPamguardBinaryFile(fileName, skipLarge = FALSE, debug = FALSE,
-  keepUIDs = NULL, ...)
+  keepUIDs = NULL, convertDate = FALSE, ...)
 }
 \arguments{
 \item{fileName}{The name of the binary file to be read}
@@ -17,6 +17,9 @@ to whistle, click, and DIFAR data}
 
 \item{keepUIDs}{If not \code{NULL}, a vector of UIDs to read. All UIDs not in this
 vector will not be read.}
+
+\item{convertDate}{logical flag to convert date from numeric to POSIXct. Defaults to 
+\code{FALSE} for speed, can reduce time by}
 
 \item{\dots}{Arguments passed to other functions}
 }

@@ -61,13 +61,24 @@ small subset of the items in the binary file.
 
 ### Compatibility
 
-PamBinaries should be compatible with Pamguard v2.00.13 and earlier.
+PamBinaries should be compatible with Pamguard v2.00.14 and earlier.
+
+#### Version 1.1
+
+* Slight change to function output, conversion of date to POSIXct object is no longer
+done automatically, only if the new flag `convertDate` is set to `TRUE`. Date is now
+reported as seconds since 1970-01-01 UTC, and there is a second exported function
+`convertPgDate` that will properly convert the numeric value to POSIXct. This change
+was made for speed purposes, `loadPamguardBinary` now runs approximately 40% faster
+without the date conversion.
+
+* Added support for Click Trigger Background binary files.
+
+#### Version 1.0
+
+* Initial release, see tutorial above.
 
 ### TO DO:
 
 Add rest of annotation readers. Will probably need to re-adjust existing ones in future
 PG versions.
-
-
-
-
