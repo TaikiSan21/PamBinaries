@@ -59,9 +59,43 @@ This only read in the data with the UIDs provided in the keepUIDs argument, skip
 the rest. This can greatly reduce the time required to read data if you only need a
 small subset of the items in the binary file.
 
+As of version 1.2 there is a second exported function, `pbToDf`. This function converts
+the output of `loadPamguardBinaryFile` into a data frame. In order to do this it must
+skip some of the information in the binaries that are not an appropriate size to put in
+a data frame, as of version 1.2 the skipped data includes: any annotations data, click
+wave forms, DIFAR demux data, and contour information from the Whistle & Moan Detector.
+This function can be called directly, and is also called when as.data.frame is called 
+on an object of class `PamBinary`; the output of `loadPamguardBinaryFile` is both `list`
+and `PamBinary` as of version 1.2. 
+
+The following should return identicala results:
+
+```r
+df1 <- pbToDf(binaryData)
+df2 <- as.data.frame(binaryData)
+df3 <- data.frame(binaryData)
+df4 <- pbToDf(binaryData$data)
+```
+
+The final example (`df4`) is not the preferred way to make this conversion, but is
+included to avoid possibly surprising behavior. The function will issue a warning,
+but will convert to a data frame as expected.
+
 ### Compatibility
 
-PamBinaries should be compatible with Pamguard v2.00.14 and earlier.
+PamBinaries should be compatible with Pamguard v2.00.15 and earlier.
+
+#### Version 1.2
+
+* The output of `loadPamguardBinaryFile` is now a `PamBinary` in addition to `list`.
+This is just to allow for some easy method dispatch (like `as.data.frame` below),
+and should not change any other behavior.
+
+* Added a new exported function `pbToDf` that converts a `PamBinary` object to a
+data frame. 
+
+* Extended the generic `as.data.frame` for class `PamBinary`, `as.data.frame.PamBinary`
+is just a wrapper for `pbToDf` but allows for quick and easy conversion to data frames.
 
 #### Version 1.1
 
@@ -69,7 +103,7 @@ PamBinaries should be compatible with Pamguard v2.00.14 and earlier.
 done automatically, only if the new flag `convertDate` is set to `TRUE`. Date is now
 reported as seconds since 1970-01-01 UTC, and there is a second exported function
 `convertPgDate` that will properly convert the numeric value to POSIXct. This change
-was made for speed purposes, `loadPamguardBinary` now runs approximately 40% faster
+was made for speed purposes, `loadPamguardBinaryFile` now runs approximately 40% faster
 without the date conversion.
 
 * Added support for Click Trigger Background binary files.

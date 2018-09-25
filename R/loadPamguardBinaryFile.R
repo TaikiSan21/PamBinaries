@@ -201,7 +201,9 @@ loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, debug=FALSE, keepU
                 dataSet[[i]]$date <- convertPgDate(dataSet[[i]]$date)
             }
         }
-        list(data=dataSet, fileInfo=fileInfo)
+        result <- list(data=dataSet, fileInfo=fileInfo)
+        class(result) <- c('PamBinary', 'list')
+        result
     }, error = function(e) {
         cat('Error reading file ', fileName)
         print(e)

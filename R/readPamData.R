@@ -183,6 +183,9 @@ readPamData <- function(fid, fileInfo, skipLarge, debug=FALSE, keepUIDs, ...) {
                 seek(fid, anStart + anTotLength, origin = 'start')
             }
         }
+        # Empty anno list makes turning things into DF weird...
+        if(length(annotations) == 0) annotations <- NA
+        
         data$annotations <- annotations
         return(data)
     # }, warning = function(w) {
