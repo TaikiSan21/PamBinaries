@@ -68,7 +68,7 @@ This function can be called directly, and is also called when as.data.frame is c
 on an object of class `PamBinary`; the output of `loadPamguardBinaryFile` is both `list`
 and `PamBinary` as of version 1.2. 
 
-The following should return identicala results:
+The following should return identical results:
 
 ```r
 df1 <- pbToDf(binaryData)

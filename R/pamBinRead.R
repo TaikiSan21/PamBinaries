@@ -18,7 +18,7 @@
 #'   Currently cannot read more than one int64 at a time, shouldn't be necessary.
 #'   
 pamBinRead <- function(fid, what=c('int8', 'int16', 'int32','int64',
-                                   'float', 'character'), n, seek=FALSE) {
+                                   'float', 'double', 'character'), n, seek=FALSE) {
     endian <- 'big'
     
     if(length(n) == 0) {
@@ -33,7 +33,10 @@ pamBinRead <- function(fid, what=c('int8', 'int16', 'int32','int64',
                    int32 = seek(fid, n*4, origin='current'),
                    int64 = seek(fid, n*8, origin='current'),
                    float = seek(fid, n*4, origin='current'),
-                   character = seek(fid, n, origin='current'))
+                   double = seek(fid, n*8, origin='current'),
+                   character = seek(fid, n, origin='current'),
+                   warning(paste0("Can't read binary data type ", what))
+            )
         )
     }
     
@@ -61,6 +64,8 @@ pamBinRead <- function(fid, what=c('int8', 'int16', 'int32','int64',
                }
            },
            float = readBin(fid, 'numeric', n=n, size=4, endian=endian),
-           character = rawToChar(readBin(fid, 'raw', n=n, size=1, endian=endian))
+           double = readBin(fid, 'numeric', n=n, size=8, endian=endian),
+           character = rawToChar(readBin(fid, 'raw', n=n, size=1, endian=endian)),
+           warning(paste0("Can't read binary data type ", what))
     )
 }

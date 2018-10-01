@@ -23,21 +23,23 @@
 #' 
 pbToDf <- function(pb) {
     skip <- c('annotations', 'wave', 'contour', 'contWidth', 'sliceData', 'demuxData')
+    good <- FALSE
     # Case 1: either a PamBinary class, or has the right pieces but not the class
     if('PamBinary' %in% class(pb) ||
        all(c('data', 'fileInfo') %in% names(pb))) {
-        return(
-            do.call(rbind, lapply(pb$data, function(x) {
-                data.frame(x[!(names(x) %in% skip)])
-            }))
-        )
+        justData <- pb$data
+        good <- TRUE
     }
     # Case 2: Just the $data part, we should do it anyway but warn.
     if(all(c('flagBitMap', 'identifier') %in% names(pb[[1]]))) {
         warning('It looks like you input just the $data, please use',
                 'the entire "PamBinary" output next time.')
+        justData <- pb
+        good <- TRUE
+    }
+    if(good) {
         return(
-            do.call(rbind, lapply(pb, function(x) {
+            do.call(rbind, lapply(justData, function(x) {
                 data.frame(x[!(names(x) %in% skip)])
             }))
         )

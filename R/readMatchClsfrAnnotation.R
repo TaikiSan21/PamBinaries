@@ -22,7 +22,7 @@ readMatchClsfrAnnotation <- function(fid, fileInfo, debug=FALSE) {
         threshold <- pamBinRead(fid, 'double', n=1)
         matchcorr <- pamBinRead(fid, 'double', n=1)
         rejectcorr <- pamBinRead(fid, 'double', n=1)
-        data <- c(threshold, matchcorr, rejectcorr)
+        data <- list('threshold'=threshold, 'matchcorr'=matchcorr, 'rejectcorr'=rejectcorr)
     }, error = function(e) {
         if(debug) {
             print(paste0('Error reading ', fileInfo$fileHeader$moduleType, 
