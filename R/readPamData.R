@@ -168,13 +168,14 @@ readPamData <- function(fid, fileInfo, skipLarge, debug=FALSE, keepUIDs, ...) {
                            annotations$mclassification <- readMatchClsfrAnnotation(fid, fileInfo)
                        },
                        {
-                           warning('Unknown annotation type ', anId, ' length ', anLength, 
-                                   ' version ', anVersion, ' in file.')
+                           warning(paste0('Unknown annotation type ', anId, ' length ', anLength, 
+                                   ' version ', anVersion, ' in file ', fileInfo$fileName))
                            seek(fid, filePos + anLength, origin = 'start')
                        })
                 endPos <- seek(fid)
                 if(endPos != filePos + anLength) {
-                    warning('Possible annotation read size error in file.')
+                    warning(paste0('Possible annotation read size error in file ',
+                                   fileInfo$fileName))
                     seek(fid, filePos + anLength, origin = 'start')
                     endPos <- seek(fid)
                 }
