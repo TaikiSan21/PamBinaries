@@ -165,7 +165,7 @@ readPamData <- function(fid, fileInfo, skipLarge, debug=FALSE, keepUIDs, ...) {
                            annotations$classification <- readClickClsfrAnnotation(fid, fileInfo)
                        },
                        'Matched_Clk_Clsfr' = {
-                           annotations$mclassification <- readMatchClsfrAnnotation(fid, fileInfo)
+                           annotations$mclassification <- readMatchClsfrAnnotation(fid, fileInfo, anVersion)
                        },
                        {
                            warning(paste0('Unknown annotation type ', anId, ' length ', anLength, 
