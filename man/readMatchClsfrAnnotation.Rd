@@ -4,12 +4,14 @@
 \alias{readMatchClsfrAnnotation}
 \title{Read Matched Classifier Annotation}
 \usage{
-readMatchClsfrAnnotation(fid, fileInfo, debug = FALSE)
+readMatchClsfrAnnotation(fid, fileInfo, anVersion, debug = FALSE)
 }
 \arguments{
 \item{fid}{binary file identifier}
 
 \item{fileInfo}{structure holding the file header and module header}
+
+\item{anVersion}{version id of annotation module}
 
 \item{debug}{logical flag to show more info on errors}
 }
