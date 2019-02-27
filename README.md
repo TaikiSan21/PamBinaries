@@ -85,6 +85,10 @@ but will convert to a data frame as expected.
 
 PamBinaries should be compatible with Pamguard v2.00.15 and earlier.
 
+#### Version 1.2.3
+
+* Fixed typo in matched classifier annotations
+
 #### Version 1.2.2
 
 * Added support for multiple matched classifier annotations
@@ -120,3 +124,5 @@ without the date conversion.
 
 Add rest of annotation readers. Will probably need to re-adjust existing ones in future
 PG versions.
+
+Cant install if no current timezone

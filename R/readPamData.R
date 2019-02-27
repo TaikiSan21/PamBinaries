@@ -150,16 +150,16 @@ readPamData <- function(fid, fileInfo, skipLarge, debug=FALSE, keepUIDs, ...) {
                 anVersion <- pamBinRead(fid, 'int16', n=1)
                 switch(anId,
                        'Beer' = {
-                           annotations$beamAngles <- readBeamFormerAnnotation(fid, anId, anLength, fileInfo, anVersion)
+                           # annotations$beamAngles <- readBeamFormerAnnotation(fid, anId, anLength, fileInfo, anVersion)
                        },
                        'Bearing' = {
-                           annotations$bearing <- readBearingAnnotation(fid, anId, anLength, fileInfo, anVersion)
+                           # annotations$bearing <- readBearingAnnotation(fid, anId, anLength, fileInfo, anVersion)
                        },
                        'TMAN' = {
-                           annotations$targetMotion <- readTMAnnotation(fid, anId, anLength, fileInfo, anVersion)
+                           # annotations$targetMotion <- readTMAnnotation(fid, anId, anLength, fileInfo, anVersion)
                        },
                        'TDBL' = {
-                           annotations$toadAngles <- readTDBLAnnotation(fid, anId, anLength, fileInfo, anVersion)
+                           # annotations$toadAngles <- readTDBLAnnotation(fid, anId, anLength, fileInfo, anVersion)
                        },
                        'ClickClasssifier_1' = {
                            annotations$classification <- readClickClsfrAnnotation(fid, fileInfo)

@@ -30,7 +30,7 @@ readMatchClsfrAnnotation <- function(fid, fileInfo, anVersion, debug=FALSE) {
         if(anVersion == 2) {
             nTemplates <- pamBinRead(fid, 'int16', n=1)
             data <- data.frame(threshold = rep(0, nTemplates),
-                               mathccorr = rep(0, nTemplates),
+                               matchcorr = rep(0, nTemplates),
                                rejectcorr = rep(0, nTemplates))
             for(i in 1:nTemplates) {
                 data$threshold[i] <- pamBinRead(fid, 'double', n=1)
