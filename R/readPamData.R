@@ -16,7 +16,7 @@
 #' 
 #' @return a structure containing data from a single object
 #' 
-#' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
+#' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
 readPamData <- function(fid, fileInfo, skipLarge, debug=FALSE, keepUIDs, ...) {
     ### UNSURE OF WHAT THE RESULTS ARE IN CASE OF ERROR ###

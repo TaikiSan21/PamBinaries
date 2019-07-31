@@ -8,7 +8,7 @@
 #' 
 #' @return footer information for Click Detector module
 #' 
-#' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
+#' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
 readClickFooter <- function(file) {
     footer <- readStdModuleFooter(file)

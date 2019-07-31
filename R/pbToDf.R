@@ -17,7 +17,7 @@
 #'   information from WMD detector. These are skipped because they are either
 #'   incosistent in their size, or are large objects.
 #' 
-#' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
+#' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
 #' @export
 #' 

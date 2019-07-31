@@ -6,7 +6,7 @@
 #' 
 #' @return Date as milliseconds
 #' 
-#' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
+#' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
 #' @note Conversion to milliseconds to match how Java stores
 #'   dates. Doesn't appear to ever be used.

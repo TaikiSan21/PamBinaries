@@ -14,7 +14,7 @@
 #' 
 #' @return a vector with the threshold, matchcorr, and rejectcorr values. See description.
 #' 
-#' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
+#' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
 readMatchClsfrAnnotation <- function(fid, fileInfo, anVersion, debug=FALSE) {
     error <- FALSE

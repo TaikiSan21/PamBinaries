@@ -7,7 +7,7 @@
 #' 
 #' @return header information common to all files
 #' 
-#' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
+#' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
 readFileHeader <- function(file, readExtra=FALSE) {
     header <- list()

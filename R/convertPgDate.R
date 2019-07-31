@@ -8,7 +8,7 @@
 #'   
 #' @return A POSIXct date in UTC
 #' 
-#' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
+#' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
 #' @export
 #'

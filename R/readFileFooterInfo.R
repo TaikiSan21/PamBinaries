@@ -9,7 +9,7 @@
 #' 
 #' @return footer information common to all files
 #' 
-#' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
+#' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
 readFileFooterInfo <- function(fid, version) {
     footer <- list()

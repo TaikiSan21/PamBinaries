@@ -8,7 +8,7 @@
 #' 
 #' @return footer information common to all modules
 #' 
-#' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
+#' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
 readStdModuleFooter <- function(file) {
     footer <- list()

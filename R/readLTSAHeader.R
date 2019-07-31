@@ -6,7 +6,7 @@
 #' 
 #' @return header information for the LTSA module
 #' 
-#' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
+#' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
 readLTSAHeader <- function(file) {
     header <- readStdModuleHeader(file)

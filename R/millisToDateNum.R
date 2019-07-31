@@ -7,7 +7,7 @@
 #' 
 #' @return Numeric time used by R.
 #' 
-#' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
+#' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
 #' @note Original function was more relevant as Matlab and Java
 #'   use different time origins. Java & R both use 1970-01-01,

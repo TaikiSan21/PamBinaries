@@ -11,7 +11,7 @@
 #' @return a structure containing data from a single object, and a logical
 #'   flag if an error has occurred
 #' 
-#' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
+#' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
 readNoiseMonData <- function(fid, fileInfo, data, debug=FALSE, ...) {
     error <- FALSE

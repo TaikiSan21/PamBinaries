@@ -8,7 +8,7 @@
 #' 
 #' @return header information common to all modules
 #' 
-#' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
+#' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
 readStdModuleHeader <- function(file) {
     header <- list()

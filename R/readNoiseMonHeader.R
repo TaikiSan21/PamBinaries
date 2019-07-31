@@ -6,7 +6,7 @@
 #' 
 #' @return header information for the Noise Monitor module
 #' 
-#' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
+#' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
 readNoiseMonHeader <- function(file) {
     header <- readStdModuleHeader(file)

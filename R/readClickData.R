@@ -13,7 +13,7 @@
 #' @return a structure containing data from a single object, and a logical
 #'   flag if an error has occurred
 #' 
-#' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
+#' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
 readClickData <- function(fid, fileInfo, data, skipLarge=FALSE, debug=FALSE, getWave, onlyWave) {
     if(!missing(getWave) | !missing(onlyWave)) {

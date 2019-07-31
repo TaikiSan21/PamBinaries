@@ -8,7 +8,7 @@
 #' 
 #' @return a vector of click classifiers, represented by the click type flag
 #' 
-#' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
+#' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
 readClickClsfrAnnotation <- function(fid, fileInfo, debug=FALSE) {
     error <- FALSE

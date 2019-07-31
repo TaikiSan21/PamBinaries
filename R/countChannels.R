@@ -7,7 +7,7 @@
 #' 
 #' @return The number of active channels (number of ones)
 #' 
-#' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
+#' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
 #' @note Altered from original script to loop through 30 instead
 #'   32 because R stores only 32 bit integers. Should not ever have

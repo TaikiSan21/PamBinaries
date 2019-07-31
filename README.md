@@ -85,6 +85,10 @@ but will convert to a data frame as expected.
 
 PamBinaries should be compatible with Pamguard v2.00.15 and earlier.
 
+#### Version 1.2.4 
+
+* Added function `contourToFreq` for adding frequency and time information to WMD binaries
+
 #### Version 1.2.3
 
 * Fixed typo in matched classifier annotations

@@ -16,7 +16,7 @@
 #' @return This function returns a list containing two objects. Data contains
 #'   all the binary data read. fileInfo contains metadata information for the file.
 #' 
-#' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
+#' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
 #' @export
 #' 

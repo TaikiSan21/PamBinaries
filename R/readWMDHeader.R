@@ -7,7 +7,7 @@
 #' 
 #' @return header information for the Whistle & Moan Detector module
 #' 
-#' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
+#' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
 readWMDHeader <- function(file) {
     header <- readStdModuleHeader(file)

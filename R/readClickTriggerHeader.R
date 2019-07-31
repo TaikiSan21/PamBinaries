@@ -6,7 +6,7 @@
 #' 
 #' @return header information for the click trigger
 #' 
-#' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
+#' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
 readClickTriggerHeader <- function(file) {
     header <- readStdModuleHeader(file)

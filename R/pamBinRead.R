@@ -10,7 +10,7 @@
 #' 
 #' @return Data of the type and number specified.
 #' 
-#' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
+#' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
 #' @note R does not natively support 64-bit integers. Current implementation
 #'   is to read an int64 as 8 separate 1-byte raw pieces. These are converted

@@ -7,7 +7,7 @@
 #' 
 #' @return the string and its length
 #' 
-#' @author Taiki Sakai \email{taiki.sakai@noaa.gov}
+#' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
 readJavaUTFString <- function(file) {
     len <- pamBinRead(file, 'int16', n=1)
