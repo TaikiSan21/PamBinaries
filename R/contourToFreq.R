@@ -36,6 +36,7 @@ contourToFreq <- function(data) {
         max(unlist(lapply(tempData$sliceData, function(x) x$peakData)))
     for(i in seq_along(data)) {
         data[[i]]$freq <- data[[i]]$contour * sr / fftLen
+        data[[i]]$allFreq <- do.call(cbind, lapply(data[[i]]$sliceData, function(x) x$peakData)) * sr / fftLen
         data[[i]]$time <- sapply(data[[i]]$sliceData,
                                  function(x) x$sliceNumber) * fftHop / sr
     }
