@@ -6,7 +6,7 @@
 #' @param data either a \code{PamBinary} class object, or just the \code{$data} from
 #'   a PamBinary object, or a single detection from the \code{$data}
 #' 
-#' @return Nothing, just plots
+#' @return A ggplot object
 #' 
 #' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
@@ -47,7 +47,7 @@ plotWMD <- function(data, id=1) {
         stat_bin_2d(data=peakData, aes(x=time, y=freq), fill='pink',
                     binwidth=c(tDiff, fDiff),
                     color='black')
-    print(plot)
+    plot
 }
     
         

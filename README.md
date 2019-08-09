@@ -85,6 +85,10 @@ but will convert to a data frame as expected.
 
 PamBinaries should be compatible with Pamguard v2.00.15 and earlier.
 
+#### Version 1.2.6
+
+* Fixed a bug in SR and FFT parameter calculation for `contourToFreq`
+
 #### Version 1.2.5
 
 * Added function `plotWMD` to look at whistle contour plots
