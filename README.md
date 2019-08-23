@@ -85,6 +85,10 @@ but will convert to a data frame as expected.
 
 PamBinaries should be compatible with Pamguard v2.00.15 and earlier.
 
+#### Version 1.2.7
+
+* Better `plotWMD` labeling and `verbose` option for `contourToFreq` that prints parameters
+
 #### Version 1.2.6
 
 * Fixed a bug in SR and FFT parameter calculation for `contourToFreq`

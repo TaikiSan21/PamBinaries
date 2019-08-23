@@ -4,11 +4,13 @@
 \alias{contourToFreq}
 \title{Add Frequency and Time to Pamguard Whistle Binaries}
 \usage{
-contourToFreq(data)
+contourToFreq(data, verbose = FALSE)
 }
 \arguments{
 \item{data}{either a \code{PamBinary} class object or just the \code{$data} from
 a PamBinary object}
+
+\item{verbose}{logical flag to print calculated parameters}
 }
 \value{
 \code{data} with items \code{freq} and \code{time} added. These use the 

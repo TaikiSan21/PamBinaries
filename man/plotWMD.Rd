@@ -4,14 +4,18 @@
 \alias{plotWMD}
 \title{Plot Whistle Contour}
 \usage{
-plotWMD(data, id = 1)
+plotWMD(data, id = 1, ...)
 }
 \arguments{
 \item{data}{either a \code{PamBinary} class object, or just the \code{$data} from
 a PamBinary object, or a single detection from the \code{$data}}
+
+\item{id}{the id of the whistle to plot, either an index or Pamguard UID}
+
+\item{\dots}{parameters to pass to other functions}
 }
 \value{
-Nothing, just plots
+A ggplot object
 }
 \description{
 Plots the entire whistle contour saved in a Pamguard Whistle &

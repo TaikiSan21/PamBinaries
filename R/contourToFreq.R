@@ -5,6 +5,7 @@
 #'   
 #' @param data either a \code{PamBinary} class object or just the \code{$data} from
 #'   a PamBinary object
+#' @param verbose logical flag to print calculated parameters
 #' 
 #' @return \code{data} with items \code{freq} and \code{time} added. These use the 
 #'   calculated FFT window length, hope size, and sample rate to compute the frequency
@@ -14,7 +15,7 @@
 #' 
 #' @export
 #' 
-contourToFreq <- function(data) {
+contourToFreq <- function(data, verbose=FALSE) {
     if(inherits(data, 'PamBinary')) {
         data$data <- contourToFreq(data$data)
         return(data)
@@ -35,7 +36,9 @@ contourToFreq <- function(data) {
         (tempData$sliceData[[tempData$nSlices]]$sliceNumber - tempData$sliceData[[1]]$sliceNumber) * fftHop
     sr <- fftLen * tempData$maxFreq /
         max(unlist(lapply(tempData$sliceData, function(x) x$peakData)))
-    
+    if(verbose) {
+        cat('SR: ', sr, ' Len: ', fftLen, ' Hop: ', fftHop, sep ='')
+    }
     for(i in seq_along(data)) {
         data[[i]]$freq <- data[[i]]$contour * sr / fftLen
         data[[i]]$allFreq <- do.call(cbind, lapply(data[[i]]$sliceData, function(x) x$peakData)) * sr / fftLen
