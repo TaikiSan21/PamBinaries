@@ -4,14 +4,16 @@
 \alias{loadPamguardBinaryFile}
 \title{Load Pamguard Binary File}
 \usage{
-loadPamguardBinaryFile(fileName, skipLarge = FALSE, debug = FALSE,
-  keepUIDs = NULL, convertDate = FALSE, ...)
+loadPamguardBinaryFile(fileName, skipLarge = FALSE, skipData = FALSE,
+  debug = FALSE, keepUIDs = NULL, convertDate = FALSE, ...)
 }
 \arguments{
 \item{fileName}{The name of the binary file to be read}
 
 \item{skipLarge}{Should we skip large parts of binaries? Currently only applicable
 to whistle, click, and DIFAR data}
+
+\item{skipData}{Should we skip all data and only read headers and footers?}
 
 \item{debug}{logical flag to show more info on errors}
 

@@ -7,6 +7,7 @@
 #' @param fileName The name of the binary file to be read
 #' @param skipLarge Should we skip large parts of binaries? Currently only applicable
 #'   to whistle, click, and DIFAR data
+#' @param skipData Should we skip all data and only read headers and footers?
 #' @param debug logical flag to show more info on errors
 #' @param keepUIDs If not \code{NULL}, a vector of UIDs to read. All UIDs not in this
 #'   vector will not be read.
@@ -20,7 +21,8 @@
 #' 
 #' @export
 #' 
-loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, debug=FALSE, keepUIDs=NULL, convertDate=FALSE, ...) {
+loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, skipData=FALSE, 
+                                   debug=FALSE, keepUIDs=NULL, convertDate=FALSE, ...) {
     tryCatch({
         fid <- file(fileName, open='rb')
         
@@ -34,7 +36,6 @@ loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, debug=FALSE, keepU
         
         # main loop
         while(TRUE) {
-            
             # if for some reason we're stuck at one byte, warn the user and
             # abort
             pos <- seek(fid)
@@ -173,6 +174,10 @@ loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, debug=FALSE, keepU
                    # empty, something has gone wrong so warn the user and exit
                    {
                        # print(5)
+                       if(skipData) {
+                           seek(fid, pos + nextLen, origin='start')
+                           next
+                       }
                        if(length(fileInfo$fileHeader)==0) {
                            print('Error: found data before file header. Aborting load.')
                            break
@@ -186,7 +191,7 @@ loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, debug=FALSE, keepU
                        # MAYBE PROBLEM: This skips the footers.
                        if(length(keepUIDs) > 0 &&
                           length(keepUIDs)==length(dataSet)) {
-                           break
+                           skipData <- TRUE
                        }
                    }
             )

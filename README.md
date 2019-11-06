@@ -85,6 +85,15 @@ but will convert to a data frame as expected.
 
 PamBinaries should be compatible with Pamguard v2.00.15 and earlier.
 
+#### Version 1.3.0
+
+* Added option `skipData` to `loadPamguardBinaryFile` that will only read in file headers
+and footers. This also speeds up data loads when using `keepUIDs` argument, and preserves
+file footers in this case (did not before)
+
+* `skipLarge` was actually slower with Whistle and Moan data, now is much faster and does
+not save any of the contour data to the data file (it was all 0s before, so not meaningful)
+
 #### Version 1.2.7
 
 * Better `plotWMD` labeling and `verbose` option for `contourToFreq` that prints parameters
