@@ -4,8 +4,15 @@
 \alias{readClickData}
 \title{Read Click Data}
 \usage{
-readClickData(fid, fileInfo, data, skipLarge = FALSE, debug = FALSE,
-  getWave, onlyWave)
+readClickData(
+  fid,
+  fileInfo,
+  data,
+  skipLarge = FALSE,
+  debug = FALSE,
+  getWave,
+  onlyWave
+)
 }
 \arguments{
 \item{fid}{binary file identifier}

@@ -19,6 +19,7 @@
 #' 
 #' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
+#' @importFrom dplyr bind_rows
 #' @export
 #' 
 pbToDf <- function(pb) {
@@ -37,10 +38,11 @@ pbToDf <- function(pb) {
         justData <- pb
         good <- TRUE
     }
+    keepIx <- !(names(justData[[1]]) %in% skip)
     if(good) {
         return(
-            do.call(rbind, lapply(justData, function(x) {
-                data.frame(x[!(names(x) %in% skip)])
+            bind_rows(lapply(justData, function(x) {
+                x[keepIx]
             }))
         )
     }

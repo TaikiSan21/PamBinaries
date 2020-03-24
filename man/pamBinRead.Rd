@@ -4,8 +4,12 @@
 \alias{pamBinRead}
 \title{Read Pamguard Binary Data}
 \usage{
-pamBinRead(fid, what = c("int8", "int16", "int32", "int64", "float",
-  "double", "character"), n, seek = FALSE)
+pamBinRead(
+  fid,
+  what = c("int8", "int16", "int32", "int64", "float", "double", "character"),
+  n,
+  seek = FALSE
+)
 }
 \arguments{
 \item{fid}{The binary file being read}

@@ -56,5 +56,3 @@ plotWMD <- function(data, id=1, ...) {
         ylab('Frequency (hertz)')
     plot
 }
-    
-        

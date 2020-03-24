@@ -4,8 +4,15 @@
 \alias{loadPamguardBinaryFile}
 \title{Load Pamguard Binary File}
 \usage{
-loadPamguardBinaryFile(fileName, skipLarge = FALSE, skipData = FALSE,
-  debug = FALSE, keepUIDs = NULL, convertDate = FALSE, ...)
+loadPamguardBinaryFile(
+  fileName,
+  skipLarge = FALSE,
+  skipData = FALSE,
+  debug = FALSE,
+  keepUIDs = NULL,
+  convertDate = FALSE,
+  ...
+)
 }
 \arguments{
 \item{fileName}{The name of the binary file to be read}
