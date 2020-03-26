@@ -10,6 +10,9 @@
 #'   
 #' @param pb a PamBinary class object created by 
 #'   \code{\link[PamBinaries]{loadPamguardBinaryFile}}
+#' @param templateNames if using the click template classifier, the names of the species
+#'   for the click templates. These will be used as the names of the columns in the
+#'   dataframe, and the length of this must exactly match the number of templates used
 #' @param \dots Unused parameters passed in from other methods
 #' 
 #' @return a data.frame containing most of the binary data read in. Will not
@@ -22,7 +25,7 @@
 #' @importFrom dplyr bind_rows
 #' @export
 #' 
-pbToDf <- function(pb) {
+pbToDf <- function(pb, templateNames = NULL) {
     skip <- c('annotations', 'wave', 'contour', 'contWidth', 'sliceData', 'demuxData')
     good <- FALSE
     # Case 1: either a PamBinary class, or has the right pieces but not the class
@@ -42,7 +45,13 @@ pbToDf <- function(pb) {
     if(good) {
         return(
             bind_rows(lapply(justData, function(x) {
-                x[keepIx]
+                if(is.null(templateNames)) {
+                    x[keepIx]
+                } else {
+                    ct <- x$annotations$mclassification$threshold
+                    names(ct) <- templateNames
+                    c(x[keepIx], ct)
+                }
             }))
         )
     }

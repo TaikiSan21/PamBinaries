@@ -4,11 +4,15 @@
 \alias{pbToDf}
 \title{Convert a PamBinary Object to Data Frame}
 \usage{
-pbToDf(pb)
+pbToDf(pb, templateNames = NULL)
 }
 \arguments{
 \item{pb}{a PamBinary class object created by 
 \code{\link[PamBinaries]{loadPamguardBinaryFile}}}
+
+\item{templateNames}{if using the click template classifier, the names of the species
+for the click templates. These will be used as the names of the columns in the
+dataframe, and the length of this must exactly match the number of templates used}
 
 \item{\dots}{Unused parameters passed in from other methods}
 }

@@ -85,6 +85,10 @@ but will convert to a data frame as expected.
 
 PamBinaries should be compatible with Pamguard v2.00.15 and earlier.
 
+#### Version 1.3.2
+
+* Added feature to `pbToDf` so read click template classifier thresholds
+
 #### Version 1.3.1
 
 * Fixed `pbToDf` so that it is much faster (~50x)
