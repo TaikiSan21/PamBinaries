@@ -66,6 +66,7 @@ readClickData <- function(fid, fileInfo, data, skipLarge=FALSE, debug=FALSE, get
 
         data$nChan <- countChannels(data$channelMap)
         maxVal <- pamBinRead(fid, 'float', n=1)
+        data$maxAmplitude <- maxVal
         if(skipLarge) {
             seek(fid, data$duration * data$nChan, origin='current')
         } else {

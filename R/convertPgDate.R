@@ -13,5 +13,8 @@
 #' @export
 #'
 convertPgDate <- function(dateNum) {
+    if(!is.numeric(dateNum)) {
+        stop('Date must be numeric, "', dateNum, '" is class ', class(dateNum))
+    }
     as.POSIXct(dateNum, origin='1970-01-01', tz='UTC')
 }

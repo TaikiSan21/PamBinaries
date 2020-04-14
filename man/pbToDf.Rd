@@ -13,8 +13,6 @@ pbToDf(pb, templateNames = NULL)
 \item{templateNames}{if using the click template classifier, the names of the species
 for the click templates. These will be used as the names of the columns in the
 dataframe, and the length of this must exactly match the number of templates used}
-
-\item{\dots}{Unused parameters passed in from other methods}
 }
 \value{
 a data.frame containing most of the binary data read in. Will not

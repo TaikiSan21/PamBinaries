@@ -85,6 +85,10 @@ but will convert to a data frame as expected.
 
 PamBinaries should be compatible with Pamguard v2.00.15 and earlier.
 
+#### Version 1.3.3
+
+* Clicks now also store `maxAmplitude` in the output
+
 #### Version 1.3.2
 
 * Added feature to `pbToDf` so read click template classifier thresholds
