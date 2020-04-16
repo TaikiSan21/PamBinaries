@@ -12,12 +12,15 @@
 #'   \code{\link[PamBinaries]{loadPamguardBinaryFile}}
 #' @param templateNames if using the click template classifier, the names of the species
 #'   for the click templates. These will be used as the names of the columns in the
-#'   dataframe, and the length of this must exactly match the number of templates used
+#'   dataframe, and the length of this must exactly match the number of templates used.
+#'   Will add columns for the threshold, match, and reject correlation values for each
+#'   template name provided
 #' 
 #' @return a data.frame containing most of the binary data read in. Will not
-#'   contain annotation data, click waveforms, DIFAR demux data, or contour
+#'   contain most annotation data, click waveforms, DIFAR demux data, or contour
 #'   information from WMD detector. These are skipped because they are either
-#'   incosistent in their size, or are large objects.
+#'   incosistent in their size, or are large objects. Click template classifier
+#'   information will be included if \code{templateNames} are supplied
 #' 
 #' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
@@ -42,17 +45,24 @@ pbToDf <- function(pb, templateNames = NULL) {
     }
     keepIx <- !(names(justData[[1]]) %in% skip)
     if(good) {
-        return(
-            bind_rows(lapply(justData, function(x) {
-                if(is.null(templateNames)) {
-                    x[keepIx]
-                } else {
-                    ct <- x$annotations$mclassification$threshold
-                    names(ct) <- templateNames
-                    c(x[keepIx], ct)
+        result <- bind_rows(lapply(justData, function(x) {
+            if(is.null(templateNames)) {
+                x[keepIx]
+            } else {
+                ct <- unlist(x$annotations$mclassification)
+                if(length(ct) < (3 *  length(templateNames))) {
+                    ct <- c(ct, rep(NA, 3 * length(templateNames) - length(ct)))
                 }
-            }))
-        )
+                names(ct) <- paste0(templateNames, '_', rep(c('thresh', 'match', 'reject'), each = length(templateNames)))
+                c(x[keepIx], ct)
+            }
+        }))
+        
+        if(any(is.na(result[ncol(result)]))) {
+            warning('Some classification templates were missing, or the number of template names provided does not match',
+                    ' number of templates present. Missing values have been set to NA.', call. = FALSE)
+        }
+        return(result)
     }
     stop("Input doesn't look like a PamBinary output.")
 }

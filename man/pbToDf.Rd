@@ -12,13 +12,16 @@ pbToDf(pb, templateNames = NULL)
 
 \item{templateNames}{if using the click template classifier, the names of the species
 for the click templates. These will be used as the names of the columns in the
-dataframe, and the length of this must exactly match the number of templates used}
+dataframe, and the length of this must exactly match the number of templates used.
+Will add columns for the threshold, match, and reject correlation values for each
+template name provided}
 }
 \value{
 a data.frame containing most of the binary data read in. Will not
-  contain annotation data, click waveforms, DIFAR demux data, or contour
+  contain most annotation data, click waveforms, DIFAR demux data, or contour
   information from WMD detector. These are skipped because they are either
-  incosistent in their size, or are large objects.
+  incosistent in their size, or are large objects. Click template classifier
+  information will be included if \code{templateNames} are supplied
 }
 \description{
 Converts a PamBinary object into a data frame. The data.frame

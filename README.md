@@ -85,6 +85,12 @@ but will convert to a data frame as expected.
 
 PamBinaries should be compatible with Pamguard v2.00.15 and earlier.
 
+#### Version 1.3.4
+
+* `pbToDf` now reads match and reject corr for click template classifier, and also fixed
+an issue where it would crash sadly if templateNames were supplied but a click did not have
+a corresponding number of templates
+
 #### Version 1.3.3
 
 * Clicks now also store `maxAmplitude` in the output
