@@ -30,16 +30,18 @@
 pbToDf <- function(pb, templateNames = NULL) {
     skip <- c('annotations', 'wave', 'contour', 'contWidth', 'sliceData', 'demuxData')
     good <- FALSE
+    fileName <- NULL
     # Case 1: either a PamBinary class, or has the right pieces but not the class
     if('PamBinary' %in% class(pb) ||
        all(c('data', 'fileInfo') %in% names(pb))) {
         justData <- pb$data
+        fileName <- pb$fileInfo$fileName
         good <- TRUE
     }
     # Case 2: Just the $data part, we should do it anyway but warn.
     if(all(c('flagBitMap', 'identifier') %in% names(pb[[1]]))) {
         warning('It looks like you input just the $data, please use',
-                'the entire "PamBinary" output next time.')
+                'the entire "PamBinary" output next time.', call.=FALSE)
         justData <- pb
         good <- TRUE
     }
@@ -59,8 +61,14 @@ pbToDf <- function(pb, templateNames = NULL) {
         }))
         
         if(any(is.na(result[ncol(result)]))) {
-            warning('Some classification templates were missing, or the number of template names provided does not match',
-                    ' number of templates present. Missing values have been set to NA.', call. = FALSE)
+            if(is.null(fileName)) {
+                warning('Some classification templates were missing, or the number of template names provided does not match',
+                        ' number of templates present. Missing values have been set to NA.', call. = FALSE)
+            } else {
+                warning('Some classification templates were missing, or the number of template names provided does not match',
+                        ' number of templates present. Missing values have been set to NA.\n',
+                        'Issue found in binary file: ', fileName, call. = FALSE)
+            }
         }
         return(result)
     }
