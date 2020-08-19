@@ -20,7 +20,10 @@
 #'   contain most annotation data, click waveforms, DIFAR demux data, or contour
 #'   information from WMD detector. These are skipped because they are either
 #'   incosistent in their size, or are large objects. Click template classifier
-#'   information will be included if \code{templateNames} are supplied
+#'   information will be included if \code{templateNames} are supplied. If binary
+#'   is from noise band monitor, noise data will be stored in columns noiseMean,
+#'   noisePeak, and octaveBands, and the resulting dataframe will have a row for 
+#'   each separate octave band stored
 #' 
 #' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
@@ -28,7 +31,7 @@
 #' @export
 #' 
 pbToDf <- function(pb, templateNames = NULL) {
-    skip <- c('annotations', 'wave', 'contour', 'contWidth', 'sliceData', 'demuxData')
+    skip <- c('annotations', 'wave', 'contour', 'contWidth', 'sliceData', 'demuxData', 'noise')
     good <- FALSE
     fileName <- NULL
     # Case 1: either a PamBinary class, or has the right pieces but not the class
@@ -46,33 +49,39 @@ pbToDf <- function(pb, templateNames = NULL) {
         good <- TRUE
     }
     keepIx <- !(names(justData[[1]]) %in% skip)
-    if(good) {
-        result <- bind_rows(lapply(justData, function(x) {
-            if(is.null(templateNames)) {
-                x[keepIx]
-            } else {
-                ct <- unlist(x$annotations$mclassification)
-                if(length(ct) < (3 *  length(templateNames))) {
-                    ct <- c(ct, rep(NA, 3 * length(templateNames) - length(ct)))
-                }
-                names(ct) <- paste0(templateNames, '_', rep(c('thresh', 'match', 'reject'), each = length(templateNames)))
-                c(x[keepIx], ct)
-            }
-        }))
-        
-        if(any(is.na(result[ncol(result)]))) {
-            if(is.null(fileName)) {
-                warning('Some classification templates were missing, or the number of template names provided does not match',
-                        ' number of templates present. Missing values have been set to NA.', call. = FALSE)
-            } else {
-                warning('Some classification templates were missing, or the number of template names provided does not match',
-                        ' number of templates present. Missing values have been set to NA.\n',
-                        'Issue found in binary file: ', fileName, call. = FALSE)
-            }
-        }
-        return(result)
+    if(!good) {
+        stop('Input does not look like a PamBinaray output.')
     }
-    stop("Input doesn't look like a PamBinary output.")
+    result <- bind_rows(lapply(justData, function(x) {
+        if('noise' %in% names(x)) {
+            tmp <- x[keepIx]
+            tmp$noiseMean <- x$noise[1, ]
+            tmp$noisePeak <- x$noise[2, ]
+            tmp$octaveBand <- 1:x$nBands
+            tmp
+        } else if(is.null(templateNames)) {
+            x[keepIx]
+        } else {
+            ct <- unlist(x$annotations$mclassification)
+            if(length(ct) < (3 *  length(templateNames))) {
+                ct <- c(ct, rep(NA, 3 * length(templateNames) - length(ct)))
+            }
+            names(ct) <- paste0(templateNames, '_', rep(c('thresh', 'match', 'reject'), each = length(templateNames)))
+            c(x[keepIx], ct)
+        }
+    }))
+    
+    if(any(is.na(result[ncol(result)]))) {
+        if(is.null(fileName)) {
+            warning('Some classification templates were missing, or the number of template names provided does not match',
+                    ' number of templates present. Missing values have been set to NA.', call. = FALSE)
+        } else {
+            warning('Some classification templates were missing, or the number of template names provided does not match',
+                    ' number of templates present. Missing values have been set to NA.\n',
+                    'Issue found in binary file: ', fileName, call. = FALSE)
+        }
+    }
+    result
 }
 
 #' @export

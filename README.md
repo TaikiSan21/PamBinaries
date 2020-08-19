@@ -85,6 +85,10 @@ but will convert to a data frame as expected.
 
 PamBinaries should be compatible with Pamguard v2.00.15 and earlier.
 
+#### Version 1.3.5
+
+* `pbToDf` now works for noise band monitor data in a well-behaved manner
+
 #### Version 1.3.4
 
 * `pbToDf` now reads match and reject corr for click template classifier, and also fixed

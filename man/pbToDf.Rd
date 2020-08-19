@@ -21,7 +21,10 @@ a data.frame containing most of the binary data read in. Will not
   contain most annotation data, click waveforms, DIFAR demux data, or contour
   information from WMD detector. These are skipped because they are either
   incosistent in their size, or are large objects. Click template classifier
-  information will be included if \code{templateNames} are supplied
+  information will be included if \code{templateNames} are supplied. If binary
+  is from noise band monitor, noise data will be stored in columns noiseMean,
+  noisePeak, and octaveBands, and the resulting dataframe will have a row for 
+  each separate octave band stored
 }
 \description{
 Converts a PamBinary object into a data frame. The data.frame
