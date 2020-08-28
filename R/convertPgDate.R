@@ -10,9 +10,21 @@
 #' 
 #' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
+#' @examples 
+#' 
+#' # load the example click binary data, leaving date as numeric
+#' clickFile <- system.file('extdata', 'Click.pgdf', package='PamBinaries')
+#' clickData <- loadPamguardBinaryFile(clickFile, convertDate = FALSE)
+#' # convert date to POSIXct
+#' convertPgDate(clickData$data[[1]]$date)
+#' 
 #' @export
 #'
 convertPgDate <- function(dateNum) {
+    if(is.null(dateNum) ||
+       is.na(dateNum)) {
+        return(dateNum)
+    }
     if(!is.numeric(dateNum)) {
         stop('Date must be numeric, "', dateNum, '" is class ', class(dateNum))
     }

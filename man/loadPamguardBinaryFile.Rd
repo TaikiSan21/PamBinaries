@@ -41,6 +41,29 @@ This function will load in the data from a Pamguard binary file. It will
   figure out the type of data being read based on the header of the file.
   All functions based on Matlab code written by Michael Oswald.
 }
+\examples{
+
+# read example whistle data
+wmFile <- system.file('extdata', 'WM.pgdf', package='PamBinaries')
+whistleData <- loadPamguardBinaryFile(wmFile)
+# works the same for different kinds of binary files
+clickFile <- system.file('extdata', 'Click.pgdf', package='PamBinaries')
+clickData <- loadPamguardBinaryFile(clickFile)
+# convert date to POSIXct (default does not because it is faster)
+clickPOSIX <- loadPamguardBinaryFile(clickFile, convertDate = TRUE)
+clickData$data[[1]]$date
+clickPOSIX$data[[1]]$date
+# read only the fileInfo portion, has empty $data item
+clickInfo <- loadPamguardBinaryFile(clickFile, skipData = TRUE)
+# skip reading the large click waveforms, much faster if you dont need them
+clickLess <- loadPamguardBinaryFile(clickFile, skipLarge = TRUE)
+object.size(clickData)
+object.size(clickLess)
+# only read specific UID numbers
+clickSpecific <- loadPamguardBinaryFile(clickFile, keepUIDs = c(4000006, 4000007))
+names(clickSpecific$data)
+
+}
 \author{
 Taiki Sakai \email{taiki.sakai@noaa.gov}
 }

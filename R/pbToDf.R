@@ -27,6 +27,15 @@
 #' 
 #' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
+#' @examples 
+#' 
+#' # load the data
+#' clickFile <- system.file('extdata', 'Click.pgdf', package='PamBinaries')
+#' clickData <- loadPamguardBinaryFile(clickFile)
+#' # two methods two convert to a dataframe
+#' head(pbToDf(clickData))
+#' head(data.frame(clickData))
+#' 
 #' @importFrom dplyr bind_rows
 #' @export
 #' 
@@ -48,6 +57,9 @@ pbToDf <- function(pb, templateNames = NULL) {
         justData <- pb
         good <- TRUE
     }
+    if(length(justData) == 0) {
+        return(NULL)
+    }
     keepIx <- !(names(justData[[1]]) %in% skip)
     if(!good) {
         stop('Input does not look like a PamBinaray output.')
@@ -59,15 +71,20 @@ pbToDf <- function(pb, templateNames = NULL) {
             tmp$noisePeak <- x$noise[2, ]
             tmp$octaveBand <- 1:x$nBands
             tmp
-        } else if(is.null(templateNames)) {
-            x[keepIx]
-        } else {
+        } else if(!is.null(templateNames)) {
             ct <- unlist(x$annotations$mclassification)
             if(length(ct) < (3 *  length(templateNames))) {
                 ct <- c(ct, rep(NA, 3 * length(templateNames) - length(ct)))
+            } else if(length(ct) > (3 * length(templateNames))) {
+                msg <- paste0('Insufficient number of template names provided',
+                              ' (found ', length(ct)/3, ' but only ', length(templateNames),
+                              ' provided)')
+                stop(msg, call. = FALSE)
             }
             names(ct) <- paste0(templateNames, '_', rep(c('thresh', 'match', 'reject'), each = length(templateNames)))
             c(x[keepIx], ct)
+        } else {
+            x[keepIx]
         }
     }))
     

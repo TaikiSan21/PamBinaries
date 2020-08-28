@@ -19,6 +19,28 @@
 #' 
 #' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
+#' @examples 
+#' 
+#' # read example whistle data
+#' wmFile <- system.file('extdata', 'WM.pgdf', package='PamBinaries')
+#' whistleData <- loadPamguardBinaryFile(wmFile)
+#' # works the same for different kinds of binary files
+#' clickFile <- system.file('extdata', 'Click.pgdf', package='PamBinaries')
+#' clickData <- loadPamguardBinaryFile(clickFile)
+#' # convert date to POSIXct (default does not because it is faster)
+#' clickPOSIX <- loadPamguardBinaryFile(clickFile, convertDate = TRUE)
+#' clickData$data[[1]]$date
+#' clickPOSIX$data[[1]]$date
+#' # read only the fileInfo portion, has empty $data item
+#' clickInfo <- loadPamguardBinaryFile(clickFile, skipData = TRUE)
+#' # skip reading the large click waveforms, much faster if you dont need them
+#' clickLess <- loadPamguardBinaryFile(clickFile, skipLarge = TRUE)
+#' object.size(clickData)
+#' object.size(clickLess)
+#' # only read specific UID numbers
+#' clickSpecific <- loadPamguardBinaryFile(clickFile, keepUIDs = c(4000006, 4000007))
+#' names(clickSpecific$data)
+#' 
 #' @export
 #' 
 loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, skipData=FALSE, 
@@ -212,6 +234,7 @@ loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, skipData=FALSE,
     }, error = function(e) {
         cat('Error reading file ', fileName)
         print(e)
+        NULL
     })
 }
 

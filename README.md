@@ -1,3 +1,7 @@
+<!-- badges: start -->
+[![Travis build status](https://travis-ci.com/TaikiSan21/PamBinaries.svg?branch=master)](https://travis-ci.com/TaikiSan21/PamBinaries)
+<!-- badges: end -->
+
 # PamBinaries
 
 The PamBinaries package is a set of functions for reading PAMGuard binary output
@@ -84,88 +88,6 @@ but will convert to a data frame as expected.
 ### Compatibility
 
 PamBinaries should be compatible with Pamguard v2.00.15 and earlier.
-
-#### Version 1.3.5
-
-* `pbToDf` now works for noise band monitor data in a well-behaved manner
-
-#### Version 1.3.4
-
-* `pbToDf` now reads match and reject corr for click template classifier, and also fixed
-an issue where it would crash sadly if templateNames were supplied but a click did not have
-a corresponding number of templates
-
-#### Version 1.3.3
-
-* Clicks now also store `maxAmplitude` in the output
-
-#### Version 1.3.2
-
-* Added feature to `pbToDf` so read click template classifier thresholds
-
-#### Version 1.3.1
-
-* Fixed `pbToDf` so that it is much faster (~50x)
-
-#### Version 1.3.0
-
-* Added option `skipData` to `loadPamguardBinaryFile` that will only read in file headers
-and footers. This also speeds up data loads when using `keepUIDs` argument, and preserves
-file footers in this case (did not before)
-
-* `skipLarge` was actually slower with Whistle and Moan data, now is much faster and does
-not save any of the contour data to the data file (it was all 0s before, so not meaningful)
-
-#### Version 1.2.7
-
-* Better `plotWMD` labeling and `verbose` option for `contourToFreq` that prints parameters
-
-#### Version 1.2.6
-
-* Fixed a bug in SR and FFT parameter calculation for `contourToFreq`
-
-#### Version 1.2.5
-
-* Added function `plotWMD` to look at whistle contour plots
-
-#### Version 1.2.4 
-
-* Added function `contourToFreq` for adding frequency and time information to WMD binaries
-
-#### Version 1.2.3
-
-* Fixed typo in matched classifier annotations
-
-#### Version 1.2.2
-
-* Added support for multiple matched classifier annotations
-
-#### Version 1.2
-
-* The output of `loadPamguardBinaryFile` is now a `PamBinary` in addition to `list`.
-This is just to allow for some easy method dispatch (like `as.data.frame` below),
-and should not change any other behavior.
-
-* Added a new exported function `pbToDf` that converts a `PamBinary` object to a
-data frame. 
-
-* Extended the generic `as.data.frame` for class `PamBinary`, `as.data.frame.PamBinary`
-is just a wrapper for `pbToDf` but allows for quick and easy conversion to data frames.
-
-#### Version 1.1
-
-* Slight change to function output, conversion of date to POSIXct object is no longer
-done automatically, only if the new flag `convertDate` is set to `TRUE`. Date is now
-reported as seconds since 1970-01-01 UTC, and there is a second exported function
-`convertPgDate` that will properly convert the numeric value to POSIXct. This change
-was made for speed purposes, `loadPamguardBinaryFile` now runs approximately 40% faster
-without the date conversion.
-
-* Added support for Click Trigger Background binary files.
-
-#### Version 1.0
-
-* Initial release, see tutorial above.
 
 ### TO DO:
 

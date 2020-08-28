@@ -35,6 +35,16 @@ Converts a PamBinary object into a data frame. The data.frame
   \code{pbToDf} is also called when \code{as.data.frame} is called on a PamBinary
   class object.
 }
+\examples{
+
+# load the data
+clickFile <- system.file('extdata', 'Click.pgdf', package='PamBinaries')
+clickData <- loadPamguardBinaryFile(clickFile)
+# two methods two convert to a dataframe
+head(pbToDf(clickData))
+head(data.frame(clickData))
+
+}
 \author{
 Taiki Sakai \email{taiki.sakai@noaa.gov}
 }

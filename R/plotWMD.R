@@ -12,6 +12,14 @@
 #' 
 #' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
+#' @examples 
+#' 
+#' # load example whistle file
+#' wmFile <- system.file('extdata', 'WM.pgdf', package='PamBinaries')
+#' wmData <- loadPamguardBinaryFile(wmFile)
+#' plotWMD(wmData, 1)
+#' plotWMD(wmData, 2)
+#' 
 #' @importFrom dplyr distinct filter
 #' @importFrom ggplot2 ggplot stat_bin_2d aes_string xlab ylab
 #' @export

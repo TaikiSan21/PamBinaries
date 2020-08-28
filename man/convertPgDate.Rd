@@ -17,6 +17,15 @@ A POSIXct date in UTC
 a simple helper to convert Pamguard's numeric date to
   POSIXct format
 }
+\examples{
+
+# load the example click binary data, leaving date as numeric
+clickFile <- system.file('extdata', 'Click.pgdf', package='PamBinaries')
+clickData <- loadPamguardBinaryFile(clickFile, convertDate = FALSE)
+# convert date to POSIXct
+convertPgDate(clickData$data[[1]]$date)
+
+}
 \author{
 Taiki Sakai \email{taiki.sakai@noaa.gov}
 }

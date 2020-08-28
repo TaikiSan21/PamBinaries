@@ -21,6 +21,18 @@ a PamBinary object}
 Adds items \code{freq} and \code{time} to a Pamguard binary file
   from the Whistle & Moan Detector
 }
+\examples{
+
+# load example whistle file
+wmFile <- system.file('extdata', 'WM.pgdf', package='PamBinaries')
+wmData <- loadPamguardBinaryFile(wmFile)
+# converts contour and FFT slice numbers to frequency and time values
+wmData <- contourToFreq(wmData)
+wmData$data[[1]]$contour
+wmData$data[[1]]$freq
+wmData$data[[1]]$time
+
+}
 \author{
 Taiki Sakai \email{taiki.sakai@noaa.gov}
 }

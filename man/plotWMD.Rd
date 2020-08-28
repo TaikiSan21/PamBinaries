@@ -21,6 +21,15 @@ A ggplot object
 Plots the entire whistle contour saved in a Pamguard Whistle &
   Moan Detector binary file, highlighting the selected contour
 }
+\examples{
+
+# load example whistle file
+wmFile <- system.file('extdata', 'WM.pgdf', package='PamBinaries')
+wmData <- loadPamguardBinaryFile(wmFile)
+plotWMD(wmData, 1)
+plotWMD(wmData, 2)
+
+}
 \author{
 Taiki Sakai \email{taiki.sakai@noaa.gov}
 }

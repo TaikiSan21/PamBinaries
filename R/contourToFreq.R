@@ -13,11 +13,22 @@
 #' 
 #' @author Taiki Sakai \email{taiki.sakai@@noaa.gov}
 #' 
+#' @examples 
+#' 
+#' # load example whistle file
+#' wmFile <- system.file('extdata', 'WM.pgdf', package='PamBinaries')
+#' wmData <- loadPamguardBinaryFile(wmFile)
+#' # converts contour and FFT slice numbers to frequency and time values
+#' wmData <- contourToFreq(wmData)
+#' wmData$data[[1]]$contour
+#' wmData$data[[1]]$freq
+#' wmData$data[[1]]$time
+#' 
 #' @export
 #' 
 contourToFreq <- function(data, verbose=FALSE) {
     if(inherits(data, 'PamBinary')) {
-        data$data <- contourToFreq(data$data)
+        data$data <- contourToFreq(data$data, verbose)
         return(data)
     }
     if(length(data) == 0) {
