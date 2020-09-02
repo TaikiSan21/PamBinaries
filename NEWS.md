@@ -1,3 +1,7 @@
+# PamBinaries 1.4.1
+
+* Fixed issue with noise band monitor data in `pbToDf` related to `vctrs` package update
+
 # PamBinaries 1.4.0
 
 * Added a `NEWS.md` file to track changes to the package.
