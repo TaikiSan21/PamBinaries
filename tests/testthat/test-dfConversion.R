@@ -24,3 +24,14 @@ test_that('PamBinaries with match classifier templates', {
     expect_equal(ncol(clickDf), ncol(noTemplate) + 3 * 6)
     expect_identical(noTemplate, clickDf[, 1:ncol(noTemplate)])
 })
+
+test_that('PamBinaries with noise monitor data', {
+    noiseFile <- system.file('extdata', 'NoiseMonitor.pgdf', package='PamBinaries')
+    noiseData <- loadPamguardBinaryFile(noiseFile)
+    noiseDf <- pbToDf(noiseData)
+    
+    expect_is(noiseDf, 'data.frame')
+    expect_equal(nrow(noiseDf), 
+                 length(noiseData$data) * noiseData$data[[1]]$nBands)
+    expect_true(all(c('octaveBand', 'noiseMean', 'noisePeak') %in% colnames(noiseDf)))
+})

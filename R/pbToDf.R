@@ -67,9 +67,10 @@ pbToDf <- function(pb, templateNames = NULL) {
     result <- bind_rows(lapply(justData, function(x) {
         if('noise' %in% names(x)) {
             tmp <- x[keepIx]
+            tmp <- data.frame(list(tmp, octaveBand = 1:x$nBands))
             tmp$noiseMean <- x$noise[1, ]
             tmp$noisePeak <- x$noise[2, ]
-            tmp$octaveBand <- 1:x$nBands
+            # tmp$octaveBand <- 1:x$nBands
             tmp
         } else if(!is.null(templateNames)) {
             ct <- unlist(x$annotations$mclassification)
