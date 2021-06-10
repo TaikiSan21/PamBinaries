@@ -6,7 +6,8 @@
 \usage{
 pamBinRead(
   fid,
-  what = c("int8", "int16", "int32", "int64", "float", "double", "character"),
+  what = c("int8", "int16", "int32", "int64", "uint8", "uint16", "float", "double",
+    "character"),
   n,
   seek = FALSE
 )

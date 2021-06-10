@@ -1,3 +1,7 @@
+# PamBinaries 1.5.0
+
+* Michael Oswald added support for GPL detector
+
 # PamBinaries 1.4.1
 
 * Fixed issue with noise band monitor data in `pbToDf` related to `vctrs` package update

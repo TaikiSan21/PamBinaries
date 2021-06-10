@@ -1,9 +1,9 @@
 Package: PamBinaries
 Title: Read and Process 'Pamguard' Binary Data
-Version: 1.4.1
+Version: 1.5.0
 Authors@R: c(
     TS = person("Taiki", "Sakai", email = "taiki.sakai@noaa.gov", role = c("aut", "cre")),
-    MO = person("Michael", "Oswald", role = c("ctb")),
+    MO = person("Michael", "Oswald", email = "mo55@st-andrews.ac.uk", role = c("aut")),
     DG = person("Douglas", "Gillespie", role = c("ctb")))
 Description: Functions for easily reading and processing binary data files created by
     'Pamguard' (<https://www.pamguard.org/>). All functions for directly reading the
