@@ -117,6 +117,12 @@ loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, skipData=FALSE,
                                   fileInfo$objectType <- 0
                                   fileInfo$readModuleData <- readDifarData
                               },
+                              'GPL Detector' = {
+                                  switch(fileInfo$fileHeader$streamName,
+                                         'GPL Detections' = {
+                                             fileInfo$readModuleData <- readGPLDetections
+                                         })
+                              },
                               'LTSA' = {
                                   fileInfo$objectType <- 1
                                   fileInfo$readModuleHeader <- readLTSAHeader

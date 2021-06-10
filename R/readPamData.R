@@ -50,15 +50,17 @@ readPamData <- function(fid, fileInfo, skipLarge, debug=FALSE, keepUIDs, ...) {
     # pointer to the next object, and exit
     data$identifier <- pamBinRead(fid, 'int32', n=1)
     # browser()
-    if(any(data$identifier == fileInfo$objectType)) {
-        # Do nothing here- couldn't figure out a clean way of checking if
-        # number wasn't in array
-    } else {
-        print(paste('Error - Object Identifier does not match ',
-                    fileInfo$fileHeader$moduleType,
-                    ' type. Aborting data read.'))
-        seek(fid, nextObj, origin='start')
-        return(NULL)
+    if(!is.null(fileInfo$objectType)) {
+        if(any(data$identifier == fileInfo$objectType)) {
+            # Do nothing here- couldn't figure out a clean way of checking if
+            # number wasn't in array
+        } else {
+            print(paste('Error - Object Identifier does not match ',
+                        fileInfo$fileHeader$moduleType,
+                        ' type. Aborting data read.'))
+            seek(fid, nextObj, origin='start')
+            return(NULL)
+        }
     }
     
     # Read the data, starting with the standard data that every data unit has

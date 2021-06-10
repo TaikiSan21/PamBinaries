@@ -17,7 +17,7 @@
 #'   from hexidecimal, shifted by the appropriate power of 2, then summed.
 #'   Currently cannot read more than one int64 at a time, shouldn't be necessary.
 #'   
-pamBinRead <- function(fid, what=c('int8', 'int16', 'int32','int64',
+pamBinRead <- function(fid, what=c('int8', 'int16', 'int32','int64', 'uint8', 'uint16',
                                    'float', 'double', 'character'), n, seek=FALSE) {
     endian <- 'big'
     
@@ -29,7 +29,9 @@ pamBinRead <- function(fid, what=c('int8', 'int16', 'int32','int64',
         return(
             switch(what,
                    int8 = seek(fid, n, origin='current'),
+                   uint8 = seek(fid, n, origin='current'),
                    int16 = seek(fid, n*2, origin='current'),
+                   uint16 = seek(fid, n*2, origin='current'),
                    int32 = seek(fid, n*4, origin='current'),
                    int64 = seek(fid, n*8, origin='current'),
                    float = seek(fid, n*4, origin='current'),
@@ -46,7 +48,9 @@ pamBinRead <- function(fid, what=c('int8', 'int16', 'int32','int64',
     
     switch(what,
            int8 = readBin(fid, 'integer', n=n, size=1, endian=endian),
+           uint8 = readBin(fid, 'integer', n=n, size=1, signed = FALSE, endian=endian),
            int16 = readBin(fid, 'integer', n=n, size=2, endian=endian),
+           uint16 = readBin(fid, 'integer', n=n, size=2, signed = FALSE, endian=endian),
            int32 = readBin(fid, 'integer', n=n, size=4, endian=endian),
            int64 = {
                if(n != 1) {
