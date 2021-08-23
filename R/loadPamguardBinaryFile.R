@@ -49,9 +49,11 @@ loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, skipData=FALSE,
         fid <- file(fileName, open='rb')
         
         # initialize variables
+        nBackground <- 0
         prevPos <- -1
         dataSet <- list()
         fileInfo <- list()
+        backgroundData <- list()
         fileInfo$fileName <- fileName
         fileInfo$readModuleHeader <- readStdModuleHeader
         fileInfo$readModuleFooter <- readStdModuleFooter
@@ -93,6 +95,7 @@ loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, skipData=FALSE,
                                              fileInfo$objectType <- 1000
                                              fileInfo$readModuleData <- readClickData
                                              fileInfo$readModuleFooter <- readClickFooter
+                                             fileInfo$readBackgroundData <- readClickBackground
                                          },
                                          'Trigger Background' = {
                                              fileInfo$objectType <- 0
@@ -121,6 +124,7 @@ loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, skipData=FALSE,
                                   switch(fileInfo$fileHeader$streamName,
                                          'GPL Detections' = {
                                              fileInfo$readModuleData <- readGPLDetections
+                                             fileInfo$readBackgroundData <- readSpectralBackground
                                          })
                               },
                               'LTSA' = {
@@ -154,6 +158,7 @@ loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, skipData=FALSE,
                                   fileInfo$objectType <- 2000
                                   fileInfo$readModuleHeader <- readWMDHeader
                                   fileInfo$readModuleData <- readWMDData
+                                  fileInfo$readBackgroundData <- readSpectralBackground
                               },
                               {
                                   print(paste("Don't recognize type ", 
@@ -213,6 +218,11 @@ loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, skipData=FALSE,
                        dataPoint <- readPamData(fid=fid, fileInfo=fileInfo, skipLarge=skipLarge, 
                                                 debug=debug, keepUIDs=keepUIDs, ...)
                        if(!is.null(dataPoint)) {
+                           if (nextType == -6) {
+                               nBackground <- nBackground + 1
+                               backgroundData[[nBackground]] <- dataPoint
+                               next
+                           }
                            dataSet[[length(dataSet)+1]] <- dataPoint
                        }
                        # Stop if at end of list of UIDs
@@ -225,6 +235,7 @@ loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, skipData=FALSE,
             )
         }
         close(fid)
+        
         if(length(dataSet) > 0 && 
             'UID' %in% names(dataSet[[1]])) {
             names(dataSet) <- sapply(dataSet, function(x) x$UID)
@@ -234,6 +245,10 @@ loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, skipData=FALSE,
                 dataSet[[i]]$date <- convertPgDate(dataSet[[i]]$date)
             }
         }
+        if (nBackground > 0) {
+            fileInfo$background <- backgroundData
+        }
+        
         result <- list(data=dataSet, fileInfo=fileInfo)
         class(result) <- c('PamBinary', 'list')
         result

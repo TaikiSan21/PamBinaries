@@ -61,7 +61,7 @@ readClickData <- function(fid, fileInfo, data, skipLarge=FALSE, debug=FALSE, get
         } else data$angleErrors <- numeric() #unsure if equiv. to []
         
         if(version <= 3) {
-            data$duration <- pamBinRead(fid, 'int16', n=1)
+            data$duration <- pamBinRead(fid, 'uint16', n=1)
         } else data$duration <- data$sampleDuration
 
         data$nChan <- countChannels(data$channelMap)

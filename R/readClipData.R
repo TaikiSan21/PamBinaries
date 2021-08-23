@@ -37,6 +37,10 @@ readClipData <- function(fid, fileInfo, data, debug=FALSE, ...) {
         
         data$filename <- readJavaUTFString(fid)$str
         data$triggerName <- readJavaUTFString(fid)$str
+        if(version >= 3) {
+            data$triggerUID <- pamBinRead(fid, 'int64', n=1)
+        }
+        
         
         # Check if the object type = 2. If it is, there must be wav data at
         # the end of this object

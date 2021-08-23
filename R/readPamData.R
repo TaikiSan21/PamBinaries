@@ -32,8 +32,11 @@ readPamData <- function(fid, fileInfo, skipLarge, debug=FALSE, keepUIDs, ...) {
     MILLISDURATION       <- strtoi('80', base=16)
     TIMEDELAYSSECS       <- strtoi('100', base=16)
     HASBINARYANNOTATIONS <- strtoi('200', base=16)
-    # SEQUENCEBITMAP       <- strtoi('200', base=16) NOT IN NEW VERSION?
-    
+    HASSEQUENCEMAP       <- strtoi('400', base=16)
+    HASNOISE             <- strtoi('800', base=16)
+    HASSIGNAL            <- strtoi('1000', base=16)
+    HASSIGNALEXCESS      <- strtoi('2000', base=16)
+
     # initialize a new variable to hold the data
     data <- list()
     data$flagBitMap <- 0
@@ -49,8 +52,14 @@ readPamData <- function(fid, fileInfo, skipLarge, debug=FALSE, keepUIDs, ...) {
     # it should be, based on the file header. If not, warn the user, move the
     # pointer to the next object, and exit
     data$identifier <- pamBinRead(fid, 'int32', n=1)
+    
+    # this is a re-read of the type of object, so we can use this to check for
+    # a -6 which indicates background noise data which will need totally
+    # different treatment.
+    isBackground <- ifelse(data$identifier == -6,T,F)
+    
     # browser()
-    if(!is.null(fileInfo$objectType)) {
+    if(!isBackground && !is.null(fileInfo$objectType)) {
         if(any(data$identifier == fileInfo$objectType)) {
             # Do nothing here- couldn't figure out a clean way of checking if
             # number wasn't in array
@@ -118,23 +127,50 @@ readPamData <- function(fid, fileInfo, skipLarge, debug=FALSE, keepUIDs, ...) {
             data$timeDelays <- td
         }
         
-        # if(bitwAnd(data$flagBitMap, SEQUENCEBITMAP) != 0) {
-        #     data$sequenceBitMap <- pamBinRead(fid, 'int32', n=1)
-        # }
+        if (bitwAnd(data$flagBitMap, HASSEQUENCEMAP) != 0) {
+            data$sequenceMap <- pamBinRead(fid, 'int32', n=1)
+        }
+        
+        if (bitwAnd(data$flagBitMap, HASNOISE) != 0) {
+            data$noise <- pamBinRead(fid, 'float', n=1)
+        }
+        
+        if (bitwAnd(data$flagBitMap, HASSIGNAL) != 0) {
+            data$signal <- pamBinRead(fid, 'float', n=1)
+        }
+        
+        if (bitwAnd(data$flagBitMap, HASSIGNALEXCESS) != 0) {
+            data$signalExcess <- pamBinRead(fid, 'float', n=1)
+        }
         
         # set date, to maintain backwards compatibility
         data$date <- millisToDateNum(data$millis)
+        
         # now read the module-specific data
-        if(class(fileInfo$readModuleData)=='function') {
-            result <- fileInfo$readModuleData(fid=fid, fileInfo=fileInfo, data=data, 
-                                              skipLarge=skipLarge, debug=debug, ...)
-            data <- result$data
-            if(result$error) {
-                print(paste('Error - cannot retrieve', 
-                            fileInfo$fileHeader$moduleType,
-                            'data properly from file', fileInfo$fileName))
-                seek(fid, nextObj, origin='start')
-                return(NULL)
+        if (isBackground) {
+            if(class(fileInfo$readModuleData)=='function') {
+                result <- fileInfo$readBackgroundData(fid=fid, fileInfo=fileInfo, data=data)
+                data <- result$data
+                if(result$error) {
+                    print(paste('Error - cannot retrieve', 
+                                fileInfo$fileHeader$moduleType,
+                                'data properly from file', fileInfo$fileName))
+                    seek(fid, nextObj, origin='start')
+                    return(NULL)
+                }
+            }
+        } else {
+            if(class(fileInfo$readModuleData)=='function') {
+                result <- fileInfo$readModuleData(fid=fid, fileInfo=fileInfo, data=data, 
+                                                  skipLarge=skipLarge, debug=debug, ...)
+                data <- result$data
+                if(result$error) {
+                    print(paste('Error - cannot retrieve', 
+                                fileInfo$fileHeader$moduleType,
+                                'data properly from file', fileInfo$fileName))
+                    seek(fid, nextObj, origin='start')
+                    return(NULL)
+                }
             }
         }
         
