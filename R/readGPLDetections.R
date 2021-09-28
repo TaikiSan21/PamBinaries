@@ -30,19 +30,20 @@ readGPLDetections <- function(fid, fileInfo, data, debug=FALSE, ...) {
         
         if(bitDepth == 8) {
             pType <- 'uint8'
-        }else {
+        } else {
             pType <- 'uint16'
         }
         
         data$excess <- rep(0, data$area)
         data$energy <- rep(0, data$area)
         data$points <- matrix(0, nrow=2, ncol=data$area)
-        
-        for(i in 1:data$area) {
-            sss <- pamBinRead(fid, pType, n=2)
-            data$points[,i] <- sss
-            data$excess[i] <- pamBinRead(fid, 'float', n=1)
-            data$energy[i] <- pamBinRead(fid, 'float', n=1)
+        if(data$area > 0) {
+            for(i in 1:data$area) {
+                sss <- pamBinRead(fid, pType, n=2)
+                data$points[,i] <- sss
+                data$excess[i] <- pamBinRead(fid, 'float', n=1)
+                data$energy[i] <- pamBinRead(fid, 'float', n=1)
+            }
         }
         
         return(list(data=data, error=error))

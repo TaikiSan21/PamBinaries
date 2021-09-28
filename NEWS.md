@@ -1,3 +1,7 @@
+# PamBinaries 1.5.1
+
+* Fixed issue when reading GPL with empty contours
+
 # PamBinaries 1.5.0
 
 * Michael Oswald added support for GPL detector
