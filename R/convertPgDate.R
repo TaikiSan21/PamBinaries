@@ -22,11 +22,15 @@
 #'
 convertPgDate <- function(dateNum) {
     if(is.null(dateNum) ||
-       is.na(dateNum)) {
+       all(is.na(dateNum))) {
         return(dateNum)
     }
     if(!is.numeric(dateNum)) {
         stop('Date must be numeric, "', dateNum, '" is class ', class(dateNum))
+    }
+    if(any(is.na(dateNum))) {
+        dateNum[!is.na(dateNum)] <- as.POSIXct(dateNum[!is.na(dateNum)], origin='1970-01-01', tz='UTC')
+        return(dateNum)
     }
     as.POSIXct(dateNum, origin='1970-01-01', tz='UTC')
 }

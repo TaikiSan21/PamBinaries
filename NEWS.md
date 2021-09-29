@@ -1,3 +1,10 @@
+# PamBinaries 1.6.0
+
+* Adding functions `loadBackgroundNoise` and `plotBackgroundNoise` to assist with
+working with new background noise data in binary files
+
+* Added new test/example files for background noise
+
 # PamBinaries 1.5.1
 
 * Fixed issue when reading GPL with empty contours
