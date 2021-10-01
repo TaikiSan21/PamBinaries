@@ -3,16 +3,24 @@
 \name{loadBackgroundNoise}
 \alias{loadBackgroundNoise}
 \alias{plotBackgroundNoise}
+\alias{combineBackgroundNoise}
 \title{Load and Format Background Noise Data}
 \usage{
 loadBackgroundNoise(x)
 
 plotBackgroundNoise(x)
+
+combineBackgroundNoise(x, forPlot = FALSE)
 }
 \arguments{
 \item{x}{character pointing to a Pamguard binary file, or a \code{PamBinary}
-object created by \link{loadPamguardBinaryFile}. For plotting, either of these
-or the output from \link{loadBackgroundNoise}}
+object created by \link{loadPamguardBinaryFile}. For plotting or combining, 
+either of these or the output from \link{loadBackgroundNoise}}
+
+\item{forPlot}{logical flag when combining noise data. If used for plotting
+purposes this will insert NA columns into background data so that images show
+up with time gaps as expected. Leave as \code{FALSE} unless you are sure you
+want this.}
 }
 \value{
 A list with \code{times} storing the POSIXct time of each background 

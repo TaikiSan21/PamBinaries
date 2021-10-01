@@ -1,6 +1,7 @@
 # PamBinaries 1.6.0
 
-* Adding functions `loadBackgroundNoise` and `plotBackgroundNoise` to assist with
+* Adding functions `loadBackgroundNoise`, `plotBackgroundNoise`, and
+`combineBackgroundNoise` to assist with
 working with new background noise data in binary files
 
 * Added new test/example files for background noise

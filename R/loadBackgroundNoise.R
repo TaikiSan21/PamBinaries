@@ -5,8 +5,12 @@
 #'   .pgnf noise file if it exists
 #' 
 #' @param x character pointing to a Pamguard binary file, or a \code{PamBinary}
-#'   object created by \link{loadPamguardBinaryFile}. For plotting, either of these
-#'   or the output from \link{loadBackgroundNoise}
+#'   object created by \link{loadPamguardBinaryFile}. For plotting or combining, 
+#'   either of these or the output from \link{loadBackgroundNoise}
+#' @param forPlot logical flag when combining noise data. If used for plotting
+#'   purposes this will insert NA columns into background data so that images show
+#'   up with time gaps as expected. Leave as \code{FALSE} unless you are sure you
+#'   want this.
 #'   
 #' @return A list with \code{times} storing the POSIXct time of each background 
 #'   measurement, and \code{background} a matrix of background values. For binary
@@ -23,6 +27,7 @@
 #' plotBackgroundNoise(gplNoise)
 #' 
 #' @importFrom graphics axis image lines
+#' @importFrom stats sd
 #' @export
 #'
 loadBackgroundNoise <- function(x) {
@@ -36,7 +41,10 @@ loadBackgroundNoise <- function(x) {
         noiseFile <- gsub('df$', 'nf', info$fileName)
         if(file.exists(noiseFile)) {
             noise <- loadPamguardBinaryFile(noiseFile)
-            noise$data <- list(oneDat)
+            noise$data <- x$data
+            if(is.null(noise$fileInfo$background)) {
+                return(NULL)
+            }
             return(loadBackgroundNoise(noise))
         }
         return(NULL)
@@ -49,7 +57,8 @@ loadBackgroundNoise <- function(x) {
     for(i in seq_along(info$background)) {
         bgData[i, ] <- info$background[[i]]$backGround
     }
-    result <- list(times = times, background=bgData)
+    result <- list(detector=gsub(' ', '_', info$fileHeader$moduleName),
+                   times = times, background=bgData)
     if(type == 'Click Detector') {
         return(result)
     }
@@ -78,24 +87,90 @@ loadBackgroundNoise <- function(x) {
 #' @rdname loadBackgroundNoise
 #' 
 plotBackgroundNoise <- function(x) {
-    if(!inherits(x, 'PamNoise')) {
-        if(is.character(x) ||
-           inherits(x, 'PamBinary')) {
-            return(plotBackgroundNoise(loadBackgroundNoise(x)))
+    x <- combineBackgroundNoise(x, forPlot=TRUE)
+    for(i in seq_along(x)) {
+        tPretty <- pretty(as.numeric(x[[i]]$times), n=5)
+        tLab <- convertPgDate(tPretty)
+        if('freq' %in% names(x[[i]])) {
+            # Adjusting background data to plot more clearly
+            bgFix <- x[[i]]$background
+            noPlot <- 1:2
+            # if(grepl('[Cc]epstrum', names(x)[i])) {
+            #     bgFix[, 1] <- max(bgFix[, -1], na.rm=TRUE)
+            # }
+            bgFix[, noPlot] <- max(bgFix[, -noPlot], na.rm=TRUE)
+            lim <- mean(bgFix, na.rm=TRUE) + c(-1,1) * 3 * sd(bgFix, na.rm=TRUE)
+            bgFix[bgFix < lim[1]] <- lim[1]
+            bgFix[bgFix > lim[2]] <- lim[2]
+            image(x=x[[i]]$times, y=x[[i]]$freq, z=bgFix, xlab='Time', ylab='Frequency (Hz)', xaxt='n')
+            axis(1, at=tPretty, labels=tLab, cex.axis=.8)
+            title(main=paste0(names(x)[i], ' Background Noise'))
+            next
         }
-        return(FALSE)
+        plot(x=x[[i]]$times, y=x[[i]]$background[, 1], type='l', xlab='Time', ylab='Background Level', xaxt='n')
+        axis(1, at=tPretty, labels=tLab, cex.axis=.9)
+        title(main=paste0(names(x)[i], ' Background Noise'))
+        if(ncol(x[[i]]$background) > 1) {
+            lines(x=x[[i]]$times, y=x[[i]]$background[, 2], col='blue')
+        }
     }
-    tPretty <- pretty(as.numeric(x$times), n=5)
-    tLab <- convertPgDate(tPretty)
-    if('freq' %in% names(x)) {
-        image(x=x$times, y=x$freq, z=x$background, xlab='Time', ylab='Frequency (Hz)', xaxt='n')
-        axis(1, at=tPretty, labels=tLab, cex.axis=.8)
-        return(TRUE)
+    invisible(TRUE)
+}
+
+#' @export
+#' @rdname loadBackgroundNoise
+#' 
+combineBackgroundNoise <- function(x, forPlot=FALSE) {
+    if(inherits(x, 'PamNoise')) {
+        x <- list(x)
     }
-    plot(x=x$times, y=x$background[, 1], type='l', xlab='Time', ylab='Background Level', xaxt='n')
-    axis(1, at=tPretty, labels=tLab, cex.axis=.9)
-    if(ncol(x$background) > 1) {
-        lines(x=x$times, y=x$background[, 2], col='blue')
+    if(all(is.character(x))) {
+        x <- lapply(x, loadBackgroundNoise)
     }
-    return(TRUE)
+    x <- x[!sapply(x, is.null)]
+    for(i in seq_along(x)) {
+        names(x)[i] <- x[[i]]$detector
+        keep <- x[[i]][2:length(x[[i]])]
+        x[[i]] <- keep
+    }
+    detNames <- unique(names(x))
+    result <- vector('list', length = length(detNames))
+    names(result) <- detNames
+    for(n in detNames) {
+        whichThisName <- which(names(x) == n)
+        thisData <- x[whichThisName]
+        if(forPlot &&
+           length(thisData) > 1) {
+            for(i in seq_along(thisData)) {
+                if(i == 1) {
+                    thisData[[i]]$background <- rbind(thisData[[i]]$background, NA)
+                    thisData[[i]]$times <- c(thisData[[i]]$times, thisData[[i]]$times[length(thisData[[i]]$times)]+.01)
+                } else {
+                    thisData[[i]]$background <- rbind(NA, thisData[[i]]$background)
+                    thisData[[i]]$times <- c(thisData[[i]]$times[1]-.01, thisData[[i]]$times)
+                }
+            }
+        }
+        result[[n]] <- list(times = unlist(lapply(thisData, function(w) w$times), use.names=FALSE),
+                            background = do.call(rbind, lapply(thisData, function(w) w$background)))
+        if('freq' %in% names(thisData[[1]])) {
+            result[[n]]$freq <- thisData[[1]]$freq
+        }
+    }
+    # x <- squishList(x)
+    for(i in seq_along(result)) {
+        if('freq' %in% names(result[[i]])) {
+            result[[i]]$freq <- result[[i]]$freq[1:ncol(result[[i]]$background)]
+        }
+        if(!inherits(result[[i]]$times, 'POSIXct')) {
+            result[[i]]$times <- convertPgDate(result[[i]]$times)
+        }
+        dupeTime <- duplicated(result[[i]]$times)
+        result[[i]]$times <- result[[i]]$times[!dupeTime]
+        timeSort <- sort(as.numeric(result[[i]]$times), index.return=TRUE)$ix
+        result[[i]]$times <- result[[i]]$times[timeSort]
+        result[[i]]$background <- result[[i]]$background[!dupeTime, ][timeSort, ]
+        class(result[[i]]) <- c('PamNoise', 'list')
+    }
+    result
 }
