@@ -84,6 +84,7 @@ loadBackgroundNoise <- function(x) {
 }
 
 #' @export
+#' @importFrom graphics title
 #' @rdname loadBackgroundNoise
 #' 
 plotBackgroundNoise <- function(x) {
