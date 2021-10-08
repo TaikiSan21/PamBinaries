@@ -33,7 +33,7 @@
 loadBackgroundNoise <- function(x) {
     if(is.character(x) &&
        file.exists(x)) {
-        x <- loadPamguardBinaryFile(x)
+        x <- loadPamguardBinaryFile(x, skipLarge=TRUE)
     }
     info <- x$fileInfo
     oneDat <- x$data[[1]]
