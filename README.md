@@ -10,7 +10,10 @@ and Michael Oswald, and is written to work in the same way.
 
 ### Installation
 
-Install the latest version from GitHub:
+`PamBinaries` is available on CRAN, but it is possible that a more recent 
+version is available on GitHub (updates are typically rare for this package).
+
+To install the latest version from GitHub:
 
 ```r
 # make sure you have Rtools installed
