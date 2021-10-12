@@ -1,5 +1,5 @@
 <!-- badges: start -->
-[![Travis build status](https://app.travis-ci.com/TaikiSan21/PamBinaries.svg?branch=master)](https://app.travis-ci.com/TaikiSan21/PamBinaries)
+[![R-CMD-check](https://github.com/TaikiSan21/PamBinaries/workflows/R-CMD-check/badge.svg)](https://github.com/TaikiSan21/PamBinaries/actions)
 <!-- badges: end -->
 
 # PamBinaries
