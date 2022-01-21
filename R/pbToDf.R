@@ -65,7 +65,7 @@ pbToDf <- function(pb, templateNames = NULL) {
         stop('Input does not look like a PamBinaray output.')
     }
     result <- bind_rows(lapply(justData, function(x) {
-        if('noise' %in% names(x)) {
+        if(all(c('noise', 'nBands') %in% names(x))) {
             tmp <- x[keepIx]
             tmp <- data.frame(list(tmp, octaveBand = 1:x$nBands))
             tmp$noiseMean <- x$noise[1, ]

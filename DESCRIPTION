@@ -1,6 +1,6 @@
 Package: PamBinaries
 Title: Read and Process 'Pamguard' Binary Data
-Version: 1.6.0
+Version: 1.6.1
 Authors@R: c(
     TS = person("Taiki", "Sakai", email = "taiki.sakai@noaa.gov", role = c("aut", "cre")),
     MO = person("Michael", "Oswald", email = "mo55@st-andrews.ac.uk", role = c("aut")),
@@ -12,7 +12,7 @@ Depends: R (>= 3.4.0)
 License: GNU General Public License
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Imports:
     ggplot2,
     dplyr

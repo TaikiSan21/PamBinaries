@@ -1,3 +1,8 @@
+# PamBinaries 1.6.1
+
+* `pbToDf` was failing on some binary types with a `$noise` value that were
+not the Noise Band Monitor
+
 # PamBinaries 1.6.0
 
 * Adding functions `loadBackgroundNoise`, `plotBackgroundNoise`, and
