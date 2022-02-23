@@ -40,7 +40,8 @@
 #' @export
 #' 
 pbToDf <- function(pb, templateNames = NULL) {
-    skip <- c('annotations', 'wave', 'contour', 'contWidth', 'sliceData', 'demuxData', 'noise')
+    # skip long data
+    skip <- c('annotations', 'wave', 'contour', 'contWidth', 'sliceData', 'demuxData', 'noise', 'excess', 'energy', 'points')
     good <- FALSE
     fileName <- NULL
     # Case 1: either a PamBinary class, or has the right pieces but not the class

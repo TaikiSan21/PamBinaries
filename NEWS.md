@@ -1,3 +1,7 @@
+# PamBinaries 1.6.2
+
+* `pbToDf` was failing on GPL data
+
 # PamBinaries 1.6.1
 
 * `pbToDf` was failing on some binary types with a `$noise` value that were
