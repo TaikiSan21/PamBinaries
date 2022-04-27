@@ -1,3 +1,7 @@
+# PamBinaries 1.6.3
+
+* Odd issues with `loadBackgroundNoise` not passing tests
+
 # PamBinaries 1.6.2
 
 * `pbToDf` was failing on GPL data

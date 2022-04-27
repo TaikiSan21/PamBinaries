@@ -7,7 +7,9 @@ test_that('PamBinaries objects convert to dataframe properly', {
     clickInfo <- loadPamguardBinaryFile(clickFile, skipData=TRUE)
     
     expect_equal(nrow(clickDf), 36)
-    expect_identical(clickDf, pbToDf(clickData$data))
+    df <- expect_warning(pbToDf(clickData$data))
+    expect_identical(clickDf, pbToDf(clickData))
+    expect_identical(clickDf, df)
     expect_is(clickDf, 'data.frame')
     expect_null(pbToDf(clickInfo))
 })

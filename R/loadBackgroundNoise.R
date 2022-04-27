@@ -24,10 +24,11 @@
 #' # load the example click binary data, leaving date as numeric
 #' gplFile <- system.file('extdata', 'GPL.pgdf', package='PamBinaries')
 #' gplNoise <- loadBackgroundNoise(gplFile)
+#' print(gplNoise)
 #' plotBackgroundNoise(gplNoise)
 #' 
 #' @importFrom graphics axis image lines
-#' @importFrom stats sd
+#' @importFrom stats sd quantile
 #' @export
 #'
 loadBackgroundNoise <- function(x) {
@@ -36,7 +37,6 @@ loadBackgroundNoise <- function(x) {
         x <- loadPamguardBinaryFile(x, skipLarge=TRUE)
     }
     info <- x$fileInfo
-    oneDat <- x$data[[1]]
     if(is.null(info$background)) {
         noiseFile <- gsub('df$', 'nf', info$fileName)
         if(file.exists(noiseFile)) {
@@ -60,8 +60,15 @@ loadBackgroundNoise <- function(x) {
     result <- list(detector=gsub(' ', '_', info$fileHeader$moduleName),
                    times = times, background=bgData)
     if(type == 'Click Detector') {
+        class(result) <- c('PamNoise', 'list')
         return(result)
     }
+    if(length(x$data) == 0) {
+        result$freq <- NA
+        class(result) <- c('PamNoise', 'list')
+        return(result)
+    }
+    oneDat <- x$data[[1]]
     switch(type,
            'GPL Detector' = {
                freqRes <- oneDat$freqRes
@@ -99,11 +106,19 @@ plotBackgroundNoise <- function(x) {
             # if(grepl('[Cc]epstrum', names(x)[i])) {
             #     bgFix[, 1] <- max(bgFix[, -1], na.rm=TRUE)
             # }
-            bgFix[, noPlot] <- max(bgFix[, -noPlot], na.rm=TRUE)
-            lim <- mean(bgFix, na.rm=TRUE) + c(-1,1) * 3 * sd(bgFix, na.rm=TRUE)
+            naRow <- is.na(bgFix[,1])
+            maxOut <- max(bgFix[, -noPlot], na.rm=TRUE)
+            bgFix[!naRow, noPlot] <- ifelse(bgFix[!naRow, noPlot] > maxOut, maxOut, bgFix[!naRow, noPlot])
+            # lim <- mean(bgFix, na.rm=TRUE) + c(-1,1) * 4 * sd(bgFix, na.rm=TRUE)
+            lim <- quantile(bgFix, c(.01, .99), na.rm=TRUE)
             bgFix[bgFix < lim[1]] <- lim[1]
             bgFix[bgFix > lim[2]] <- lim[2]
-            image(x=x[[i]]$times, y=x[[i]]$freq, z=bgFix, xlab='Time', ylab='Frequency (Hz)', xaxt='n')
+            if(all(is.na(x[[i]]$freq))) {
+                plotFreq <- seq(from=0, to=1, length=length(x[[i]]$freq))
+            } else {
+                plotFreq <- x[[i]]$freq
+            }
+            image(x=x[[i]]$times, y=plotFreq, z=bgFix, xlab='Time', ylab='Frequency (Hz)', xaxt='n')
             axis(1, at=tPretty, labels=tLab, cex.axis=.8)
             title(main=paste0(names(x)[i], ' Background Noise'))
             next
@@ -155,7 +170,14 @@ combineBackgroundNoise <- function(x, forPlot=FALSE) {
         result[[n]] <- list(times = unlist(lapply(thisData, function(w) w$times), use.names=FALSE),
                             background = do.call(rbind, lapply(thisData, function(w) w$background)))
         if('freq' %in% names(thisData[[1]])) {
-            result[[n]]$freq <- thisData[[1]]$freq
+            freqNA <- sapply(thisData, function(y) any(is.na(y$freq)))
+            
+            if(all(freqNA)) {
+                freqUse <- rep(NA, ncol(thisData[[1]]$background))
+            } else {
+                freqUse <- thisData[[which(!freqNA)[1]]]$freq
+            }
+            result[[n]]$freq <- freqUse
         }
     }
     # x <- squishList(x)

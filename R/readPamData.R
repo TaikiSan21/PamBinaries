@@ -148,7 +148,7 @@ readPamData <- function(fid, fileInfo, skipLarge, debug=FALSE, keepUIDs, ...) {
         
         # now read the module-specific data
         if (isBackground) {
-            if(class(fileInfo$readModuleData)=='function') {
+            if(inherits(fileInfo$readModuleData, 'function')) {
                 result <- fileInfo$readBackgroundData(fid=fid, fileInfo=fileInfo, data=data)
                 data <- result$data
                 if(result$error) {
@@ -160,7 +160,7 @@ readPamData <- function(fid, fileInfo, skipLarge, debug=FALSE, keepUIDs, ...) {
                 }
             }
         } else {
-            if(class(fileInfo$readModuleData)=='function') {
+            if(inherits(fileInfo$readModuleData, 'function')) {
                 result <- fileInfo$readModuleData(fid=fid, fileInfo=fileInfo, data=data, 
                                                   skipLarge=skipLarge, debug=debug, ...)
                 data <- result$data

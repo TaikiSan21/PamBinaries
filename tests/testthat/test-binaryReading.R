@@ -9,8 +9,8 @@ test_that('Pamguard binary files are able to be read', {
     expect_identical(clickData$fileInfo, clickInfo$fileInfo)
     expect_equal(length(clickData$data), 36)
     expect_equal(length(clickInfo$data), 0)
-    expect_warning(loadPamguardBinaryFile('FILEDNE'))
-    expect_null(loadPamguardBinaryFile('FILEDNE'))
+    noFile <- expect_warning(loadPamguardBinaryFile('FILEDNE'))
+    expect_null(noFile)
 })
 
 test_that('Converting units of PamBinary data', {

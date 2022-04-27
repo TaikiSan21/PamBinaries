@@ -38,6 +38,7 @@ Reads and formats background noise data from Pamguard binary files
 # load the example click binary data, leaving date as numeric
 gplFile <- system.file('extdata', 'GPL.pgdf', package='PamBinaries')
 gplNoise <- loadBackgroundNoise(gplFile)
+print(gplNoise)
 plotBackgroundNoise(gplNoise)
 
 }
