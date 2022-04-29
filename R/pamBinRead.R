@@ -33,10 +33,12 @@ pamBinRead <- function(fid, what=c('int8', 'int16', 'int32','int64', 'uint8', 'u
                    int16 = seek(fid, n*2, origin='current'),
                    uint16 = seek(fid, n*2, origin='current'),
                    int32 = seek(fid, n*4, origin='current'),
+                   uint32 = seek(fid, n*4, origin='current'),
                    int64 = seek(fid, n*8, origin='current'),
                    float = seek(fid, n*4, origin='current'),
                    double = seek(fid, n*8, origin='current'),
                    character = seek(fid, n, origin='current'),
+                   char = seek(fid, n, origin='current'),
                    warning(paste0("Can't read binary data type ", what))
             )
         )
@@ -52,6 +54,7 @@ pamBinRead <- function(fid, what=c('int8', 'int16', 'int32','int64', 'uint8', 'u
            int16 = readBin(fid, 'integer', n=n, size=2, endian=endian),
            uint16 = readBin(fid, 'integer', n=n, size=2, signed = FALSE, endian=endian),
            int32 = readBin(fid, 'integer', n=n, size=4, endian=endian),
+           uint32 = readBin(fid, 'integer', n=n, size=4, signed = FALSE, endian=endian),
            int64 = {
                if(n != 1) {
                    print(paste('WARNING: Currently does not accurately ',
@@ -70,6 +73,7 @@ pamBinRead <- function(fid, what=c('int8', 'int16', 'int32','int64', 'uint8', 'u
            float = readBin(fid, 'numeric', n=n, size=4, endian=endian),
            double = readBin(fid, 'numeric', n=n, size=8, endian=endian),
            character = rawToChar(readBin(fid, 'raw', n=n, size=1, endian=endian)),
+           char = rawToChar(readBin(fid, 'raw', n=n, size=1, endian=endian)),
            warning(paste0("Can't read binary data type ", what))
     )
 }

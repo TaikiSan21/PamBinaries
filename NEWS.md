@@ -1,3 +1,9 @@
+# PamBinaries 1.7.0
+
+* Adding support for deep learning module
+
+* Added some missing annotation functions
+
 # PamBinaries 1.6.3
 
 * Odd issues with `loadBackgroundNoise` not passing tests

@@ -120,6 +120,20 @@ loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, skipData=FALSE,
                                   fileInfo$objectType <- 0
                                   fileInfo$readModuleData <- readDifarData
                               },
+                              'Deep Learning Classifier' = {
+                                  switch(fileInfo$fileHeader$streamName,
+                                         'DL_detection' = {
+                                             fileInfo$objectType <- 1
+                                             fileInfo$readModuleData <- readDLDetData
+                                         },
+                                         'DL_Model_Data' = {
+                                             # TODO
+                                         },
+                                         'DL Model Data' = {
+                                             # TODO same above
+                                         }
+                                  )
+                              },
                               'GPL Detector' = {
                                   switch(fileInfo$fileHeader$streamName,
                                          'GPL Detections' = {
