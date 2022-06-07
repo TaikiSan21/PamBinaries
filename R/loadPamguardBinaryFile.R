@@ -57,6 +57,7 @@ loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, skipData=FALSE,
         fileInfo$fileName <- fileName
         fileInfo$readModuleHeader <- readStdModuleHeader
         fileInfo$readModuleFooter <- readStdModuleFooter
+        doneUIDs <- character(0)
         
         # main loop
         while(TRUE) {
@@ -238,11 +239,12 @@ loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, skipData=FALSE,
                                next
                            }
                            dataSet[[length(dataSet)+1]] <- dataPoint
+                           doneUIDs <- c(doneUIDs, dataPoint$UID)
                        }
                        # Stop if at end of list of UIDs
                        # MAYBE PROBLEM: This skips the footers.
                        if(length(keepUIDs) > 0 &&
-                          length(keepUIDs)==length(dataSet)) {
+                          all(keepUIDs %in% doneUIDs)) {
                            skipData <- TRUE
                        }
                    }

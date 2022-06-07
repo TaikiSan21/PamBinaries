@@ -1,3 +1,7 @@
+# PamBinaries 1.7.1
+
+* `keepUIDs` option logic changed to be more consistent in the face of strangeness 
+
 # PamBinaries 1.7.0
 
 * Adding support for deep learning module
