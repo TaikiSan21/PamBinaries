@@ -238,6 +238,9 @@ loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, skipData=FALSE,
                                backgroundData[[nBackground]] <- dataPoint
                                next
                            }
+                           if(dataPoint$UID %in% doneUIDs) {
+                               next
+                           }
                            dataSet[[length(dataSet)+1]] <- dataPoint
                            doneUIDs <- c(doneUIDs, dataPoint$UID)
                        }
