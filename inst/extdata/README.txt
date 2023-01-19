@@ -5,3 +5,4 @@ WM.pgdf - A binary file created by the Whistle and Moan Detector module containi
 NoiseMonitor.pgdf - A binary file created by the NoiseBand Monitor module containing 152 noise band events
 GPL.pgdf - A binary file created by the Generalised Power Law Detector module with 101 detections
 GPL.pgnf - A background noise file associated with "GPL.pgdf"
+GTD.pgdf - A Tritech Gemini threshold track file.

@@ -58,17 +58,21 @@ readPamData <- function(fid, fileInfo, skipLarge, debug=FALSE, keepUIDs, ...) {
     # different treatment.
     isBackground <- ifelse(data$identifier == -6,T,F)
     
+    # TODO - this check doesn't appear in the MATLAB version and causes issues
+    # with the tritech track data. It probably shouldn't
     # browser()
     if(!isBackground && !is.null(fileInfo$objectType)) {
         if(any(data$identifier == fileInfo$objectType)) {
             # Do nothing here- couldn't figure out a clean way of checking if
             # number wasn't in array
         } else {
-            print(paste('Error - Object Identifier does not match ',
-                        fileInfo$fileHeader$moduleType,
-                        ' type. Aborting data read.'))
-            seek(fid, nextObj, origin='start')
-            return(NULL)
+            if (fileInfo$fileHeader$moduleType != 'Gemini Threshold Detector') {
+                print(paste('Error - Object Identifier does not match ',
+                            fileInfo$fileHeader$moduleType,
+                            ' type. Aborting data read.'))
+                seek(fid, nextObj, origin='start')
+                return(NULL)
+            }
         }
     }
     

@@ -161,6 +161,10 @@ loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, skipData=FALSE,
                                   fileInfo$objectType <- 1
                                   fileInfo$readModuleData <- readNoiseBandData
                               },
+                              'Gemini Threshold Detector' = {
+                                  fileInfo$objectType <- 0
+                                  fileInfo$readModuleData <- readTritechTrack
+                              },
                               'RW Edge Detector' = {
                                   fileInfo$objectType <- 0
                                   fileInfo$readModuleData <- readRWEDetectorData
