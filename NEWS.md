@@ -1,3 +1,7 @@
+# PamBinaries 1.8.0
+
+* New Gemini Track Reader code added from pull request
+
 # PamBinaries 1.7.1
 
 * `keepUIDs` option logic changed to be more consistent in the face of strangeness 
