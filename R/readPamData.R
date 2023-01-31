@@ -57,8 +57,7 @@ readPamData <- function(fid, fileInfo, skipLarge, debug=FALSE, keepUIDs, ...) {
     # a -6 which indicates background noise data which will need totally
     # different treatment.
     isBackground <- ifelse(data$identifier == -6,T,F)
-    
-    # browser()
+
     if(!isBackground && !is.null(fileInfo$objectType)) {
         if(any(data$identifier == fileInfo$objectType)) {
             # Do nothing here- couldn't figure out a clean way of checking if

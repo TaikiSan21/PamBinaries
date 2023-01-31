@@ -31,4 +31,14 @@ test_that('Converting units of PamBinary data', {
     expect_true(is.na(convertPgDate(NA)))
     expect_null(convertPgDate(NULL))
 })
+
+test_that('Pamguard Tritech Gemini binary files are able to be read', {
+    gemFile <- system.file('extdata', 'GTD.pgdf', package='PamBinaries', mustWork = TRUE)
+    gemData <- loadPamguardBinaryFile(gemFile)
+    expect_equal(length(gemData$data), 1965)
+    expect_equal(length(gemData$data[[1]]$track$sonarId[1]), 1)
+    noFile <- expect_warning(loadPamguardBinaryFile('FILEDNE'))
+    expect_null(noFile)
+})
+
     
