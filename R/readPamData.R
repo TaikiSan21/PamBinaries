@@ -66,13 +66,11 @@ readPamData <- function(fid, fileInfo, skipLarge, debug=FALSE, keepUIDs, ...) {
             # Do nothing here- couldn't figure out a clean way of checking if
             # number wasn't in array
         } else {
-            if (fileInfo$fileHeader$moduleType != 'Gemini Threshold Detector') {
-                print(paste('Error - Object Identifier does not match ',
-                            fileInfo$fileHeader$moduleType,
-                            ' type. Aborting data read.'))
-                seek(fid, nextObj, origin='start')
-                return(NULL)
-            }
+            print(paste('Error - Object Identifier does not match ',
+                        fileInfo$fileHeader$moduleType,
+                        ' type. Aborting data read.'))
+            seek(fid, nextObj, origin='start')
+            return(NULL)
         }
     }
     
