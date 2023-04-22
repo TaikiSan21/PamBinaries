@@ -1,6 +1,10 @@
-# PamBinaries 1.7.2
+# PamBinaries 1.8.1
 
 * `contourToFreq` sometimes not working for all files, better method now
+
+# PamBinaries 1.8.0
+
+* New Gemini Track Reader code added from pull request
 
 # PamBinaries 1.7.1
 
