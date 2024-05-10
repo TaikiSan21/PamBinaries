@@ -26,7 +26,7 @@ readDLModelData <- function(fid, fileInfo, data, debug=FALSE, ...) {
         nSpecies <- pamBinRead(fid, 'int16', n=1)
         pred <- vector('numeric', length=nSpecies)
         for(i in 1:nSpecies) {
-            pred[i] <- pamBinRead(fid, 'int16', n=1)/scales
+            pred[i] <- pamBinRead(fid, 'int16', n=1)/scale
         }
         data$predictions <- pred
         nclass <- pamBinRead(fid, 'int16', n=1)
