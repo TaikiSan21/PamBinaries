@@ -127,11 +127,17 @@ loadPamguardBinaryFile <- function(fileName, skipLarge=FALSE, skipData=FALSE,
                                              fileInfo$objectType <- 1
                                              fileInfo$readModuleData <- readDLDetData
                                          },
+                                         'DL detection' = {
+                                             fileInfo$objectType <- 1
+                                             fileInfo$readModuleData <- readDLDetData
+                                         },
                                          'DL_Model_Data' = {
-                                             # TODO
+                                             fileInfo$objectType <- 0
+                                             fileInfo$readModuleData <- readDLModelData
                                          },
                                          'DL Model Data' = {
-                                             # TODO same above
+                                             fileInfo$objectType <- 0
+                                             fileInfo$readModuleData <- readDLModelData
                                          }
                                   )
                               },

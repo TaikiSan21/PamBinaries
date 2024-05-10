@@ -1,3 +1,7 @@
+# PamBinaries 1.9.0
+
+* Added `readDLModelData` 
+
 # PamBinaries 1.8.1
 
 * `contourToFreq` sometimes not working for all files, better method now
