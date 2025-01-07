@@ -1,3 +1,7 @@
+# PamBinaries 1.9.1
+
+* Fixing bug with finding whistle sample rate in rare cases
+
 # PamBinaries 1.9.0
 
 * Added `readDLModelData` 
