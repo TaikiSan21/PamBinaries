@@ -1,6 +1,6 @@
 Package: PamBinaries
 Title: Read and Process 'Pamguard' Binary Data
-Version: 1.9.1
+Version: 1.9.2
 Authors@R: c(
     TS = person("Taiki", "Sakai", email = "taiki.sakai@noaa.gov", role = c("aut", "cre")),
     MO = person("Michael", "Oswald", email = "mo55@st-andrews.ac.uk", role = c("aut")),

@@ -50,10 +50,10 @@ contourToFreq <- function(data, verbose=FALSE) {
         cat('SR: ', sr, ' Len: ', fftLen, ' Hop: ', fftHop, sep ='')
     }
     for(i in seq_along(data)) {
-        data[[i]]$freq <- data[[i]]$contour * sr / fftLen
-        data[[i]]$allFreq <- do.call(cbind, lapply(data[[i]]$sliceData, function(x) x$peakData)) * sr / fftLen
+        data[[i]]$freq <- data[[i]]$contour / fftLen * sr
+        data[[i]]$allFreq <- do.call(cbind, lapply(data[[i]]$sliceData, function(x) x$peakData)) / fftLen * sr
         data[[i]]$time <- sapply(data[[i]]$sliceData,
-                                 function(x) x$sliceNumber) * fftHop / sr
+                                 function(x) x$sliceNumber) / sr * fftHop
     }
     data
 }

@@ -1,3 +1,7 @@
+# PamBinaries 1.9.2
+
+* Fixing sample rate better lol
+
 # PamBinaries 1.9.1
 
 * Fixing bug with finding whistle sample rate in rare cases
