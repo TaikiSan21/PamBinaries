@@ -1,3 +1,7 @@
+# PamBinaries 1.9.3
+
+* Old binaries crashing bc of lack of UIDs
+
 # PamBinaries 1.9.2
 
 * Fixing sample rate better lol
